@@ -1,0 +1,99 @@
+<c-row ngPreserveWhitespaces>
+    <c-col xs="12">
+        <c-card class="mb-4">
+            <c-card-header>
+                <strong>Filter</strong>
+              </c-card-header>
+          <c-card-body>
+            <!-- Filter Section -->
+            <div class="row mb-4">
+              <!-- Event Name Filter -->
+              <div class="col-md-3 mb-3">
+                <label for="event-name" class="form-label">Event Name</label>
+                <input
+                  id="event-name"
+                  type="text"
+                  class="form-control"
+                  placeholder="Search Event"
+                />
+              </div>
+      
+              <!-- Status Filter -->
+              <div class="col-md-3 mb-3">
+                <label for="status" class="form-label">Status</label>
+                <select
+                  id="status"
+                  class="form-select"
+                >
+                  <option value="">All Status</option>
+                  <option value="pending">Pending</option>
+                  <option value="in-progress">In Progress</option>
+                  <option value="completed">Completed</option>
+                </select>
+              </div>
+      
+              <!-- Start Date Filter -->
+              <div class="col-md-3 mb-3">
+                <label for="start-date" class="form-label">Start Date</label>
+                <input
+                  id="start-date"
+                  type="date"
+                  class="form-control"
+                />
+              </div>
+      
+              <!-- Last Date Filter -->
+              <div class="col-md-3 mb-3">
+                <label for="last-date" class="form-label">Last Date</label>
+                <input
+                  id="last-date"
+                  type="date"
+                  class="form-control"
+                />
+              </div>
+            </div>
+            <button class="btn btn-primary ms-auto">Submit</button>
+      
+          </c-card-body>
+        </c-card>
+      </c-col>
+      
+    <c-col xs="12">
+      <c-card class="mb-4">
+        <c-card-header>
+          <strong>Event List</strong>
+        </c-card-header>
+        <c-card-body>
+          <div class="d-flex">
+            <button routerLink="/events/add-new-event" class="btn btn-primary ms-auto">Add New Event</button>
+          </div>
+          <table class="table table-striped">
+            <thead>
+              <tr>
+                <th scope="col">#</th>
+                <th scope="col">Name</th>
+                <th scope="col">Link</th>
+                <th scope="col">Date</th>
+                <th scope="col">Status</th>
+                <th scope="col">Action</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <th scope="row">1</th>
+                <td>Part</td>
+                <td>https:test.com</td>
+                <td>2025-01-02</td>
+                <td>Completed</td>
+                <td>
+                  <c-col class="mb-5" [md]="3" [sm]="4" [xl]="2" [xs]="6">
+                    <svg cIcon name="cil-calendar" size="lg"></svg>
+                  </c-col>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </c-card-body>
+      </c-card>
+    </c-col>
+  </c-row>
