@@ -1,21 +1,17 @@
 import { ApplicationConfig, importProvidersFrom } from '@angular/core';
-import { provideAnimationsAsync } from '@angular/platform-browser/animations/async';
-import {
-  provideRouter,
-  withEnabledBlockingInitialNavigation,
-  withHashLocation,
-  withInMemoryScrolling,
-  withRouterConfig,
-  withViewTransitions
-} from '@angular/router';
+import { provideAnimations } from '@angular/platform-browser/animations'; // ✅ Required
+import { provideRouter, withEnabledBlockingInitialNavigation, withInMemoryScrolling, withRouterConfig, withViewTransitions } from '@angular/router';
 
 import { DropdownModule, SidebarModule } from '@coreui/angular';
 import { IconSetService } from '@coreui/icons-angular';
 import { routes } from './app.routes';
+import { provideToastr } from 'ngx-toastr';
+import { provideHttpClient, withFetch } from '@angular/common/http';
 
 export const appConfig: ApplicationConfig = {
   providers: [
-    provideRouter(routes,
+    provideRouter(
+      routes,
       withRouterConfig({
         onSameUrlNavigation: 'reload'
       }),
@@ -24,11 +20,14 @@ export const appConfig: ApplicationConfig = {
         anchorScrolling: 'enabled'
       }),
       withEnabledBlockingInitialNavigation(),
-      withViewTransitions(),
-      // withHashLocation()
+      withViewTransitions()
     ),
     importProvidersFrom(SidebarModule, DropdownModule),
     IconSetService,
-    provideAnimationsAsync()
+
+    provideAnimations(),
+    provideToastr(),
+
+    provideHttpClient(withFetch()),
   ]
 };
