@@ -14,5 +14,12 @@ export const routes: Routes = [
     data: {
       title: 'Add New User'
     }
+  },
+  {
+    path: 'update-user/:id',
+    loadComponent: () => import('./update-user/update-user.component').then(m => m.UpdateUserComponent),
+    data: {
+      title: 'Update User'
+    }
   }
 ];

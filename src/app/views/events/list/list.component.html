@@ -71,7 +71,7 @@
             <thead>
               <tr>
                 <th scope="col">#</th>
-                <th scope="col">Name</th>
+                <th scope="col">Title</th>
                 <th scope="col">Link</th>
                 <th scope="col">Date</th>
                 <th scope="col">Status</th>
@@ -79,12 +79,12 @@
               </tr>
             </thead>
             <tbody>
-              <tr>
-                <th scope="row">1</th>
-                <td>Part</td>
-                <td>https:test.com</td>
-                <td>2025-01-02</td>
-                <td>Completed</td>
+              <tr *ngFor="let event of events; let i = index">
+                <th scope="row">{{i + 1}}</th>
+                <td>{{event.title}}</td>
+                <td>{{event.registerLink}}</td>
+                <td>{{event.startDate}}</td>
+                <td>{{event.status}}</td>
                 <td>
                   <c-col class="mb-5" [md]="3" [sm]="4" [xl]="2" [xs]="6">
                     <svg cIcon name="cil-calendar" size="lg"></svg>

@@ -3,6 +3,9 @@ import { RouterLink } from '@angular/router';
 import { RowComponent, ColComponent, TextColorDirective, CardComponent, CardHeaderComponent, CardBodyComponent } from '@coreui/angular';
 import { IconComponent, IconDirective, IconSetService } from '@coreui/icons-angular';
 import { freeSet } from '@coreui/icons';
+import { UserService } from './service/user.service';
+import { ToastrService } from 'ngx-toastr';
+import { CommonModule } from '@angular/common';
 
 @Component({
   selector: 'app-user',
@@ -16,7 +19,8 @@ import { freeSet } from '@coreui/icons';
     CardHeaderComponent,
     CardBodyComponent,
     IconDirective,
-    IconComponent
+    IconComponent,
+    CommonModule
   ],
   providers: [IconSetService],
   templateUrl: './user.component.html',
@@ -24,16 +28,35 @@ import { freeSet } from '@coreui/icons';
 })
 export class UserComponent implements OnInit {
   public cilCalendar: any;
+  public cilPencil: any;
+  users: any[] = [];
 
-  constructor(private iconSet: IconSetService) {
-    // Register freeSet into iconSet
+  constructor(private iconSet: IconSetService,
+    private userService:UserService,
+    private toastr: ToastrService,
+    
+  ) {
     this.iconSet.icons = { ...freeSet };
-
-    // Assign only the specific icon you want
     this.cilCalendar = freeSet.cilCalendar;
+    this.cilPencil = freeSet.cilPencil;
   }
 
   ngOnInit(): void {
-    console.log('cilCalendar:', this.cilCalendar); // This should log the path data
+    this.loadusers();
   }
+
+  loadusers() {
+    this.userService.getUsers()
+      .subscribe(
+        (data: any) => {
+          this.users = data.data.items;
+          console.log(this.users);
+        },
+        error => {
+          console.error('Error fetching users:', error);
+        }
+      );
+
+  }
+
 }

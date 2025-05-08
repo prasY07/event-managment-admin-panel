@@ -18,14 +18,19 @@
             </tr>
           </thead>
           <tbody>
-            <tr>
-              <th scope="row">1</th>
-              <td>Mark</td>
-              <td>Mark&#64;gmail.com</td>
+            <tr *ngFor = "let user of  users; let i = index">
+              <th scope="row">{{i+1}}</th>
+              <td>{{user.name}}</td>
+              <td>{{user.email}}</td>
 
-              <td>
-                <c-col class="mb-5" [md]="3" [sm]="4" [xl]="2" [xs]="6">
+              <td class="d-flex actionButtons">
+                <!-- <c-col class="mb-5" [md]="3" [sm]="4" [xl]="2" [xs]="6">
                   <svg cIcon name="cil-calendar" size="lg"></svg>
+                </c-col> -->
+                <c-col class="mb-5 mx-2" [md]="3" [sm]="4" [xl]="2" [xs]="6">
+                  <a [routerLink]="['/users/update-user', user.id]">
+                  <svg cIcon name="cil-pencil" size="lg"></svg>
+                  </a>
                 </c-col>
               </td>
             </tr>

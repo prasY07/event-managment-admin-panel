@@ -22,6 +22,9 @@ export class UserService {
     return this.baseApi.getData('api/admin/user/user-list');
   }
 
+  getUsersList():Observable<userInterface>{
+    return this.baseApi.getData('api/admin/user/list');
+  }
 
   getSingleUsers(id:string):Observable<userInterface>{
     return this.baseApi.getInformation(`api/admin/user/${id}/user-information`);
