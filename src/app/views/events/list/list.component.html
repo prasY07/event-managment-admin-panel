@@ -9,12 +9,12 @@
             <div class="row mb-4">
               <!-- Event Name Filter -->
               <div class="col-md-3 mb-3">
-                <label for="event-name" class="form-label">Event Name</label>
+                <label for="event-name" class="form-label">Title</label>
                 <input
-                  id="event-name"
+                  id="title"
                   type="text"
                   class="form-control"
-                  placeholder="Search Event"
+                  placeholder="Search Title"
                 />
               </div>
       
@@ -25,10 +25,11 @@
                   id="status"
                   class="form-select"
                 >
-                  <option value="">All Status</option>
-                  <option value="pending">Pending</option>
-                  <option value="in-progress">In Progress</option>
-                  <option value="completed">Completed</option>
+                  <option value="">Event Status</option>
+                  <option value="UPCOMING">Upcoming</option>
+                  <option value="ONGOING">Ongoing</option>
+                  <option value="COMPLETED">Completed</option>
+                  <option value="CANCELLED">Cancelled</option>
                 </select>
               </div>
       
@@ -74,7 +75,7 @@
                 <th scope="col">Title</th>
                 <th scope="col">Date</th>
                 <th scope="col">Event Status</th>
-                <!-- <th scope="col">Status</th> -->
+                <th scope="col">Status</th>
                 <th scope="col">Action</th>
               </tr>
             </thead>
@@ -84,6 +85,7 @@
                 <td>{{event.title}}</td>
                 <td>{{event.startDate}}</td>
                 <td [innerHTML]="event.eventStatus | eventStatus"></td>
+                <td [innerHTML]="event.status | eventStatus"></td>
 
                 <!-- <td>{{event.status}}</td> -->
                 <td class="d-flex">

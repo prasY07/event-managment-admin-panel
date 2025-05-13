@@ -16,10 +16,16 @@ export class EventStatusPipe implements PipeTransform {
       case 'ONGOING':
         badgeClass = 'badge bg-success';
         break;
+      case 'ACTIVE':
+        badgeClass = 'badge bg-success';
+        break;
       case 'COMPLETED':
         badgeClass = 'badge bg-secondary';
         break;
       case 'CANCELLED':
+        badgeClass = 'badge bg-danger';
+        break;
+      case 'INACTIVE':
         badgeClass = 'badge bg-danger';
         break;
       default:
