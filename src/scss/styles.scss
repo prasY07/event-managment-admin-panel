@@ -21,3 +21,14 @@
 // We use those styles to show code examples, you should remove them in your application.
 @use "examples";
 
+.toast-container {
+  position: fixed !important; // or 'unset', depending on your goal
+}
+
+// .btn-primary
+// {
+//   background-color: #1c3252 !important;
+// }
+// a{
+//   color: black !important;
+// }

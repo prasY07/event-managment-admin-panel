@@ -2,8 +2,10 @@ import { CommonModule } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
 import { RouterLink } from '@angular/router';
 import { RowComponent, ColComponent, TextColorDirective, CardComponent, CardHeaderComponent, CardBodyComponent } from '@coreui/angular';
-import { IconComponent, IconDirective } from '@coreui/icons-angular';
+import { IconComponent, IconDirective, IconSetService } from '@coreui/icons-angular';
 import { EventService } from '../service/event.service';
+import { EventStatusPipe } from '../../pipes/event-status.pipe';
+import { freeSet } from '@coreui/icons';
 @Component({
   selector: 'app-list',
   standalone: true, // 🔹 Required for loadComponent
@@ -16,23 +18,34 @@ import { EventService } from '../service/event.service';
     CardBodyComponent,
     IconDirective,
     IconComponent,
-    CommonModule
+    CommonModule,
+    EventStatusPipe
   ],
   templateUrl: './list.component.html',
   styleUrl: './list.component.scss'
 })
 export class ListComponent implements OnInit {
   events: any[] = [];
+  // public cilinfo: any;
+  // public cilSetting: any;
+
   constructor(
     private eventService:EventService,
+    private iconSet: IconSetService,
     
   ) {
-  }
-  ngOnInit(): void {
-    this.loadusers();
+        this.iconSet.icons = { ...freeSet };
+        // this.cilinfo = freeSet.cilInfo;
+        // this.cilSetting = freeSet.cilSettings;
+
   }
 
-  loadusers() {
+  
+  ngOnInit(): void {
+    this.loadEvents();
+  }
+
+  loadEvents() {
     this.eventService.getEvents()
       .subscribe(
         (data: any) => {

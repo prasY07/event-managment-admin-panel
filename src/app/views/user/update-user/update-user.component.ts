@@ -44,7 +44,6 @@ export class UpdateUserComponent {
       this.userForm.get('name')?.setValue(this.user.data.name);
       this.userForm.get('email')?.setValue(this.user.data.email);
 
-
     });
   }
   onSubmit(): void {

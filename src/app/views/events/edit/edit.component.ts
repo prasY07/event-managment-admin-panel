@@ -1,16 +1,16 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
-import { NgxSummernoteModule } from 'ngx-summernote';
-import { RowComponent, ColComponent, TextColorDirective, CardComponent, CardHeaderComponent, CardBodyComponent } from '@coreui/angular';
 import { ToastrService } from 'ngx-toastr';
 import { UserService } from '../../user/service/user.service';
-import { Router } from '@angular/router';
-import { CommonModule } from '@angular/common';
 import { EventService } from '../service/event.service';
+import { ActivatedRoute, Router } from '@angular/router';
+import { RowComponent, ColComponent, TextColorDirective, CardComponent, CardHeaderComponent, CardBodyComponent } from '@coreui/angular';
+import { CommonModule } from '@angular/common';
+import { NgxSummernoteModule } from 'ngx-summernote';
+
 
 @Component({
-  selector: 'app-add',
-  standalone: true,  // Ensure this is a standalone component
+  selector: 'app-edit',
   imports: [
     RowComponent,
     ColComponent,
@@ -23,12 +23,16 @@ import { EventService } from '../service/event.service';
     CommonModule,
     NgxSummernoteModule  // Ensure NgxSummernoteModule is here
   ],
-  templateUrl: './add.component.html',
-  styleUrls: ['./add.component.scss']
+  templateUrl: './edit.component.html',
+  styleUrl: './edit.component.scss'
 })
-export class AddComponent implements OnInit {
+export class EditComponent implements OnInit {
   eventForm!: FormGroup;
   users: any = [];
+  eventId: string = '';
+  event: any = {};
+
+
   summernoteConfig: any = {
     placeholder: 'Enter text...',
     tabsize: 2,
@@ -45,16 +49,21 @@ export class AddComponent implements OnInit {
     styleTags: ['p', 'h1', 'h2', 'h3', 'h4', 'h5', 'h6'],  // Allow these in dropdown
     fontNames: ['Arial', 'Comic Sans MS', 'Courier New']
   };
-    
+
   constructor(
     private fb: FormBuilder,
     private toastr: ToastrService,
     private userService: UserService,
     private eventService: EventService,
-    private router: Router
-  ) {}
+    private router: Router,
+    private aRoute: ActivatedRoute,
+
+  ) { }
 
   ngOnInit(): void {
+    this.aRoute.params.subscribe(params => {
+      this.eventId = params['id'];
+    });
     this.eventForm = this.fb.group({
       title: ['', [Validators.required, Validators.minLength(3), Validators.maxLength(30)]],
       address: ['', [Validators.required, Validators.minLength(3), Validators.maxLength(50)]],
@@ -65,11 +74,12 @@ export class AddComponent implements OnInit {
       startDate: ['', Validators.required],
       endDate: ['', Validators.required],
       userId: [''],
-      eventMemberType: ['', [Validators.required]],
-      eventAccessType: ['', [Validators.required]]
+      eventMemberType: [''],
+      eventAccessType: ['']
     });
 
     this.getUsers();
+    this.getEvent();
   }
 
   getUsers() {
@@ -86,14 +96,15 @@ export class AddComponent implements OnInit {
 
   onSubmit(): void {
     if (this.eventForm.valid) {
-      console.log("this.eventForm.value",this.eventForm.value);
-      this.eventService.createEvent(this.eventForm.value).subscribe(
+      this.eventService.updateEvent(this.eventForm.value, this.eventId).subscribe(
         response => {
-          this.toastr.success('New Event successfully.', 'Success');
+          this.toastr.success('Event Update successfully.', 'Success');
           this.router.navigate(['/events']);
         },
+
+
         error => {
-          let errorMsg = 'OOPS Something Went Wrong';
+          let errorMsg = 'OOPS Something Went wrong';
           if (error.error && error.error.message) {
             errorMsg = error.error.message;
           }
@@ -104,4 +115,25 @@ export class AddComponent implements OnInit {
       alert('Please fill form');
     }
   }
+
+  getEvent() {
+    this.eventService.getSingleEvent(this.eventId).subscribe((data: any) => {
+      this.event = data;;
+      this.eventForm.patchValue({
+        title: this.event.data.title,
+        address: this.event.data.address,
+        venue: this.event.data.venue,
+        category: this.event.data.category,
+        startDate: this.event.data.startDate,
+        endDate: this.event.data.endDate,
+        userId: this.event.data.user.id,
+        description: this.event.data.description,           // <-- this sets Summernote content
+        privacyPolicy: this.event.data.privacyPolicy  
+        
+      });
+
+
+    });
+  }
+
 }

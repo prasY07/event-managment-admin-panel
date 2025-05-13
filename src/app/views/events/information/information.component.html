@@ -1,0 +1,65 @@
+<c-row ngPreserveWhitespaces>
+  <c-col xs="12">
+    <c-card class="mb-4 shadow-sm border-0">
+      <c-card-header class="bg-dark text-white">
+        <strong><i class="fas fa-calendar-alt me-2"></i>Event Information</strong>
+      </c-card-header>
+      <c-card-body>
+        <div class="row">
+
+          <!-- Left Column -->
+          <div class="col-md-6">
+            <div class="info-box mb-4">
+              <label class="text-muted"><i class="fas fa-heading me-2 text-primary"></i><strong>Event Title</strong></label>
+              <p class="fs-5">{{ event.title || 'N/A' }}</p>
+            </div>
+
+            <div class="info-box mb-4">
+              <label class="text-muted"><i class="fas fa-calendar-plus me-2 text-success"></i><strong>Start Date</strong></label>
+              <p>{{ event.startDate || 'N/A' }}</p>
+            </div>
+
+            <div class="info-box mb-4">
+              <label class="text-muted"><i class="fas fa-calendar-minus me-2 text-danger"></i><strong>End Date</strong></label>
+              <p>{{ event.endDate || 'N/A' }}</p>
+            </div>
+
+            <div class="info-box mb-4">
+              <label class="text-muted"><i class="fas fa-map-marker-alt me-2 text-warning"></i><strong>Venue</strong></label>
+              <p>{{ event.venue || 'N/A' }}</p>
+            </div>
+
+            <div class="info-box mb-4">
+              <label class="text-muted"><i class="fas fa-home me-2 text-info"></i><strong>Address</strong></label>
+              <p>{{ event.address || 'N/A' }}</p>
+            </div>
+
+            <div class="info-box mb-4">
+              <label class="text-muted"><i class="fas fa-tags me-2 text-secondary"></i><strong>Category</strong></label>
+              <p>{{ event.category || 'N/A' }}</p>
+            </div>
+          </div>
+
+          <!-- Right Column -->
+          <div class="col-md-6">
+            <div class="info-box mb-4">
+              <label class="text-muted"><i class="fas fa-user me-2 text-dark"></i><strong>User</strong></label>
+              <p>{{ event.user?.name || 'N/A' }}</p>
+            </div>
+
+            <div class="info-box mb-4">
+              <label class="text-muted"><i class="fas fa-align-left me-2 text-primary"></i><strong>Description</strong></label>
+              <div class="border rounded p-2 bg-light" [innerHTML]="event.description || 'N/A'"></div>
+            </div>
+
+            <div class="info-box mb-4">
+              <label class="text-muted"><i class="fas fa-shield-alt me-2 text-success"></i><strong>Privacy Policy</strong></label>
+              <div class="border rounded p-2 bg-light" [innerHTML]="event.privacyPolicy || 'N/A'"></div>
+            </div>
+          </div>
+
+        </div>
+      </c-card-body>
+    </c-card>
+  </c-col>
+</c-row>

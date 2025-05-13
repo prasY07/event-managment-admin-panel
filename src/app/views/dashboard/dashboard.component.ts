@@ -17,7 +17,9 @@ import {
   ProgressComponent,
   RowComponent,
   TableDirective,
-  TextColorDirective
+  TemplateIdDirective,
+  TextColorDirective,
+  WidgetStatFComponent
 } from '@coreui/angular';
 import { ChartjsComponent } from '@coreui/angular-chartjs';
 import { IconDirective } from '@coreui/icons-angular';
@@ -25,6 +27,7 @@ import { IconDirective } from '@coreui/icons-angular';
 import { WidgetsBrandComponent } from '../widgets/widgets-brand/widgets-brand.component';
 import { WidgetsDropdownComponent } from '../widgets/widgets-dropdown/widgets-dropdown.component';
 import { DashboardChartsData, IChartProps } from './dashboard-charts-data';
+import { cilArrowRight, cilChartPie } from '@coreui/icons';
 
 interface IUser {
   name: string;
@@ -43,7 +46,8 @@ interface IUser {
 @Component({
     templateUrl: 'dashboard.component.html',
     styleUrls: ['dashboard.component.scss'],
-    imports: [WidgetsDropdownComponent, TextColorDirective, CardComponent, CardBodyComponent, RowComponent, ColComponent, ButtonDirective, IconDirective, ReactiveFormsModule, ButtonGroupComponent, FormCheckLabelDirective, ChartjsComponent, NgStyle, CardFooterComponent, GutterDirective, ProgressBarDirective, ProgressComponent, WidgetsBrandComponent, CardHeaderComponent, TableDirective, AvatarComponent]
+    imports: [WidgetsDropdownComponent, TextColorDirective, CardComponent, CardBodyComponent, RowComponent, ColComponent, ButtonDirective, IconDirective, ReactiveFormsModule, ButtonGroupComponent, FormCheckLabelDirective, ChartjsComponent, NgStyle, CardFooterComponent, GutterDirective, ProgressBarDirective, ProgressComponent, WidgetsBrandComponent, CardHeaderComponent, TableDirective, AvatarComponent,    WidgetStatFComponent,TemplateIdDirective
+    ]
 })
 export class DashboardComponent implements OnInit {
 
@@ -51,6 +55,7 @@ export class DashboardComponent implements OnInit {
   readonly #document: Document = inject(DOCUMENT);
   readonly #renderer: Renderer2 = inject(Renderer2);
   readonly #chartsData: DashboardChartsData = inject(DashboardChartsData);
+  icons = { cilChartPie, cilArrowRight };
 
   public users: IUser[] = [
     {

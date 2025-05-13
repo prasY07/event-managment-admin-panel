@@ -1,0 +1,118 @@
+<div class="card">
+    <div class="card-header" id="heading6">
+        <h5 class="mb-0" style="display: flex;justify-content: space-between;">
+           Access Setting
+
+        </h5>
+    </div>
+  
+        <div class="card-body">
+            <c-accordion [flush]="true">
+                <c-accordion-item #item0="cAccordionItem" [visible]="false">
+                  <ng-template cTemplateId="accordionHeaderTemplate">
+                    <button (click)="item0.toggleItem()" [collapsed]="!item0.visible" cAccordionButton>
+                      Access
+                    </button>
+                  </ng-template>
+                  <ng-template cTemplateId="accordionBodyTemplate">
+                    <div class="accordion-body">
+                        <div class="table-responsive">
+                            <table class="table table-bordered">
+                                <thead>
+                                    <tr>
+                                        <th>Member Type</th>
+                                        <th>Access Type</th>
+                                        <th>Submit</th>
+                                      
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr *ngFor="let member of memberType">
+                                      <td>{{ member.name }}</td>
+                                      
+                                      <td>
+            
+                                        <ng-multiselect-dropdown
+                                        [placeholder]="'Select Access Type'"
+                                        [settings]="dropdownSettings"
+                                        [data]="accessType"
+                                        [(ngModel)]="selectedAccessMap[member.id]"
+                                        >
+                                        </ng-multiselect-dropdown>
+                                      </td>
+                                  
+                                      <td>
+                                        <button class="btn btn-primary btn-sm" (click)="submitAccess(member.id)">Submit</button>
+                                      </td>
+                                    </tr>
+                                  </tbody>
+                            </table>
+                        </div>
+                    </div>
+                  </ng-template>
+                </c-accordion-item>
+                <c-accordion-item #item1="cAccordionItem" [visible]="false">
+                  <ng-template cTemplateId="accordionHeaderTemplate">
+                    <button (click)="item1.toggleItem()" [collapsed]="!item1.visible" cAccordionButton>
+                        Member Type List
+                    </button>
+                  </ng-template>
+                  <ng-template cTemplateId="accordionBodyTemplate">
+                    <div class="accordion-body">
+            
+                    <div class="table-responsive">
+                        <table class="table table-bordered">
+                            <thead>
+                                <tr>
+                                    <th>Member Type</th>
+                                    <th>Submit</th>
+                                  
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr *ngFor="let member of memberType" [attr.id]="'row_' + member.id">
+                                  <td>{{ member.name }}</td>
+                                  <td>
+                                    <i class="fa fa-trash text-danger" aria-hidden="true" (click)="removeMemberType(member.id)"></i>
+                                 
+                                  </td>
+                                </tr>
+                              </tbody>
+                        </table>
+                    </div>
+                </div>
+                  </ng-template>
+                </c-accordion-item>
+                <c-accordion-item #item2="cAccordionItem" [visible]="false">
+                  <ng-template cTemplateId="accordionHeaderTemplate">
+                    <button (click)="item2.toggleItem()" [collapsed]="!item2.visible" cAccordionButton>
+                      Access Type 
+                    </button>
+                  </ng-template>
+                  <ng-template cTemplateId="accordionBodyTemplate">
+                    <div class="accordion-body">
+                        <div class="table-responsive">
+                            <table class="table table-bordered">
+                                <thead>
+                                    <tr>
+                                        <th>Access Type</th>
+                                        <th>Submit</th>
+                                      
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr *ngFor="let access of accessType" [attr.id]="'row_' + access.id">
+                                      <td>{{ access.name | ucfirst}}</td>
+                                      <td>
+                                        <i class="fa fa-trash text-danger" aria-hidden="true" (click)="removeAccessType(access.id)"></i>
+                                      </td>
+                                    </tr>
+                                  </tbody>
+                            </table>
+                        </div>
+                    </div>
+                  </ng-template>
+                </c-accordion-item>
+              </c-accordion>
+        </div>
+    </div>

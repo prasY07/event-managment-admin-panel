@@ -1,7 +1,7 @@
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
-import { environment } from '../../../environments/environment.ts';
+import { environment } from '../../../environments/environment';
 
 @Injectable({
   providedIn: 'root'
@@ -36,6 +36,10 @@ export class BaseApiServiceService {
     return this.http.patch<any>(`${this.apiUrl}/${endpoint}`, {},{ headers: this.applyHeaders() });
   }
 
+
+  deleteData(endpoint: string): Observable<any> {
+    return this.http.delete<any>(`${this.apiUrl}/${endpoint}`, { headers: this.applyHeaders() });
+  }
 
   private applyHeaders(): HttpHeaders {
     return new HttpHeaders({

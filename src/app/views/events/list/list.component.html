@@ -72,9 +72,9 @@
               <tr>
                 <th scope="col">#</th>
                 <th scope="col">Title</th>
-                <th scope="col">Link</th>
                 <th scope="col">Date</th>
-                <th scope="col">Status</th>
+                <th scope="col">Event Status</th>
+                <!-- <th scope="col">Status</th> -->
                 <th scope="col">Action</th>
               </tr>
             </thead>
@@ -82,12 +82,27 @@
               <tr *ngFor="let event of events; let i = index">
                 <th scope="row">{{i + 1}}</th>
                 <td>{{event.title}}</td>
-                <td>{{event.registerLink}}</td>
                 <td>{{event.startDate}}</td>
-                <td>{{event.status}}</td>
-                <td>
+                <td [innerHTML]="event.eventStatus | eventStatus"></td>
+
+                <!-- <td>{{event.status}}</td> -->
+                <td class="d-flex">
+                  <c-col class="mb-5 mx-2" [md]="3" [sm]="4" [xl]="2" [xs]="6">
+                    <a [routerLink]="['/events/update-event', event.id]">
+                    <svg cIcon name="cil-pencil" size="lg"></svg>
+                    </a>
+                  </c-col>
                   <c-col class="mb-5" [md]="3" [sm]="4" [xl]="2" [xs]="6">
-                    <svg cIcon name="cil-calendar" size="lg"></svg>
+                    <a [routerLink]="['/events/event-information', event.id]">
+                    <svg cIcon name="cil-info" size="lg"></svg>
+                    </a>
+                  </c-col>
+                
+                
+                  <c-col class="mb-5" [md]="3" [sm]="4" [xl]="2" [xs]="6">
+                    <a [routerLink]="['/events/event-setting', event.id]">
+                    <svg cIcon name="cil-settings" size="lg"></svg>
+                    </a>
                   </c-col>
                 </td>
               </tr>

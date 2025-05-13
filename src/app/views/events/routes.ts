@@ -17,4 +17,25 @@ export const routes: Routes = [
       title: 'Add'
     }
   },
+  {
+    path: 'update-event/:id',
+    loadComponent: () => import('./edit/edit.component').then(m => m.EditComponent),
+    data: {
+      title: 'Update Event'
+    }
+  },
+  {
+    path: 'event-setting/:id',
+    loadComponent: () => import('./setting/setting.component').then(m => m.SettingComponent),
+    data: {
+      title: 'Event Setting' 
+    }
+  },
+  {
+    path: 'event-information/:id',
+    loadComponent: () => import('./information/information.component').then(m => m.InformationComponent),
+    data: {
+      title: 'Event Information' 
+    }
+  }
 ];

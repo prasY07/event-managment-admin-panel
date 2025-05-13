@@ -1,0 +1,119 @@
+<c-row ngPreserveWhitespaces>
+    <c-col xs="12">
+      <c-card class="mb-4">
+        <c-card-header>
+          <strong>Update Event</strong>
+        </c-card-header>
+        <c-card-body>
+          <form [formGroup]="eventForm" (ngSubmit)="onSubmit()">
+            <div class="row">
+              
+              <!-- Title -->
+              <div class="col-6 mb-3">
+                <label>Event Title</label>
+                <input class="form-control" formControlName="title" type="text" placeholder="Enter event title" />
+                <div *ngIf="eventForm.get('title')?.touched && eventForm.get('title')?.invalid" class="text-danger">
+                  <small *ngIf="eventForm.get('title')?.errors?.['required']">Title is required.</small>
+                  <small *ngIf="eventForm.get('title')?.errors?.['minlength']">Minimum 3 characters.</small>
+                  <small *ngIf="eventForm.get('title')?.errors?.['maxlength']">Maximum 100 characters.</small>
+                </div>
+              </div>
+  
+              <!-- Start Date -->
+              <div class="col-6 mb-3">
+                <label>Start Date</label>
+                <input class="form-control" formControlName="startDate" type="date" />
+                <div *ngIf="eventForm.get('startDate')?.touched && eventForm.get('startDate')?.invalid" class="text-danger">
+                  <small>Start Date is required.</small>
+                </div>
+              </div>
+  
+              <!-- End Date -->
+              <div class="col-6 mb-3">
+                <label>End Date</label>
+                <input class="form-control" formControlName="endDate" type="date" />
+                <div *ngIf="eventForm.get('endDate')?.touched && eventForm.get('endDate')?.invalid" class="text-danger">
+                  <small>End Date is required.</small>
+                </div>
+              </div>
+  
+              <!-- Venue -->
+              <div class="col-6 mb-3">
+                <label>Venue</label>
+                <input class="form-control" formControlName="venue" type="text" placeholder="Enter venue" />
+                <div *ngIf="eventForm.get('venue')?.touched && eventForm.get('venue')?.invalid" class="text-danger">
+                  <small *ngIf="eventForm.get('venue')?.errors?.['required']">Venue is required.</small>
+                  <small *ngIf="eventForm.get('venue')?.errors?.['minlength']">Minimum 3 characters.</small>
+                  <small *ngIf="eventForm.get('venue')?.errors?.['maxlength']">Maximum 100 characters.</small>
+                </div>
+              </div>
+  
+              <!-- Address -->
+              <div class="col-6 mb-3">
+                <label>Address</label>
+                <input class="form-control" formControlName="address" type="text" placeholder="Enter address" />
+                <div *ngIf="eventForm.get('address')?.touched && eventForm.get('address')?.invalid" class="text-danger">
+                  <small *ngIf="eventForm.get('address')?.errors?.['required']">Address is required.</small>
+                  <small *ngIf="eventForm.get('address')?.errors?.['minlength']">Minimum 3 characters.</small>
+                  <small *ngIf="eventForm.get('address')?.errors?.['maxlength']">Maximum 100 characters.</small>
+                </div>
+              </div>
+  
+              <!-- Category -->
+              <div class="col-6 mb-3">
+                <label>Category</label>
+                <input class="form-control" formControlName="category" type="text" placeholder="Enter category" />
+                <div *ngIf="eventForm.get('category')?.touched && eventForm.get('category')?.invalid" class="text-danger">
+                  <small *ngIf="eventForm.get('category')?.errors?.['required']">Category is required.</small>
+                  <small *ngIf="eventForm.get('category')?.errors?.['minlength']">Minimum 3 characters.</small>
+                  <small *ngIf="eventForm.get('category')?.errors?.['maxlength']">Maximum 100 characters.</small>
+                </div>
+              </div>
+  
+              <!-- User -->
+              <div class="col-6 mb-3">
+                <label>User</label>
+                <select class="form-control" formControlName="userId">
+                  <option value="">Select a user</option>
+                  <option *ngFor="let user of users" [value]="user.id">
+                    {{ user.name }}
+                  </option>
+                </select>
+              </div>
+              <div class="mb-3">
+                <label for="memberType">Member Type</label>
+                <textarea class="form-control" formControlName="eventMemberType" rows="3"></textarea>
+              </div>
+              
+              <div class="mb-3">
+                <label for="accessType">Access Type</label>
+                <textarea class="form-control" formControlName="eventAccessType" rows="3"></textarea>
+              </div>
+  
+              <div class="col-12 mb-3">
+                <label>Description</label>
+                <div [ngxSummernote]="summernoteConfig" formControlName="description"></div>
+                <div class="text-danger" *ngIf="eventForm.get('description')?.invalid && eventForm.get('description')?.touched">
+                  <div *ngIf="eventForm.get('description')?.errors?.['required']">Description is required.</div>
+                  <div *ngIf="eventForm.get('description')?.errors?.['minlength']">Minimum 10 characters required.</div>
+                  <div *ngIf="eventForm.get('description')?.errors?.['maxlength']">Maximum 500 characters allowed.</div>
+                </div>
+              </div>
+              
+              <div class="col-12 mb-3">
+                <label>Privacy Policy</label>
+                <div [ngxSummernote]="summernoteConfig" formControlName="privacyPolicy"></div>
+                <div class="text-danger" *ngIf="eventForm.get('privacyPolicy')?.invalid && eventForm.get('privacyPolicy')?.touched">
+                  <div *ngIf="eventForm.get('privacyPolicy')?.errors?.['required']">Privacy Policy is required.</div>
+                  <div *ngIf="eventForm.get('privacyPolicy')?.errors?.['minlength']">Minimum 10 characters required.</div>
+                  <div *ngIf="eventForm.get('privacyPolicy')?.errors?.['maxlength']">Maximum 500 characters allowed.</div>
+                </div>
+              </div>
+            </div>
+            <button type="submit" class="btn btn-primary" [disabled]="eventForm.invalid">Submit</button>
+          </form>
+        </c-card-body>
+      </c-card>
+    </c-col>
+  </c-row>
+  

@@ -70,36 +70,6 @@
               </div>
             </div>
 
-            <!-- Description -->
-            <div class="col-12 mb-3">
-              <label>Description</label>
-              <textarea class="form-control" formControlName="description" rows="3" placeholder="Enter description"></textarea>
-              <div *ngIf="eventForm.get('description')?.touched && eventForm.get('description')?.invalid" class="text-danger">
-                <small *ngIf="eventForm.get('description')?.errors?.['required']">Description is required.</small>
-                <small *ngIf="eventForm.get('description')?.errors?.['minlength']">Minimum 10 characters.</small>
-                <small *ngIf="eventForm.get('description')?.errors?.['maxlength']">Maximum 500 characters.</small>
-              </div>
-            </div>
-
-            <!-- Registration Fees -->
-            <div class="col-6 mb-3">
-              <label>Registration Fees</label>
-              <input class="form-control" formControlName="registrationFees" type="number" placeholder="Enter fees" />
-              <div *ngIf="eventForm.get('registrationFees')?.touched && eventForm.get('registrationFees')?.invalid" class="text-danger">
-                <small *ngIf="eventForm.get('registrationFees')?.errors?.['required']">Fees is required.</small>
-              </div>
-            </div>
-
-            <!-- Location -->
-            <div class="col-6 mb-3">
-              <label>Location</label>
-              <input class="form-control" formControlName="location" type="text" placeholder="Enter location" />
-              <div *ngIf="eventForm.get('location')?.touched && eventForm.get('location')?.invalid" class="text-danger">
-                <small *ngIf="eventForm.get('location')?.errors?.['required']">Location is required.</small>
-                <small *ngIf="eventForm.get('location')?.errors?.['minlength']">Minimum 5 characters.</small>
-                <small *ngIf="eventForm.get('location')?.errors?.['maxlength']">Maximum 150 characters.</small>
-              </div>
-            </div>
 
             <!-- User -->
             <div class="col-6 mb-3">
@@ -110,6 +80,37 @@
                   {{ user.name }}
                 </option>
               </select>
+            </div>
+
+            <div class="mb-3">
+              <label for="memberType">Member Type</label>
+              <textarea class="form-control" formControlName="eventMemberType" rows="3"></textarea>
+            </div>
+            
+            <div class="mb-3">
+              <label for="accessType">Access Type</label>
+              <textarea class="form-control" formControlName="eventAccessType" rows="3"></textarea>
+            </div>
+
+            
+            <div class="col-12 mb-3">
+              <label>Description</label>
+              <div [ngxSummernote]="summernoteConfig" formControlName="description"></div>
+              <div class="text-danger" *ngIf="eventForm.get('description')?.invalid && eventForm.get('description')?.touched">
+                <div *ngIf="eventForm.get('description')?.errors?.['required']">Description is required.</div>
+                <div *ngIf="eventForm.get('description')?.errors?.['minlength']">Minimum 10 characters required.</div>
+                <div *ngIf="eventForm.get('description')?.errors?.['maxlength']">Maximum 500 characters allowed.</div>
+              </div>
+            </div>
+            
+            <div class="col-12 mb-3">
+              <label>Privacy Policy</label>
+              <div [ngxSummernote]="summernoteConfig" formControlName="privacyPolicy"></div>
+              <div class="text-danger" *ngIf="eventForm.get('privacyPolicy')?.invalid && eventForm.get('privacyPolicy')?.touched">
+                <div *ngIf="eventForm.get('privacyPolicy')?.errors?.['required']">Privacy Policy is required.</div>
+                <div *ngIf="eventForm.get('privacyPolicy')?.errors?.['minlength']">Minimum 10 characters required.</div>
+                <div *ngIf="eventForm.get('privacyPolicy')?.errors?.['maxlength']">Maximum 500 characters allowed.</div>
+              </div>
             </div>
 
           </div>
