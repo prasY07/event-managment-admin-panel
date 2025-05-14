@@ -41,6 +41,10 @@ export class BaseApiServiceService {
     return this.http.delete<any>(`${this.apiUrl}/${endpoint}`, { headers: this.applyHeaders() });
   }
 
+  uploadImage(endpoint: string, data: object): Observable<any> {
+    return this.http.post<any>(`${this.apiUrl}/${endpoint}`, data);
+  }
+
   private applyHeaders(): HttpHeaders {
     return new HttpHeaders({
       'Content-Type': 'application/json',

@@ -37,6 +37,14 @@ constructor(private baseApi: BaseApiServiceService) { }
     return this.baseApi.submitData('api/admin/event-access/create-access',data);
   }
 
+  // uploadBanner(formData: FormData,id:string){
+  //   return this.baseApi.submitData(`api/admin/event/${id}/upload-banner`,formData);
+  // }
+
+  uploadBanner(formData: FormData, eventId: string) {
+    return this.baseApi.uploadImage(`api/admin/event/${eventId}/upload-banner`, formData);
+  }
+
   getSelectedAccessList(id:string){
     return this.baseApi.getData(`api/admin/event-access/${id}/access-list`);
   }

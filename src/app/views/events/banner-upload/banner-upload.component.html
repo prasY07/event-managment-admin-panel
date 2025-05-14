@@ -1,0 +1,35 @@
+<!-- Modal Structure -->
+<div class="modal fade" id="imageUploadModal" tabindex="-1" aria-labelledby="imageUploadModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="imageUploadModalLabel">Upload Banner</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" (click)="closeModal()"></button>
+      </div>
+      <div class="p-3">
+        <form [formGroup]="bannerUpload" (ngSubmit)="onSubmit()">
+          <div class="mb-3">
+            <label for="file" class="form-label">Banner</label>
+            <input
+              type="file"
+              class="form-control"
+              id="file"
+              (change)="onFileChange($event)"
+              accept="image/png, image/jpeg, image/jpg"
+            />
+            <div *ngIf="bannerUpload.get('file')?.hasError('invalidImageType') && bannerUpload.get('file')?.touched">
+              <small class="text-danger">Only PNG, JPG, and JPEG files are allowed.</small>
+            </div>
+          </div>
+
+          <button type="submit" class="btn btn-primary" [disabled]="bannerUpload.invalid || loading">
+            {{ loading ? 'Uploading...' : 'Submit' }}
+          </button>
+        </form>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" (click)="closeModal()">Close</button>
+      </div>
+    </div>
+  </div>
+</div>

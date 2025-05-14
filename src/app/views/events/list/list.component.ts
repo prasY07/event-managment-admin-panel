@@ -1,11 +1,12 @@
 import { CommonModule } from '@angular/common';
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { RouterLink } from '@angular/router';
 import { RowComponent, ColComponent, TextColorDirective, CardComponent, CardHeaderComponent, CardBodyComponent } from '@coreui/angular';
 import { IconComponent, IconDirective, IconSetService } from '@coreui/icons-angular';
 import { EventService } from '../service/event.service';
 import { EventStatusPipe } from '../../pipes/event-status.pipe';
 import { freeSet } from '@coreui/icons';
+import { BannerUploadComponent } from '../banner-upload/banner-upload.component';
 @Component({
   selector: 'app-list',
   standalone: true, // 🔹 Required for loadComponent
@@ -19,15 +20,19 @@ import { freeSet } from '@coreui/icons';
     IconDirective,
     IconComponent,
     CommonModule,
-    EventStatusPipe
+    EventStatusPipe,
+    BannerUploadComponent
   ],
+  
   templateUrl: './list.component.html',
   styleUrl: './list.component.scss'
 })
 export class ListComponent implements OnInit {
   events: any[] = [];
+  eventId : String = '';
   // public cilinfo: any;
   // public cilSetting: any;
+  @ViewChild('bannerUpload') bannerUpload!: BannerUploadComponent;
 
   constructor(
     private eventService:EventService,
@@ -56,5 +61,21 @@ export class ListComponent implements OnInit {
         }
       );
 
+  }
+
+
+  openImageUploadModal(id: string) {
+    const modalElement = document.getElementById('imageUploadModal');
+    if (modalElement) {
+      modalElement.classList.add('show'); // Shows the modal
+      modalElement.style.display = 'block';
+      document.body.classList.add('modal-open');
+      const modalBackdrop = document.createElement('div');
+      modalBackdrop.classList.add('modal-backdrop', 'fade', 'show');
+      document.body.appendChild(modalBackdrop);
+      this.bannerUpload.eventId = id;  // Pass eventId to the BannerUploadComponent
+
+     
+    }
   }
 }
