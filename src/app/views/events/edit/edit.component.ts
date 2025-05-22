@@ -99,7 +99,7 @@ export class EditComponent implements OnInit {
       this.eventService.updateEvent(this.eventForm.value, this.eventId).subscribe(
         response => {
           this.toastr.success('Event Update successfully.', 'Success');
-          this.router.navigate(['/events']);
+          this.router.navigate(['/admin/events']);
         },
 
 

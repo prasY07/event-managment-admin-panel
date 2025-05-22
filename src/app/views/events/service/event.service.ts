@@ -17,7 +17,14 @@ constructor(private baseApi: BaseApiServiceService) { }
     return this.baseApi.updateData(`api/admin/event/${id}/update-event`,data);
   }
 
-  getEvents():Observable<any>{
+  // getEvents(pageNumber: number): Observable<any> {
+  //   return this.baseApi.getDataWithParams('api/admin/event/list', {
+  //     page: pageNumber,
+  //     // size: pageSize
+  //   });
+  // }
+
+  getEvents(): Observable<any> {
     return this.baseApi.getData('api/admin/event/list');
   }
 
@@ -59,6 +66,12 @@ constructor(private baseApi: BaseApiServiceService) { }
     return this.baseApi.deleteData(`api/admin/event-access/${id}/delete-access-type`);
   }
 
+  updateEntryFees(data:object,id:string)
+  {
+    return this.baseApi.updateData(`api/admin/event-member/${id}/update-fees`,data);
+  }
+
+  
 }
 
 

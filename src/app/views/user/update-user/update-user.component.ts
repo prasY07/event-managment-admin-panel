@@ -57,7 +57,7 @@ export class UpdateUserComponent {
      .subscribe(
        response => {
        this.toastr.success('User update successfully.', 'Success');
-         this.router.navigate(['/users']);
+         this.router.navigate(['/admin/users']);
        //  this.isLoading = false;
 
        },

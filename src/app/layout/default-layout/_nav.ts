@@ -16,12 +16,12 @@ export const navItems: INavData[] = [
   },
   {
     name: 'Users',
-    url: '/users',
+    url: 'users',
     iconComponent: { name: 'cil-user' }
   },
   {
     name: 'Events',
-    url: '/events',
+    url: 'events',
     iconComponent: { name: 'cil-calendar' }
   },
   {

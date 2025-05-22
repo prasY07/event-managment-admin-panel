@@ -213,4 +213,28 @@ export class SettingComponent implements OnInit {
     );
 
   }
+
+  updateEntryFees(member: any) {
+    if (member.entryFees < 0) {
+      alert('Entry fees cannot be negative.');
+      return;
+    }
+
+    if (member.entryFees > 100000) {
+      alert('Entry fees cannot greater than 100000.');
+      return;
+    }
+    console.log("member",member);
+
+    const payload = {
+      id: member.id,
+      entryFees: member.entryFees
+    };
+
+    this.eventService.updateEntryFees(payload,this.eventId).subscribe({
+      next: () => this.toastr.success('Entry fees updated!'),
+      error: () => this.toastr.error('Failed to update entry fees.')
+    });
+  }
+  
 }

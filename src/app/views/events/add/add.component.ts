@@ -90,7 +90,7 @@ export class AddComponent implements OnInit {
       this.eventService.createEvent(this.eventForm.value).subscribe(
         response => {
           this.toastr.success('New Event successfully.', 'Success');
-          this.router.navigate(['/events']);
+          this.router.navigate(['/admin/events']);
         },
         error => {
           let errorMsg = 'OOPS Something Went Wrong';

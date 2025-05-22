@@ -1,4 +1,4 @@
-import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { environment } from '../../../environments/environment';
@@ -15,6 +15,24 @@ export class BaseApiServiceService {
   getData(endpoint: string): Observable<any> {
     return this.http.get<any>(`${this.apiUrl}/${endpoint}`, { headers: this.applyHeaders() });
   }
+
+  getDataWithParams(endpoint: string, queryParams?: any): Observable<any> {
+    let params = new HttpParams();
+  
+    if (queryParams) {
+      Object.keys(queryParams).forEach(key => {
+        if (queryParams[key] !== undefined && queryParams[key] !== null) {
+          params = params.set(key, queryParams[key]);
+        }
+      });
+    }
+  
+    return this.http.get<any>(`${this.apiUrl}/${endpoint}`, {
+      headers: this.applyHeaders(),
+      params: params
+    });
+  }
+  
 
   getDataWithoutPagination(endpoint: string): Observable<any> {
     return this.http.get<any>(`${this.apiUrl}/${endpoint}`, { headers: this.applyHeaders() });

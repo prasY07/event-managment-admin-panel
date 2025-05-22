@@ -66,7 +66,7 @@
         </c-card-header>
         <c-card-body>
           <div class="d-flex">
-            <button routerLink="/events/add-new-event" class="btn btn-primary ms-auto">Add New Event</button>
+            <button routerLink="/admin/events/add-new-event" class="btn btn-primary ms-auto">Add New Event</button>
           </div>
           <table class="table table-striped">
             <thead>
@@ -90,19 +90,19 @@
                 <!-- <td>{{event.status}}</td> -->
                 <td class="d-flex">
                   <c-col class="mb-5 mx-2" [md]="3" [sm]="4" [xl]="2" [xs]="6">
-                    <a [routerLink]="['/events/update-event', event.id]">
+                    <a [routerLink]="['/admin/events/update-event', event.id]">
                     <svg cIcon name="cil-pencil" size="lg"></svg>
                     </a>
                   </c-col>
                   <c-col class="mb-5" [md]="3" [sm]="4" [xl]="2" [xs]="6">
-                    <a [routerLink]="['/events/event-information', event.id]">
+                    <a [routerLink]="['/admin/events/event-information', event.id]">
                     <svg cIcon name="cil-info" size="lg"></svg>
                     </a>
                   </c-col>
                 
                 
                   <c-col class="mb-5" [md]="3" [sm]="4" [xl]="2" [xs]="6">
-                    <a [routerLink]="['/events/event-setting', event.id]">
+                    <a [routerLink]="['/admin/events/event-setting', event.id]">
                     <svg cIcon name="cil-settings" size="lg"></svg>
                     </a>
                   </c-col>
@@ -113,7 +113,11 @@
                     </a>
                   </c-col>
 
-                  
+                  <c-col class="mb-5" [md]="3" [sm]="4" [xl]="2" [xs]="6">
+                    <a [routerLink]="['/admin/events/event-users', event.id]">
+                    <svg cIcon name="cil-user" size="lg"></svg>
+                    </a>
+                  </c-col>
 
                 </td>
               </tr>

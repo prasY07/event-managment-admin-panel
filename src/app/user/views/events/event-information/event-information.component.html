@@ -1,0 +1,36 @@
+<div class="form-page" [ngStyle]="{'background-image': 'url(' + event.image + ')'}">
+  <div class="glass-form">
+    <h1 class="event-title">{{ event.title }}</h1>
+    <p class="event-date-time">📅 {{ event.startDate }} - {{ event.endDate }}</p>
+    <a href="#" class="btn register-btn">Register Now</a>
+
+    <section class="description-section">
+      <h2>Description</h2>
+      <div [innerHTML]="event.description"></div>
+    </section>
+
+    <section class="details-grid">
+      <div>
+        <h3>Venue</h3>
+        <p>{{ event.venue }}</p>
+      </div>
+      <div>
+        <h3>Category</h3>
+        <p>{{ event.category }}</p>
+      </div>
+      <div>
+        <h3>Host</h3>
+        <p>{{ event.user.name }}</p>
+      </div>
+    </section>
+
+    <section class="terms-conditions">
+      <h2>Terms and Conditions</h2>
+      <div [innerHTML]="event.privacyPolicy"></div>
+    </section>
+
+    <div class="register-footer">
+      <a href="#" class="btn register-btn">Click here to Register</a>
+    </div>
+  </div>
+</div>

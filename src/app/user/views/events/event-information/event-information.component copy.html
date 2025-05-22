@@ -1,0 +1,51 @@
+<div class="event-container">
+  <div class="event-banner" style="background-image: url('https://placehold.co/600x400?text=Hello+World');">
+    <div class="overlay">
+      <h1 class="event-title">{{event.title}}</h1>
+      <p class="event-date-time">📅 {{event.startDate}}   -  {{event.endDate}}
+        
+        <!-- |  🕘 10:30 AM - 1:00 PM -->
+      </p>
+      <a href="#" class="btn register-btn">Register Now</a>
+    </div>
+  </div>
+
+  <div class="event-content">
+    <section class="description-section">
+      <h2>Description</h2>
+      <div  [innerHTML]="event.description" ></div>
+     <!-- 📞 <strong>Prashant Yadav</strong> - 9988776655<br>
+        📞 <strong>Amrita Sharma</strong> - 9988665544 -->
+    </section>
+
+    <section class="details-grid">
+      <div>
+        <h3>Venue</h3>
+        <p>{{event.venue}}</p>
+      </div>
+      <!-- <div>
+        <h3>Zone Name</h3>
+        <p>Rajasthan</p>
+      </div> -->
+      <div>
+        <h3>Category</h3>
+        <p>{{event.category}}</p>
+      </div>
+      <div>
+        <h3>Host</h3>
+        <p>{{event.user.name}}</p>
+      </div>
+    </section>
+
+    <!-- Terms and Conditions Section -->
+    <section class="terms-conditions">
+      <h2 class="text-center">Terms and Conditions</h2>
+      <div  [innerHTML]="event.privacyPolicy" ></div>
+    </section>
+
+    <!-- Register button at the end -->
+    <div class="register-footer text-center">
+      <a href="#" class="btn register-btn">Click here to Register</a>
+    </div>
+  </div>
+</div>

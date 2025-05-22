@@ -1,0 +1,38 @@
+<c-row ngPreserveWhitespaces>
+    <c-col xs="12">
+      <c-card class="mb-4">
+        <c-card-header>
+          <strong>Event users List</strong>
+        </c-card-header>
+        <c-card-body>
+          <div class="d-flex">
+            <button  [routerLink]="['/admin/events/add-user', 1]" class="btn btn-primary ms-auto">Add New User</button>
+          </div>
+
+          <table class="table table-striped">
+            <thead>
+              <tr>
+                <th scope="col">#</th>
+                <th scope="col">Name</th>
+                <th scope="col">Email</th>
+                <th scope="col">Register Date</th>
+                <th scope="col">Action</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let event of events; let i = index">
+                <th scope="row">{{i + 1}}</th>
+                <td>Prashant</td>
+                <td>gmail</td>
+                <td></td>
+                <td></td>
+
+                
+              </tr>
+            </tbody>
+          </table>
+        </c-card-body>
+      </c-card>
+    </c-col>
+  </c-row>
+

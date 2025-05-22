@@ -65,6 +65,7 @@
                             <thead>
                                 <tr>
                                     <th>Member Type</th>
+                                    <th>Entry Fees</th>
                                     <th>Submit</th>
                                   
                                 </tr>
@@ -73,6 +74,18 @@
                                 <tr *ngFor="let member of memberType" [attr.id]="'row_' + member.id">
                                   <td>{{ member.name }}</td>
                                   <td>
+                                    <input type="number"
+                                    class="form-control"
+                                    [(ngModel)]="member.entryFees"
+                                    min="0"
+                                    step="0.01"
+                                    placeholder="Enter fee" />
+                                  </td>
+                                  <td>
+                                    <i class="fa fa-save text-success me-2"
+                                    style="cursor: pointer;"
+                                    title="Save"
+                                    (click)="updateEntryFees(member)"></i>
                                     <i class="fa fa-trash text-danger" aria-hidden="true" (click)="removeMemberType(member.id)"></i>
                                  
                                   </td>
@@ -113,6 +126,43 @@
                     </div>
                   </ng-template>
                 </c-accordion-item>
+
+
+
+                <!-- <c-accordion-item #item3="cAccordionItem" [visible]="false">
+                  <ng-template cTemplateId="accordionHeaderTemplate">
+                    <button (click)="item3.toggleItem()" [collapsed]="!item3.visible" cAccordionButton>
+                      Required Contact 
+                    </button>
+                  </ng-template>
+                  <ng-template cTemplateId="accordionBodyTemplate">
+                    <div class="accordion-body card">
+                      <div style="text-align: right;">
+                        <button class="btn btn-primary mb-3 text-right" >Add</button>
+                      </div>
+                        <div class="table-responsive mt-2">
+                       
+                            <table class="table table-bordered">
+                                <thead>
+                                    <tr>
+                                        <th>Name</th>
+                                        <th>Number</th>
+                                      
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr *ngFor="let access of accessType" [attr.id]="'row_' + access.id">
+                                      <td>{{ access.name | ucfirst}}</td>
+                                      <td>
+                                        <i class="fa fa-trash text-danger" aria-hidden="true" (click)="removeAccessType(access.id)"></i>
+                                      </td>
+                                    </tr>
+                                  </tbody>
+                            </table>
+                        </div>
+                    </div>
+                  </ng-template>
+                </c-accordion-item> -->
               </c-accordion>
         </div>
     </div>

@@ -86,5 +86,7 @@ export class BannerUploadComponent implements OnInit {
       alert('Please fill out the form correctly.');
     }
   }
+
+  
   
 }

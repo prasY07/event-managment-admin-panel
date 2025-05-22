@@ -1,5 +1,6 @@
 import { Routes } from '@angular/router';
 import { DefaultLayoutComponent } from './layout';
+import { UserDefaultLayoutComponent } from './user/views/layout/user-default-layout/user-default-layout.component';
 
 export const routes: Routes = [
   {
@@ -8,7 +9,7 @@ export const routes: Routes = [
     pathMatch: 'full'
   },
   {
-    path: '',
+    path: 'admin',
     component: DefaultLayoutComponent,
     data: {
       title: 'Home'
@@ -66,12 +67,33 @@ export const routes: Routes = [
     ]
   },
   {
+    path: 'event/:id',
+    component: UserDefaultLayoutComponent,  
+    children: [
+      {
+        path: '',
+        loadChildren: () => import('./user/views/routes').then(m => m.routes),
+        data: {
+          title: 'Event Description'
+        }
+      }
+    ]
+  },
+  
+  {
     path: '404',
     loadComponent: () => import('./views/pages/page404/page404.component').then(m => m.Page404Component),
     data: {
       title: 'Page 404'
     }
   },
+  // {
+  //   path: 'event-description-path',
+  //   loadComponent: () => import('./user/views/events/event-information/event-information.component').then(m => m.EventInformationComponent),
+  //   data: {
+  //     title: 'Page 404'
+  //   }
+  // },
   {
     path: '500',
     loadComponent: () => import('./views/pages/page500/page500.component').then(m => m.Page500Component),

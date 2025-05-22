@@ -6,7 +6,7 @@
       </c-card-header>
       <c-card-body>
         <div class="d-flex">
-          <button routerLink="/users/add-new-user" class="btn btn-primary ms-auto">Add New User</button>
+          <button routerLink="/admin/users/add-new-user" class="btn btn-primary ms-auto">Add New User</button>
         </div>
         <table class="table table-striped">
           <thead>
@@ -28,7 +28,7 @@
                   <svg cIcon name="cil-calendar" size="lg"></svg>
                 </c-col> -->
                 <c-col class="mb-5 mx-2" [md]="3" [sm]="4" [xl]="2" [xs]="6">
-                  <a [routerLink]="['/users/update-user', user.id]">
+                  <a [routerLink]="['/admin/users/update-user', user.id]">
                   <svg cIcon name="cil-pencil" size="lg"></svg>
                   </a>
                 </c-col>

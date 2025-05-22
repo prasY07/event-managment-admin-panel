@@ -37,5 +37,19 @@ export const routes: Routes = [
     data: {
       title: 'Event Information' 
     }
+  },
+  {
+    path: 'event-users/:id',
+    loadComponent: () => import('./event-user-list/event-user-list.component').then(m => m.EventUserListComponent),
+    data: {
+      title: 'Event Information' 
+    }
+  },
+  {
+    path: 'add-user/:id',
+    loadComponent: () => import('./add-event-user/add-event-user.component').then(m => m.AddEventUserComponent),
+    data: {
+      title: 'Event Information' 
+    }
   }
 ];

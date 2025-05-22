@@ -41,7 +41,7 @@ export class AddUserComponent implements OnInit {
         .subscribe(
           response => {
             this.toastr.success('New User add successfully.', 'Success');
-            this.router.navigate(['/users']);
+            this.router.navigate(['/admin/users']);
           },
           error => {
             let errorMsg = 'OOPS Something Went Wrong';
