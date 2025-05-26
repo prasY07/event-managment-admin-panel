@@ -6,7 +6,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { CardBodyComponent, CardComponent, CardHeaderComponent, ColComponent, RowComponent, TextColorDirective } from '@coreui/angular';
 import { CommonModule } from '@angular/common';
 import { UcfirstPipe } from '../../../common/pipe/ucfirst.pipe';
-import { SocialSourceService } from '../service/social-source.service';
+import { SocialSourceService } from '../../../common/Service/social-source.service';
 
 @Component({
   selector: 'app-add-event-user',
@@ -31,6 +31,8 @@ export class AddEventUserComponent implements OnInit {
   socialMediaPlateForm: any = [];
   memberTypes: any[] = [];
   socialSources:any[] = [];
+  states:any[] = [];
+  
   eventUserRegisterForm!: FormGroup;
   eventId = '';
 
@@ -92,4 +94,17 @@ export class AddEventUserComponent implements OnInit {
         }
       );
   }
+
+  // loadStates() {
+  //   this.eventService.getAllStates()
+  //     .subscribe(
+  //       (data: any) => {
+  //         this.states = data.data;
+  //         console.log("member", this.memberTypes);
+  //       },
+  //       error => {
+  //         console.error('Error fetching users:', error);
+  //       }
+  //     );
+  // }
 }

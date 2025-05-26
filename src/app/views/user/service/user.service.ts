@@ -11,23 +11,23 @@ export class UserService {
   constructor(private baseApi: BaseApiServiceService) { }
 
   createUser(data:object){
-    return this.baseApi.submitData('api/admin/user/create',data);
+    return this.baseApi.submitData('user/create',data);
   }
 
   updateUser(data:object,id:string){
-    return this.baseApi.updateData(`api/admin/user/${id}/update`,data);
+    return this.baseApi.updateData(`user/${id}/update`,data);
   }
 
   getUsers():Observable<userInterface>{
-    return this.baseApi.getData('api/admin/user/user-list');
+    return this.baseApi.getData('user/user-list');
   }
 
   getUsersList():Observable<userInterface>{
-    return this.baseApi.getData('api/admin/user/list');
+    return this.baseApi.getData('user/list');
   }
 
   getSingleUsers(id:string):Observable<userInterface>{
-    return this.baseApi.getInformation(`api/admin/user/${id}/user-information`);
+    return this.baseApi.getInformation(`user/${id}/user-information`);
   }
 
   // updateStatus(id:string){
