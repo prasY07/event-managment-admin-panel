@@ -7,6 +7,7 @@ import { CardBodyComponent, CardComponent, CardHeaderComponent, ColComponent, Ro
 import { CommonModule } from '@angular/common';
 import { UcfirstPipe } from '../../../common/pipe/ucfirst.pipe';
 import { SocialSourceService } from '../../../common/Service/social-source.service';
+import { StateService } from '../../../common/Service/state.service';
 
 @Component({
   selector: 'app-add-event-user',
@@ -40,6 +41,7 @@ export class AddEventUserComponent implements OnInit {
     private fb: FormBuilder,
     private toastr: ToastrService,
     private eventService: EventService,
+    private stateService: StateService,
     private socialSourceService: SocialSourceService,
     private router: Router,
     private aRoute: ActivatedRoute,
@@ -51,6 +53,7 @@ export class AddEventUserComponent implements OnInit {
   ngOnInit(): void {
     this.loadMemberAccess();
     this.getSocialMediaPlateform();
+    this.loadStates();
 
     this.eventUserRegisterForm = this.fb.group({
       name: ['', Validators.required],
@@ -95,16 +98,16 @@ export class AddEventUserComponent implements OnInit {
       );
   }
 
-  // loadStates() {
-  //   this.eventService.getAllStates()
-  //     .subscribe(
-  //       (data: any) => {
-  //         this.states = data.data;
-  //         console.log("member", this.memberTypes);
-  //       },
-  //       error => {
-  //         console.error('Error fetching users:', error);
-  //       }
-  //     );
-  // }
+  loadStates() {
+    this.stateService.getAllStates()
+      .subscribe(
+        (data: any) => {
+          this.states = data.data;
+          console.log("states", this.states);
+        },
+        error => {
+          console.error('Error fetching users:', error);
+        }
+      );
+  }
 }
