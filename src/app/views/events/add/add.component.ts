@@ -1,12 +1,12 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
-import { NgxSummernoteModule } from 'ngx-summernote';
 import { RowComponent, ColComponent, TextColorDirective, CardComponent, CardHeaderComponent, CardBodyComponent } from '@coreui/angular';
 import { ToastrService } from 'ngx-toastr';
 import { UserService } from '../../user/service/user.service';
 import { Router } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { EventService } from '../service/event.service';
+import { Editor, NgxEditorComponent, NgxEditorMenuComponent, Toolbar } from 'ngx-editor';
 
 @Component({
   selector: 'app-add',
@@ -21,31 +21,44 @@ import { EventService } from '../service/event.service';
     ReactiveFormsModule,
     FormsModule,
     CommonModule,
-    NgxSummernoteModule  // Ensure NgxSummernoteModule is here
+    NgxEditorComponent, NgxEditorMenuComponent
   ],
   templateUrl: './add.component.html',
   styleUrls: ['./add.component.scss']
 })
-export class AddComponent implements OnInit {
+export class AddComponent implements OnInit , OnDestroy {
   eventForm!: FormGroup;
   users: any = [];
-  summernoteConfig: any = {
-    placeholder: 'Enter text...',
-    tabsize: 2,
-    height: '300px',
-    toolbar: [
-      ['style', ['style']], // Enables paragraph, h1, h2, etc.
-      ['font', ['bold', 'italic', 'underline', 'strikethrough']],
-      ['fontsize', ['fontsize']],
-      ['color', ['color']],
-      ['para', ['ul', 'ol', 'paragraph']],
-      ['insert', ['link']],
-      ['view', ['codeview']]
-    ],
-    styleTags: ['p', 'h1', 'h2', 'h3', 'h4', 'h5', 'h6'],  // Allow these in dropdown
-    fontNames: ['Arial', 'Comic Sans MS', 'Courier New']
-  };
+  // summernoteConfig: any = {
+  //   placeholder: 'Enter text...',
+  //   tabsize: 2,
+  //   height: '300px',
+  //   toolbar: [
+  //     ['style', ['style']], // Enables paragraph, h1, h2, etc.
+  //     ['font', ['bold', 'italic', 'underline', 'strikethrough']],
+  //     ['fontsize', ['fontsize']],
+  //     ['color', ['color']],
+  //     ['para', ['ul', 'ol', 'paragraph']],
+  //     ['insert', ['link']],
+  //     ['view', ['codeview']]
+  //   ],
+  //   styleTags: ['p', 'h1', 'h2', 'h3', 'h4', 'h5', 'h6'],  // Allow these in dropdown
+  //   fontNames: ['Arial', 'Comic Sans MS', 'Courier New']
+  // };
     
+  descriptionEditor!: Editor;
+  privacyPolicyEditor!: Editor;
+  toolbar: Toolbar = [
+    ['bold', 'italic'],
+    ['underline', 'strike'],
+    ['code', 'blockquote'],
+    ['ordered_list', 'bullet_list'],
+    [{ heading: ['h1', 'h2', 'h3', 'h4', 'h5', 'h6'] }],
+    ['link', 'image'],
+    ['text_color', 'background_color'],
+    ['align_left', 'align_center', 'align_right', 'align_justify'],
+  ];
+
   constructor(
     private fb: FormBuilder,
     private toastr: ToastrService,
@@ -70,8 +83,15 @@ export class AddComponent implements OnInit {
     });
 
     this.getUsers();
+    this.descriptionEditor = new Editor();
+    this.privacyPolicyEditor = new Editor();
+
   }
 
+  ngOnDestroy() {
+    this.descriptionEditor.destroy();
+    this.privacyPolicyEditor.destroy();
+  }
   getUsers() {
     this.userService.getUsersList().subscribe(
       (data: any) => {

@@ -91,11 +91,14 @@
               <label for="accessType">Access Type</label>
               <textarea class="form-control" formControlName="eventAccessType" rows="3"></textarea>
             </div>
-
             
-            <div class="col-12 mb-3">
+            
+             <div class="col-12 mb-3">
               <label>Description</label>
-              <div [ngxSummernote]="summernoteConfig" formControlName="description"></div>
+              <div class="NgxEditor__Wrapper">
+                <ngx-editor-menu [editor]="descriptionEditor" [toolbar]="toolbar"> </ngx-editor-menu>
+                <ngx-editor [editor]="descriptionEditor" formControlName="description"> </ngx-editor>
+              </div>
               <div class="text-danger" *ngIf="eventForm.get('description')?.invalid && eventForm.get('description')?.touched">
                 <div *ngIf="eventForm.get('description')?.errors?.['required']">Description is required.</div>
                 <div *ngIf="eventForm.get('description')?.errors?.['minlength']">Minimum 10 characters required.</div>
@@ -105,13 +108,17 @@
             
             <div class="col-12 mb-3">
               <label>Privacy Policy</label>
-              <div [ngxSummernote]="summernoteConfig" formControlName="privacyPolicy"></div>
+              <!-- <div [ngxSummernote]="summernoteConfig" formControlName="privacyPolicy"></div> -->
+              <div class="NgxEditor__Wrapper">
+                <ngx-editor-menu [editor]="privacyPolicyEditor" [toolbar]="toolbar"> </ngx-editor-menu>
+                <ngx-editor [editor]="privacyPolicyEditor" formControlName="privacyPolicy" > </ngx-editor>
+              </div>
               <div class="text-danger" *ngIf="eventForm.get('privacyPolicy')?.invalid && eventForm.get('privacyPolicy')?.touched">
                 <div *ngIf="eventForm.get('privacyPolicy')?.errors?.['required']">Privacy Policy is required.</div>
                 <div *ngIf="eventForm.get('privacyPolicy')?.errors?.['minlength']">Minimum 10 characters required.</div>
                 <div *ngIf="eventForm.get('privacyPolicy')?.errors?.['maxlength']">Maximum 500 characters allowed.</div>
               </div>
-            </div>
+            </div> 
 
           </div>
 

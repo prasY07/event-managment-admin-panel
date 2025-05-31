@@ -10,7 +10,7 @@ import { Router } from '@angular/router';
   selector: 'app-add-user',
   imports: [RowComponent, ColComponent, TextColorDirective, CardComponent, CardHeaderComponent, CardBodyComponent, ReactiveFormsModule, FormsModule, CommonModule],
   templateUrl: './add-user.component.html',
-  styleUrl: './add-user.component.scss'
+  // styleUrl: './add-user.component.scss'
 })
 export class AddUserComponent implements OnInit {
   userForm!: FormGroup;

@@ -90,7 +90,7 @@
                 <textarea class="form-control" formControlName="eventAccessType" rows="3"></textarea>
               </div>
   
-              <div class="col-12 mb-3">
+              <!-- <div class="col-12 mb-3">
                 <label>Description</label>
                 <div [ngxSummernote]="summernoteConfig" formControlName="description"></div>
                 <div class="text-danger" *ngIf="eventForm.get('description')?.invalid && eventForm.get('description')?.touched">
@@ -108,7 +108,7 @@
                   <div *ngIf="eventForm.get('privacyPolicy')?.errors?.['minlength']">Minimum 10 characters required.</div>
                   <div *ngIf="eventForm.get('privacyPolicy')?.errors?.['maxlength']">Maximum 500 characters allowed.</div>
                 </div>
-              </div>
+              </div> -->
             </div>
             <button type="submit" class="btn btn-primary" [disabled]="eventForm.invalid">Submit</button>
           </form>

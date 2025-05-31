@@ -6,7 +6,6 @@ import { EventService } from '../service/event.service';
 import { ActivatedRoute, Router } from '@angular/router';
 import { RowComponent, ColComponent, TextColorDirective, CardComponent, CardHeaderComponent, CardBodyComponent } from '@coreui/angular';
 import { CommonModule } from '@angular/common';
-import { NgxSummernoteModule } from 'ngx-summernote';
 
 
 @Component({
@@ -21,7 +20,6 @@ import { NgxSummernoteModule } from 'ngx-summernote';
     ReactiveFormsModule,
     FormsModule,
     CommonModule,
-    NgxSummernoteModule  // Ensure NgxSummernoteModule is here
   ],
   templateUrl: './edit.component.html',
   styleUrl: './edit.component.scss'
@@ -33,22 +31,22 @@ export class EditComponent implements OnInit {
   event: any = {};
 
 
-  summernoteConfig: any = {
-    placeholder: 'Enter text...',
-    tabsize: 2,
-    height: '300px',
-    toolbar: [
-      ['style', ['style']], // Enables paragraph, h1, h2, etc.
-      ['font', ['bold', 'italic', 'underline', 'strikethrough']],
-      ['fontsize', ['fontsize']],
-      ['color', ['color']],
-      ['para', ['ul', 'ol', 'paragraph']],
-      ['insert', ['link']],
-      ['view', ['codeview']]
-    ],
-    styleTags: ['p', 'h1', 'h2', 'h3', 'h4', 'h5', 'h6'],  // Allow these in dropdown
-    fontNames: ['Arial', 'Comic Sans MS', 'Courier New']
-  };
+  // summernoteConfig: any = {
+  //   placeholder: 'Enter text...',
+  //   tabsize: 2,
+  //   height: '300px',
+  //   toolbar: [
+  //     ['style', ['style']], // Enables paragraph, h1, h2, etc.
+  //     ['font', ['bold', 'italic', 'underline', 'strikethrough']],
+  //     ['fontsize', ['fontsize']],
+  //     ['color', ['color']],
+  //     ['para', ['ul', 'ol', 'paragraph']],
+  //     ['insert', ['link']],
+  //     ['view', ['codeview']]
+  //   ],
+  //   styleTags: ['p', 'h1', 'h2', 'h3', 'h4', 'h5', 'h6'],  // Allow these in dropdown
+  //   fontNames: ['Arial', 'Comic Sans MS', 'Courier New']
+  // };
 
   constructor(
     private fb: FormBuilder,

@@ -71,6 +71,11 @@ constructor(private baseApi: BaseApiServiceService) { }
     return this.baseApi.updateData(`event-member/${id}/update-fees`,data);
   }
 
+  getAllEventUser(data:object,id:string)
+  {
+    return this.baseApi.getData(`event-member/${id}/update-fees`);
+  }
+
   
 }
 

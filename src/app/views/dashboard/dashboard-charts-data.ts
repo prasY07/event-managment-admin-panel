@@ -1,6 +1,5 @@
 import { Injectable } from '@angular/core';
 import { ChartData, ChartDataset, ChartOptions, ChartType, PluginOptionsByType, ScaleOptions, TooltipLabelStyle } from 'chart.js';
-import { DeepPartial } from 'chart.js/dist/types/utils';
 import { getStyle } from '@coreui/utils';
 
 export interface IChartProps {
@@ -120,22 +119,12 @@ export class DashboardChartsData {
       }
     ];
 
-    const plugins: DeepPartial<PluginOptionsByType<any>> = {
-      legend: {
-        display: false
-      },
-      tooltip: {
-        callbacks: {
-          labelColor: (context) => ({ backgroundColor: context.dataset.borderColor } as TooltipLabelStyle)
-        }
-      }
-    };
+   
 
     const scales = this.getScales();
 
     const options: ChartOptions = {
       maintainAspectRatio: false,
-      plugins,
       scales,
       elements: {
         line: {
