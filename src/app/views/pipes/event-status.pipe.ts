@@ -6,6 +6,7 @@ import { Pipe, PipeTransform } from '@angular/core';
 export class EventStatusPipe implements PipeTransform {
 
   transform(status: string): any {
+    if (!status) return '';
     let badgeClass = '';
     let label = status.charAt(0).toUpperCase() + status.slice(1).toLowerCase();
 

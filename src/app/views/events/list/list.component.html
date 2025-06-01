@@ -59,73 +59,88 @@
         </c-card>
       </c-col>
       
-    <c-col xs="12">
-      <c-card class="mb-4">
-        <c-card-header>
-          <strong>Event List</strong>
-        </c-card-header>
-        <c-card-body>
-          <div class="d-flex">
-            <button routerLink="/admin/events/add-new-event" class="btn btn-primary ms-auto">Add New Event</button>
-          </div>
-          <table class="table table-striped">
-            <thead>
-              <tr>
-                <th scope="col">#</th>
-                <th scope="col">Title</th>
-                <th scope="col">Date</th>
-                <th scope="col">Event Status</th>
-                <th scope="col">Status</th>
-                <th scope="col">Action</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr *ngFor="let event of events; let i = index">
-                <th scope="row">{{i + 1}}</th>
-                <td>{{event.title}}</td>
-                <td>{{event.startDate}}</td>
-                <td [innerHTML]="event.eventStatus | eventStatus"></td>
-                <td [innerHTML]="event.status | eventStatus"></td>
+      <c-col xs="12">
+        <c-card class="mb-4">
+          <c-card-header>
+            <strong>Event List</strong>
+          </c-card-header>
+          <c-card-body>
+            <div class="d-flex mb-3">
+              <button routerLink="/admin/events/add-new-event" class="btn btn-primary ms-auto">
+                Add New Event
+              </button>
+            </div>
+            <table mat-table [dataSource]="dataSource" class="mat-elevation-z8" matSort>
 
-                <!-- <td>{{event.status}}</td> -->
-                <td class="d-flex">
-                  <c-col class="mb-5 mx-2" [md]="3" [sm]="4" [xl]="2" [xs]="6">
-                    <a [routerLink]="['/admin/events/update-event', event.id]">
+              <!-- Position Column -->
+              <ng-container matColumnDef="position">
+                <th mat-header-cell *matHeaderCellDef> # </th>
+                <td mat-cell *matCellDef="let element; let i = index"> {{ i + 1 + page * pageSize }} </td>
+              </ng-container>
+            
+              <!-- Title Column -->
+              <ng-container matColumnDef="title">
+                <th mat-header-cell *matHeaderCellDef> Title </th>
+                <td mat-cell *matCellDef="let element"> {{element.title}} </td>
+              </ng-container>
+            
+              <!-- Date Column -->
+              <ng-container matColumnDef="startDate">
+                <th mat-header-cell *matHeaderCellDef> Date </th>
+                <td mat-cell *matCellDef="let element"> {{element.startDate | date}} </td>
+              </ng-container>
+            
+            <!-- Event Status Column -->
+<ng-container matColumnDef="eventStatus">
+  <th mat-header-cell *matHeaderCellDef> Event Status </th>
+  <td mat-cell *matCellDef="let element" [innerHTML]="element.eventStatus | eventStatus"></td>
+
+</ng-container>
+
+<!-- Status Column -->
+<ng-container matColumnDef="status">
+  <th mat-header-cell *matHeaderCellDef> Status </th>
+  <td mat-cell *matCellDef="let element" [innerHTML]="element.status | eventStatus"></td>
+
+</ng-container>
+
+            
+              <!-- Action Column -->
+              <ng-container matColumnDef="action">
+                <th mat-header-cell *matHeaderCellDef> Action </th>
+                <td mat-cell *matCellDef="let element" style="margin-top:10px;display: flex; gap: 10px; align-items: center;">
+                  <a [routerLink]="['/admin/events/update-event', element.id]" title="Edit">
                     <svg cIcon name="cil-pencil" size="lg"></svg>
-                    </a>
-                  </c-col>
-                  <c-col class="mb-5" [md]="3" [sm]="4" [xl]="2" [xs]="6">
-                    <a [routerLink]="['/admin/events/event-information', event.id]">
+                  </a>
+                  <a [routerLink]="['/admin/events/event-information', element.id]" title="Info">
                     <svg cIcon name="cil-info" size="lg"></svg>
-                    </a>
-                  </c-col>
-                
-                
-                  <c-col class="mb-5" [md]="3" [sm]="4" [xl]="2" [xs]="6">
-                    <a [routerLink]="['/admin/events/event-setting', event.id]">
+                  </a>
+                  <a [routerLink]="['/admin/events/event-setting', element.id]" title="Settings">
                     <svg cIcon name="cil-settings" size="lg"></svg>
-                    </a>
-                  </c-col>
-  
-                  <c-col class="mb-5" [md]="3" [sm]="4" [xl]="2" [xs]="6">
-                    <a (click)="openImageUploadModal(event.id)">
+                  </a>
+                  <a (click)="openImageUploadModal(element.id)" title="Upload Image" style="cursor: pointer;">
                     <svg cIcon name="cil-image" size="lg"></svg>
-                    </a>
-                  </c-col>
-
-                  <c-col class="mb-5" [md]="3" [sm]="4" [xl]="2" [xs]="6">
-                    <a [routerLink]="['/admin/events/event-users', event.id]">
+                  </a>
+                  <a [routerLink]="['/admin/events/event-users', element.id]" title="Users">
                     <svg cIcon name="cil-user" size="lg"></svg>
-                    </a>
-                  </c-col>
-
+                  </a>
                 </td>
-              </tr>
-            </tbody>
-          </table>
-        </c-card-body>
-      </c-card>
-    </c-col>
+              </ng-container>
+              
+              
+            
+              <!-- Header and Row Declarations -->
+              <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+              <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+            </table>
+            
+            <mat-paginator [length]="totalItems" [pageSize]="pageSize" [pageSizeOptions]="[5, 10, 25]" showFirstLastButtons (page)="onPageChange($event)">
+            </mat-paginator>
+            
+          </c-card-body>
+        </c-card>
+      </c-col>
+      
   </c-row>
 
   <app-banner-upload #bannerUpload></app-banner-upload>

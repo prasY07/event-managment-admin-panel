@@ -17,12 +17,12 @@ constructor(private baseApi: BaseApiServiceService) { }
     return this.baseApi.updateData(`event/${id}/update-event`,data);
   }
 
-  // getEvents(pageNumber: number): Observable<any> {
-  //   return this.baseApi.getDataWithParams('event/list', {
-  //     page: pageNumber,
-  //     // size: pageSize
-  //   });
-  // }
+  getEventsWithPagination(pageNumber: number): Observable<any> {
+    return this.baseApi.getDataWithParams('event/list', {
+      page: pageNumber,
+      // size: pageSize
+    });
+  }
 
   getEvents(): Observable<any> {
     return this.baseApi.getData('event/list');

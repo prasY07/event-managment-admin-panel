@@ -1,4 +1,4 @@
-import { CommonModule } from '@angular/common';
+import { CommonModule, NgForOf } from '@angular/common';
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { RouterLink } from '@angular/router';
 import { RowComponent, ColComponent, TextColorDirective, CardComponent, CardHeaderComponent, CardBodyComponent } from '@coreui/angular';
@@ -7,6 +7,10 @@ import { EventService } from '../service/event.service';
 import { EventStatusPipe } from '../../pipes/event-status.pipe';
 import { freeSet } from '@coreui/icons';
 import { BannerUploadComponent } from '../banner-upload/banner-upload.component';
+import { MatTableDataSource, MatTableModule  } from '@angular/material/table';
+import { MatPaginator, MatPaginatorModule, PageEvent } from '@angular/material/paginator';
+import { MatIconModule } from '@angular/material/icon';
+
 @Component({
   selector: 'app-list',
   standalone: true, // 🔹 Required for loadComponent
@@ -18,10 +22,15 @@ import { BannerUploadComponent } from '../banner-upload/banner-upload.component'
     CardHeaderComponent,
     CardBodyComponent,
     IconDirective,
-    IconComponent,
     CommonModule,
     EventStatusPipe,
-    BannerUploadComponent
+    BannerUploadComponent,
+    MatTableModule,
+    MatPaginatorModule,
+    NgForOf,
+    MatIconModule
+    
+    // DataSource
   ],
   
   templateUrl: './list.component.html',
@@ -30,8 +39,16 @@ import { BannerUploadComponent } from '../banner-upload/banner-upload.component'
 export class ListComponent implements OnInit {
   events: any[] = [];
   eventId : String = '';
-  // public cilinfo: any;
-  // public cilSetting: any;
+ 
+  displayedColumns: string[] = ['position', 'title', 'startDate', 'eventStatus', 'status', 'action'];
+  dataSource = new MatTableDataSource<any>([]);
+
+  totalItems = 0;
+  pageSize = 1;
+  page = 0;
+
+  @ViewChild(MatPaginator) paginator!: MatPaginator;
+
   @ViewChild('bannerUpload') bannerUpload!: BannerUploadComponent;
 
   constructor(
@@ -47,20 +64,46 @@ export class ListComponent implements OnInit {
 
   
   ngOnInit(): void {
-    this.loadEvents();
+    this.loadEvents(this.page, this.pageSize);
   }
 
-  loadEvents() {
-    this.eventService.getEvents()
-      .subscribe(
-        (data: any) => {
-          this.events = data.data.items;
-        },
-        error => {
-          console.error('Error fetching users:', error);
-        }
-      );
+  // loadEvents(page: number, size: number) {
+  //   this.eventService.getEventsWithPagination(page)
+  //     .subscribe(
+  //       (res: any) => {
+  //         this.events = res.data.items;
+  //         this.page = res.data.page;
+  //         this.totalItems = res.data.totalElements;
+  //       },
+  //       error => {
+  //         console.error('Error fetching users:', error);
+  //       }
+  //     );
 
+  // }
+
+  loadEvents(page: number, size: number): void {
+    this.eventService.getEventsWithPagination(page).subscribe(
+      (res: any) => {
+        this.dataSource.data = res.data.items;
+        this.totalItems = res.data.totalElements;
+      },
+      (error) => {
+        console.error('Error fetching events:', error);
+      }
+    );
+  }
+
+  onPageChange(event: PageEvent): void {
+    this.page = event.pageIndex;
+    this.pageSize = event.pageSize;
+    this.loadEvents(this.page, this.pageSize);
+  }
+
+  
+
+  get totalPages(): number {
+    return Math.ceil(this.totalItems / this.pageSize);
   }
 
 
@@ -75,7 +118,6 @@ export class ListComponent implements OnInit {
       document.body.appendChild(modalBackdrop);
       this.bannerUpload.eventId = id;  // Pass eventId to the BannerUploadComponent
 
-     
     }
   }
 }
