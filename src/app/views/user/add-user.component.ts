@@ -6,12 +6,15 @@ import { ToastrService } from 'ngx-toastr';
 import { UserService } from './service/user.service';
 import { Router } from '@angular/router';
 
+const allowedRoles = ['EVENT_MANAGER', 'INDIVIDUAL'];
+
 @Component({
   selector: 'app-add-user',
   imports: [RowComponent, ColComponent, TextColorDirective, CardComponent, CardHeaderComponent, CardBodyComponent, ReactiveFormsModule, FormsModule, CommonModule],
   templateUrl: './add-user.component.html',
   // styleUrl: './add-user.component.scss'
 })
+
 export class AddUserComponent implements OnInit {
   userForm!: FormGroup;
 
@@ -26,7 +29,9 @@ export class AddUserComponent implements OnInit {
   ngOnInit(): void {
     this.userForm = this.fb.group({
       name: ['', [Validators.required, Validators.minLength(3)]],
-      email: ['', [Validators.required, Validators.email]]
+      email: ['', [Validators.required, Validators.email]],
+      phoneNumber: ['', [Validators.required, Validators.pattern('^[0-9]{10}$'),Validators.pattern('^[6-9][0-9]{9}$') ]],
+      role: ['', Validators.required],
     });
   }
 
@@ -34,7 +39,12 @@ export class AddUserComponent implements OnInit {
 
     if (this.userForm.valid) {
       const formValue = this.userForm.value;
+      const selectedRole = formValue.role;
 
+      if (!allowedRoles.includes(selectedRole)) {
+        alert('Invalid role selected!');
+        return; // stop submission
+      }
       console.log("before submit", this.userForm.value);
 
       this.userService.createUser(this.userForm.value)

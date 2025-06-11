@@ -1,11 +1,14 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { RouterLink } from '@angular/router';
 import { RowComponent, ColComponent, TextColorDirective, CardComponent, CardHeaderComponent, CardBodyComponent } from '@coreui/angular';
 import { IconComponent, IconDirective, IconSetService } from '@coreui/icons-angular';
 import { freeSet } from '@coreui/icons';
 import { UserService } from './service/user.service';
 import { ToastrService } from 'ngx-toastr';
-import { CommonModule } from '@angular/common';
+import { CommonModule, NgFor, NgForOf } from '@angular/common';
+import { MatTableDataSource, MatTableModule } from '@angular/material/table';
+import { MatPaginator, MatPaginatorModule, PageEvent } from '@angular/material/paginator';
+import { MatIconModule } from '@angular/material/icon';
 
 @Component({
   selector: 'app-user',
@@ -20,7 +23,11 @@ import { CommonModule } from '@angular/common';
     CardBodyComponent,
     IconDirective,
     IconComponent,
-    CommonModule
+    CommonModule,
+    NgForOf,
+    MatTableModule,
+    MatPaginatorModule,
+    MatIconModule
   ],
   providers: [IconSetService],
   templateUrl: './user.component.html',
@@ -30,6 +37,15 @@ export class UserComponent implements OnInit {
   public cilCalendar: any;
   public cilPencil: any;
   users: any[] = [];
+
+  displayedColumns: string[] = ['position','name', 'email', 'status', 'role', 'action'];
+  dataSource = new MatTableDataSource<any>([]);
+
+  totalItems = 0;
+  pageSize = 10;
+  page = 0;
+
+  @ViewChild(MatPaginator) paginator!: MatPaginator;
 
   constructor(private iconSet: IconSetService,
     private userService:UserService,
@@ -42,14 +58,16 @@ export class UserComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.loadusers();
+    this.loadusers(this.page, this.pageSize);
   }
 
-  loadusers() {
+  loadusers(page: number, size: number) {
     this.userService.getUsers()
       .subscribe(
         (data: any) => {
           this.users = data.data.items;
+        this.dataSource.data = data.data.items;
+        this.totalItems = data.data.totalElements;
           console.log(this.users);
         },
         error => {
@@ -58,5 +76,13 @@ export class UserComponent implements OnInit {
       );
 
   }
+
+  
+  onPageChange(user: PageEvent): void {
+    this.page = user.pageIndex;
+    this.pageSize = user.pageSize;
+    this.loadusers(this.page, this.pageSize);
+  }
+
 
 }
