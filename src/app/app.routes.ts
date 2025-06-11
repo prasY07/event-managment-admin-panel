@@ -1,7 +1,6 @@
 import { Routes } from '@angular/router';
 import { DefaultLayoutComponent } from './layout';
-import { UserDefaultLayoutComponent } from './user/views/layout/user-default-layout/user-default-layout.component';
-
+import {WebDefaultLayoutComponent} from './web/views/layout/web-default-layout/web-default-layout.component';
 export const routes: Routes = [
   {
     path: '',
@@ -68,11 +67,11 @@ export const routes: Routes = [
   },
   {
     path: 'event/:id',
-    component: UserDefaultLayoutComponent,  
+    component: WebDefaultLayoutComponent,  
     children: [
       {
         path: '',
-        loadChildren: () => import('./user/views/routes').then(m => m.routes),
+        loadChildren: () => import('./web/views/routes').then(m => m.routes),
         data: {
           title: 'Event Description'
         }
