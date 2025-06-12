@@ -9,6 +9,8 @@ import { CommonModule, NgFor, NgForOf } from '@angular/common';
 import { MatTableDataSource, MatTableModule } from '@angular/material/table';
 import { MatPaginator, MatPaginatorModule, PageEvent } from '@angular/material/paginator';
 import { MatIconModule } from '@angular/material/icon';
+import { UserstatusPipe } from '../pipes/userstatus.pipe';
+import { MatButtonModule } from '@angular/material/button';
 
 @Component({
   selector: 'app-user',
@@ -24,10 +26,10 @@ import { MatIconModule } from '@angular/material/icon';
     IconDirective,
     IconComponent,
     CommonModule,
-    NgForOf,
     MatTableModule,
     MatPaginatorModule,
-    MatIconModule
+    MatIconModule,
+    UserstatusPipe,
   ],
   providers: [IconSetService],
   templateUrl: './user.component.html',
@@ -84,5 +86,22 @@ export class UserComponent implements OnInit {
     this.loadusers(this.page, this.pageSize);
   }
 
+
+onStatusChange(id: number, newStatus: string): void {
+  const data = {
+    status: newStatus
+  };
+
+  this.userService.updateStatus(id.toString(), data).subscribe(
+    (response: any) => {
+      this.toastr.success('User status updated successfully');
+      this.loadusers(this.page, this.pageSize);
+    },
+    (error: any) => {
+      console.error('Error updating user status:', error);
+      this.toastr.error('Failed to update user status');
+    }
+  );
+}
 
 }

@@ -50,8 +50,8 @@ export class BaseApiServiceService {
     return this.http.put<any>(`${this.apiUrl}/${endpoint}`, data, { headers: this.applyHeaders() });
   }
 
-  updateStatus(endpoint: string): Observable<any> {
-    return this.http.patch<any>(`${this.apiUrl}/${endpoint}`, {},{ headers: this.applyHeaders() });
+  updateStatus(endpoint: string, data: object): Observable<any> {
+    return this.http.patch<any>(`${this.apiUrl}/${endpoint}`, data,{ headers: this.applyHeaders() });
   }
 
 
