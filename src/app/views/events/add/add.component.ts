@@ -1,5 +1,5 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
+import { AbstractControl, FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, ValidationErrors, Validators } from '@angular/forms';
 import { RowComponent, ColComponent, TextColorDirective, CardComponent, CardHeaderComponent, CardBodyComponent } from '@coreui/angular';
 import { ToastrService } from 'ngx-toastr';
 import { UserService } from '../../user/service/user.service';
@@ -73,10 +73,16 @@ export class AddComponent implements OnInit , OnDestroy {
       address: ['', [Validators.required, Validators.minLength(3), Validators.maxLength(50)]],
       venue: ['', [Validators.required, Validators.minLength(3), Validators.maxLength(30)]],
       category: ['', [Validators.required, Validators.minLength(3), Validators.maxLength(100)]],
-      description: ['', [Validators.required, Validators.minLength(10), Validators.maxLength(500)]],
-      privacyPolicy: ['', [Validators.required, Validators.minLength(10), Validators.maxLength(500)]],
-      startDate: ['', Validators.required],
-      endDate: ['', Validators.required],
+      description: ['', [Validators.required, Validators.minLength(10), Validators.maxLength(3000)]],
+      privacyPolicy: ['', [Validators.required, Validators.minLength(10), Validators.maxLength(3000)]],
+      // startDate: ['', [Validators.required, this.validateStartDate.bind(this)]],
+      // endDate: ['', [Validators.required, this.validateEndDate.bind(this)]],
+      // lastRegistrationDate: ['', [Validators.required, this.validateRegistrationDate.bind(this)]],
+
+      startDate: ['', [Validators.required]],
+      endDate: ['', [Validators.required]],
+      lastRegistrationDate: ['', [Validators.required]],
+
       userId: [''],
       eventMemberType: ['', [Validators.required]],
       eventAccessType: ['', [Validators.required]]
@@ -85,6 +91,7 @@ export class AddComponent implements OnInit , OnDestroy {
     this.getUsers();
     this.descriptionEditor = new Editor();
     this.privacyPolicyEditor = new Editor();
+
 
   }
 
@@ -105,6 +112,7 @@ export class AddComponent implements OnInit , OnDestroy {
   }
 
   onSubmit(): void {
+    
     if (this.eventForm.valid) {
       console.log("this.eventForm.value",this.eventForm.value);
       this.eventService.createEvent(this.eventForm.value).subscribe(
@@ -124,4 +132,51 @@ export class AddComponent implements OnInit , OnDestroy {
       alert('Please fill form');
     }
   }
+
+
+
+  validateStartDate(control: AbstractControl): ValidationErrors | null {
+  if (!this.eventForm) return null;
+
+  const startDate = new Date(control.value);
+  const endDate = new Date(this.eventForm.get('endDate')?.value);
+
+  if (startDate && endDate && startDate >= endDate) {
+    return { invalidStartDate: 'Start date must be before the end date.' };
+  }
+
+  return null;
+}
+
+validateEndDate(control: AbstractControl): ValidationErrors | null {
+  if (!this.eventForm) return null;
+
+  const endDate = new Date(control.value);
+  const startDate = new Date(this.eventForm.get('startDate')?.value);
+
+  if (startDate && endDate && endDate < startDate) {
+    return { invalidEndDate: 'End date must be after the start date.' };
+  }
+
+  return null;
+}
+
+validateRegistrationDate(control: AbstractControl): ValidationErrors | null {
+  if (!this.eventForm) return null;
+
+  const regDate = new Date(control.value);
+  const startDate = new Date(this.eventForm.get('startDate')?.value);
+  const endDate = new Date(this.eventForm.get('endDate')?.value);
+
+  if (regDate && startDate && regDate >= startDate) {
+    return { invalidRegistrationDate: 'Must be before event start date.' };
+  }
+
+  if (regDate && endDate && regDate >= endDate) {
+    return { invalidRegistrationDate: 'Must be before event end date.' };
+  }
+
+  return null;
+}
+
 }

@@ -19,23 +19,41 @@
               </div>
             </div>
 
-            <!-- Start Date -->
-            <div class="col-6 mb-3">
-              <label>Start Date</label>
-              <input class="form-control" formControlName="startDate" type="date" />
-              <div *ngIf="eventForm.get('startDate')?.touched && eventForm.get('startDate')?.invalid" class="text-danger">
-                <small>Start Date is required.</small>
-              </div>
-            </div>
+           <!-- Start Date -->
+<div class="col-6 mb-3">
+  <label>Start Date</label>
+  <input class="form-control" formControlName="startDate" type="date" />
+  <div *ngIf="eventForm.get('startDate')?.touched && eventForm.get('startDate')?.invalid" class="text-danger">
+    <small *ngIf="eventForm.get('startDate')?.errors?.['required']">Start Date is required.</small>
+    <small *ngIf="eventForm.get('startDate')?.errors?.['invalidStartDate']">
+      {{ eventForm.get('startDate')?.errors?.['invalidStartDate'] }}
+    </small>
+  </div>
+</div>
 
-            <!-- End Date -->
-            <div class="col-6 mb-3">
-              <label>End Date</label>
-              <input class="form-control" formControlName="endDate" type="date" />
-              <div *ngIf="eventForm.get('endDate')?.touched && eventForm.get('endDate')?.invalid" class="text-danger">
-                <small>End Date is required.</small>
-              </div>
-            </div>
+<!-- End Date -->
+<div class="col-6 mb-3">
+  <label>End Date</label>
+  <input class="form-control" formControlName="endDate" type="date" />
+  <div *ngIf="eventForm.get('endDate')?.touched && eventForm.get('endDate')?.invalid" class="text-danger">
+    <small *ngIf="eventForm.get('endDate')?.errors?.['required']">End Date is required.</small>
+    <small *ngIf="eventForm.get('endDate')?.errors?.['invalidEndDate']">
+      {{ eventForm.get('endDate')?.errors?.['invalidEndDate'] }}
+    </small>
+  </div>
+</div>
+
+<!-- Last Registration Date -->
+<div class="col-6 mb-3">
+  <label>Last Registration Date</label>
+  <input class="form-control" formControlName="lastRegistrationDate" type="date" />
+  <div *ngIf="eventForm.get('lastRegistrationDate')?.touched && eventForm.get('lastRegistrationDate')?.invalid" class="text-danger">
+    <small *ngIf="eventForm.get('lastRegistrationDate')?.errors?.['required']">Last Registration Date is required.</small>
+    <small *ngIf="eventForm.get('lastRegistrationDate')?.errors?.['invalidRegistrationDate']">
+      {{ eventForm.get('lastRegistrationDate')?.errors?.['invalidRegistrationDate'] }}
+    </small>
+  </div>
+</div>
 
             <!-- Venue -->
             <div class="col-6 mb-3">
