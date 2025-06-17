@@ -1,5 +1,6 @@
 import { Injectable } from '@angular/core';
-import { BaseApiServiceService } from '../../views/service/base-api-service.service';
+import { BaseApiServiceService } from 'src/app/admin/service/base-api-service.service';
+// import { BaseApiServiceService } from '../../views/service/base-api-service.service';
 
 @Injectable({
   providedIn: 'root'
