@@ -1,9 +1,15 @@
 // src/app/routes.ts
 import { Routes } from '@angular/router';
 import { adminRoutes } from './admin/routes';
-
+import { webRoutes  } from './web/routes';
 export const routes: Routes = [
+  
   {
+    path: '',
+    children: webRoutes
+  },
+
+   {
     path: 'admin',
     redirectTo: 'admin/dashboard',
     pathMatch: 'full'
@@ -27,15 +33,11 @@ export const routes: Routes = [
     }
   },
   {
-    path: 'login',
-    loadComponent: () => import('./admin/pages/login/login.component').then(m => m.LoginComponent),
+    path: 'admin/login',
+    loadComponent: () => import('./admin/auth/login/login.component').then(m => m.LoginComponent),
     data: {
       title: 'Login Page'
     }
   },
 
-  {
-    path: '**',
-    redirectTo: 'admin/dashboard'
-  }
 ];
