@@ -1,13 +1,15 @@
 import { Injectable } from '@angular/core';
-import { BaseApiServiceService } from '../../service/base-api-service.service';
+// import { BaseApiServiceService } from '../../service/base-api-service.service';
 import { Observable } from 'rxjs';
+import { BaseApiService } from 'src/app/baseservice/base-api.service';
+// import { BaseApiServiceService } from 'src/app/baseservice/base-api-service.service';
 
 @Injectable({
   providedIn: 'root'
 })
 export class EventService {
 
-constructor(private baseApi: BaseApiServiceService) { }
+constructor(private baseApi: BaseApiService) { }
 
   createEvent(data:object){
     return this.baseApi.submitData('admin/event/create',data);

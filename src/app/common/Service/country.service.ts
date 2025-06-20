@@ -4,12 +4,13 @@ import { BaseApiService } from '../../baseservice/base-api.service';
 @Injectable({
   providedIn: 'root'
 })
-export class StateService {
+export class CountryService {
 
-   constructor(private baseApi: BaseApiService) { }
+
+  constructor(private baseApi: BaseApiService) { }
    
      getAllStates()
      {
-        return this.baseApi.getData('social-media/list');
+        return this.baseApi.getData('country/list');
      }
 }

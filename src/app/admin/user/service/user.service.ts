@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
-import { BaseApiServiceService } from '../../service/base-api-service.service';
+import { BaseApiService } from '../../../baseservice/base-api.service';
 
 @Injectable({
   providedIn: 'root'
@@ -8,7 +8,7 @@ import { BaseApiServiceService } from '../../service/base-api-service.service';
 export class UserService {
 
  
-  constructor(private baseApi: BaseApiServiceService) { }
+  constructor(private baseApi: BaseApiService) { }
 
   createUser(data:object){
     return this.baseApi.submitData('admin/user/create',data);

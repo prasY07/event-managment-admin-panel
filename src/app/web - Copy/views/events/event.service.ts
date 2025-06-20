@@ -1,13 +1,13 @@
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
-import { BaseApiServiceService } from '../../../views/service/base-api-service.service';
+import { BaseApiService } from 'src/app/baseservice/base-api.service';
 @Injectable({
   providedIn: 'root'
 })
 export class EventService {
 
   
-  constructor(private baseApi: BaseApiServiceService) { }
+  constructor(private baseApi: BaseApiService) { }
   
     getEventDataWithUUId(eventID:string){
       return this.baseApi.getData(`api/admin/event/${eventID}/event-info`);
