@@ -9,8 +9,8 @@ export class CountryService {
 
   constructor(private baseApi: BaseApiService) { }
    
-     getAllStates()
+     getAllCountry()
      {
-        return this.baseApi.getData('country/list');
+        return this.baseApi.getData('common/country/list');
      }
 }

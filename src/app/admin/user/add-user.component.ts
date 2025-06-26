@@ -5,6 +5,7 @@ import { CommonModule } from '@angular/common';
 import { ToastrService } from 'ngx-toastr';
 import { UserService } from './service/user.service';
 import { Router } from '@angular/router';
+import { CountryService } from '../../common/Service/country.service';
 
 const allowedRoles = ['EVENT_MANAGER', 'INDIVIDUAL'];
 
@@ -18,10 +19,12 @@ const allowedRoles = ['EVENT_MANAGER', 'INDIVIDUAL'];
 export class AddUserComponent implements OnInit {
   userForm!: FormGroup;
 
+  allCountry : any = [];
   constructor(private fb: FormBuilder,
     private toastr: ToastrService,
     private userService: UserService,
-    private router: Router
+    private countryService : CountryService,
+    private router: Router,
   ) {
 
   }
@@ -34,6 +37,8 @@ export class AddUserComponent implements OnInit {
       role: ['', Validators.required],
       countryCode:['',Validators.required],
     });
+
+    this.getAllCountry();
   }
 
   onSubmit(): void {
@@ -74,4 +79,18 @@ export class AddUserComponent implements OnInit {
     return this.userForm.controls; // This allows you to use 'f.name' and 'f.email' in the template
   }
 
+
+  getAllCountry()
+  {
+this.countryService.getAllCountry().subscribe(
+      (data: any) => {
+        this.allCountry = data.data;
+        console.log("allCountry", this.allCountry);
+      },
+      error => {
+        console.error('Error fetching users:', error);
+        alert('No user found');
+      }
+    );
+  }
 }
