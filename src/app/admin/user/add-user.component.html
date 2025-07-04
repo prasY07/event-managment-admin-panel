@@ -16,21 +16,27 @@
               </div>
             </div>
 
-          <div class="col-6 mb-3">
-  <label for="phoneNumber">Phone Number</label>
-  <div class="input-group">
-    <select class="form-select" formControlName="countryCode" style="max-width: 120px;">
-     
-    </select>
-    <input id="phoneNumber" class="form-control" placeholder="Enter Your Phone Number" type="text"
-      formControlName="phoneNumber" />
-  </div>
-  <div *ngIf="(f['phoneNumber'].touched && f['phoneNumber'].invalid) || (f['countryCode'].touched && f['countryCode'].invalid)" class="text-danger">
-    <small *ngIf="f['phoneNumber'].errors?.['required']">Phone Number is required.</small>
-    <small *ngIf="f['phoneNumber'].errors?.['pattern']">Phone number must be 10 digits and start with digits between 6 and 9.</small>
-    <small *ngIf="f['countryCode'].errors?.['required']">Country code is required.</small>
-  </div>
-</div>
+            <div class="col-6 mb-3">
+              <label for="phoneNumber">Phone Number</label>
+              <div class="input-group">
+                <select class="form-select" formControlName="countryId" style="max-width: 214px;">
+                  <option value="">-- Select Country Code --</option>
+                  <option *ngFor="let item of allCountry" [value]="item.id">
+                    {{ item.name }} ({{ item.countryCode }})
+                  </option>
+                </select>
+                <input id="phoneNumber" class="form-control" placeholder="Enter Your Phone Number" type="text"
+                  formControlName="phoneNumber" />
+              </div>
+              <div
+                *ngIf="(f['phoneNumber'].touched && f['phoneNumber'].invalid) || (f['countryId'].touched && f['countryId'].invalid)"
+                class="text-danger">
+                <small *ngIf="f['phoneNumber'].errors?.['required']">Phone Number is required.</small>
+                <small *ngIf="f['phoneNumber'].errors?.['pattern']">Phone number must be 10 digits and start with digits
+                  between 6 and 9.</small>
+                <small *ngIf="f['countryId'].errors?.['required']">Country code is required.</small>
+              </div>
+            </div>
 
 
             <div class="col-6 mb-3">
@@ -52,7 +58,7 @@
                 <option value="INDIVIDUAL">Individual</option>
               </select>
               <div *ngIf="f['role'].touched && f['role'].invalid" class="text-danger">
-              <small *ngIf="f['role'].errors?.['required']">Role is required.</small>
+                <small *ngIf="f['role'].errors?.['required']">Role is required.</small>
               </div>
             </div>
 

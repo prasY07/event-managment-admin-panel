@@ -80,7 +80,7 @@ export class AddEventUserComponent implements OnInit {
       },
       error => {
         console.error('Error fetching users:', error);
-        alert('No user found');
+        alert('social media source not found');
       }
     );
   }

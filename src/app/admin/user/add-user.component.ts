@@ -35,7 +35,7 @@ export class AddUserComponent implements OnInit {
       email: ['', [Validators.required, Validators.email]],
       phoneNumber: ['', [Validators.required, Validators.pattern('^[0-9]{10}$'),Validators.pattern('^[6-9][0-9]{9}$') ]],
       role: ['', Validators.required],
-      countryCode:['',Validators.required],
+      countryId:['',Validators.required],
     });
 
     this.getAllCountry();
