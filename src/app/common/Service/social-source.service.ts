@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
+import { BaseApiService } from '../../baseservice/base-api.service';
 // import { BaseApiServiceService } from 'src/app/baseservice/base-api-service.service';
-import { BaseApiService } from 'src/app/baseservice/base-api.service';
 // import { BaseApiServiceService } from 'src/app/admin/service/base-api-service.service';
 // import { BaseApiServiceService } from '../../views/service/base-api-service.service';
 
@@ -13,6 +13,6 @@ export class SocialSourceService {
  
    getSocialMediaSources()
    {
-      return this.baseApi.getData('social-media/list');
+      return this.baseApi.getData('common/social-media/list');
    }
 }

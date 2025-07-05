@@ -12,49 +12,74 @@
             <div class="col-6 mb-3">
               <label>Name</label>
               <input class="form-control" formControlName="name" type="text" placeholder="Enter name" />
+              <div *ngIf="f['name'].touched && f['name'].invalid" class="text-danger">
+                <small *ngIf="f['name'].errors?.['required']">Name is required.</small>
+              </div>
             </div>
 
-            <!-- Phone Number -->
+            <!-- Phone Number + Country Code -->
             <div class="col-6 mb-3">
-              <label>Phone Number</label>
-              <input class="form-control" formControlName="phone" type="text" placeholder="Enter phone number" />
+              <label for="phoneNumber">Phone Number</label>
+              <div class="input-group">
+                <select class="form-select" formControlName="countryId" style="max-width: 214px;">
+                  <option value="">-- Select Country Code --</option>
+                  <option *ngFor="let item of allCountry" [value]="item.id">
+                    {{ item.name }} ({{ item.countryCode }})
+                  </option>
+                </select>
+                <input id="phoneNumber" class="form-control" placeholder="Enter Your Phone Number" type="text"
+                  formControlName="phoneNumber" />
+              </div>
+              <div
+                *ngIf="(f['phoneNumber'].touched && f['phoneNumber'].invalid) || (f['countryId'].touched && f['countryId'].invalid)"
+                class="text-danger">
+                <small *ngIf="f['phoneNumber'].errors?.['required']">Phone number is required.</small>
+                <small *ngIf="f['phoneNumber'].errors?.['pattern']">Phone number must be 10 digits.</small>
+                <small *ngIf="f['countryId'].errors?.['required']">Country code is required.</small>
+              </div>
             </div>
 
             <!-- Email -->
             <div class="col-6 mb-3">
               <label>Email</label>
               <input class="form-control" formControlName="email" type="email" placeholder="Enter email" />
+              <div *ngIf="f['email'].touched && f['email'].invalid" class="text-danger">
+                <small *ngIf="f['email'].errors?.['required']">Email is required.</small>
+                <small *ngIf="f['email'].errors?.['email']">Invalid email format.</small>
+              </div>
             </div>
 
-            <!-- State -->
-            <div class="col-6 mb-3">
-              <label>State</label>
-              <input class="form-control" formControlName="state" type="text" placeholder="Enter state" />
-            </div>
+           
 
             <!-- Address -->
-            <div class="col-12 mb-3">
+            <div class="col-6 mb-3">
               <label>Address</label>
               <input class="form-control" formControlName="address" type="text" placeholder="Enter address" />
+              <div *ngIf="f['address'].touched && f['address'].invalid" class="text-danger">
+                <small *ngIf="f['address'].errors?.['required']">Address is required.</small>
+              </div>
             </div>
 
             <!-- Pincode -->
             <div class="col-6 mb-3">
               <label>Pincode</label>
               <input class="form-control" formControlName="pincode" type="text" placeholder="Enter pincode" />
+              <div *ngIf="f['pincode'].touched && f['pincode'].invalid" class="text-danger">
+                <small *ngIf="f['pincode'].errors?.['required']">Pincode is required.</small>
+                <small *ngIf="f['pincode'].errors?.['pattern']">Pincode must be 6 digits.</small>
+              </div>
             </div>
 
-            <!-- About Event -->
+            <!-- Event Source -->
             <div class="col-12 mb-3">
               <label>How did you hear about the event?</label><br />
               <div class="form-check form-check-inline" *ngFor="let socialSource of socialSources">
-                <input
-                  class="form-check-input"
-                  type="radio"
-                  [value]="socialSource.id"
-                  formControlName="eventSource"
-                />
+                <input class="form-check-input" type="radio" [value]="socialSource.id" formControlName="eventSource" />
                 <label class="form-check-label">{{ socialSource.name | ucfirst }}</label>
+              </div>
+              <div *ngIf="f['eventSource'].touched && f['eventSource'].invalid" class="text-danger">
+                <small *ngIf="f['eventSource'].errors?.['required']">Please select how you heard about the
+                  event.</small>
               </div>
             </div>
 
@@ -73,22 +98,24 @@
                 <input class="form-check-input" type="radio" formControlName="gender" value="other" />
                 <label class="form-check-label">Other</label>
               </div>
+              <div *ngIf="f['gender'].touched && f['gender'].invalid" class="text-danger">
+                <small *ngIf="f['gender'].errors?.['required']">Gender selection is required.</small>
+              </div>
             </div>
 
             <!-- Member Type -->
             <div class="col-12 mb-3">
               <label>Member Type</label><br />
               <div class="form-check form-check-inline" *ngFor="let type of memberTypes">
-                <input
-                  class="form-check-input"
-                  type="radio"
-                  [value]="type.id"
-                  formControlName="memberType"
-                />
+                <input class="form-check-input" type="radio" [value]="type.id" formControlName="memberType" />
                 <label class="form-check-label">{{ type.name | ucfirst }} ({{type.entryFees}})</label>
               </div>
+              <div *ngIf="f['memberType'].touched && f['memberType'].invalid" class="text-danger">
+                <small *ngIf="f['memberType'].errors?.['required']">Please select a member type.</small>
+              </div>
             </div>
-            
+
+
 
           </div>
 

@@ -8,6 +8,7 @@ import { CommonModule } from '@angular/common';
 import { UcfirstPipe } from '../../../common/pipe/ucfirst.pipe';
 import { SocialSourceService } from '../../../common/Service/social-source.service';
 import { StateService } from '../../../common/Service/state.service';
+import { CountryService } from '../../../common/Service/country.service';
 
 @Component({
   selector: 'app-add-event-user',
@@ -33,6 +34,7 @@ export class AddEventUserComponent implements OnInit {
   memberTypes: any[] = [];
   socialSources:any[] = [];
   states:any[] = [];
+  allCountry : any = [];
   
   eventUserRegisterForm!: FormGroup;
   eventId = '';
@@ -45,6 +47,7 @@ export class AddEventUserComponent implements OnInit {
     private socialSourceService: SocialSourceService,
     private router: Router,
     private aRoute: ActivatedRoute,
+    private countryService : CountryService,
   ) {
     this.aRoute.params.subscribe(params => {
       this.eventId = params['id'];
@@ -54,22 +57,24 @@ export class AddEventUserComponent implements OnInit {
     this.loadMemberAccess();
     this.getSocialMediaPlateform();
     this.loadStates();
+    this.getAllCountry();
 
     this.eventUserRegisterForm = this.fb.group({
       name: ['', Validators.required],
-      phone: ['', [Validators.required, Validators.pattern(/^\d{10}$/)]],
       email: ['', [Validators.required, Validators.email]],
-      state: ['', Validators.required],
       address: ['', Validators.required],
       pincode: ['', [Validators.required, Validators.pattern(/^\d{6}$/)]],
       eventSource: ['', Validators.required],
       gender: ['', Validators.required],
       memberType: ['', Validators.required],
+      countryId:['',Validators.required],
+      phoneNumber: ['', [Validators.required, Validators.pattern(/^\d{10}$/)]],
     });
 
   }
 
   onSubmit(): void {
+    
   }
 
   getSocialMediaPlateform() {
@@ -110,4 +115,22 @@ export class AddEventUserComponent implements OnInit {
         }
       );
   }
+
+   getAllCountry()
+  {
+      this.countryService.getAllCountry().subscribe(
+      (data: any) => {
+        this.allCountry = data.data;
+        console.log("allCountry", this.allCountry);
+      },
+      error => {
+        console.error('Error fetching users:', error);
+        alert('No user found');
+      }
+    );
+  }
+
+  get f() {
+  return this.eventUserRegisterForm.controls;
+}
 }

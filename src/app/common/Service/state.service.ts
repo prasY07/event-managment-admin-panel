@@ -10,6 +10,6 @@ export class StateService {
    
      getAllStates()
      {
-        return this.baseApi.getData('social-media/list');
+        return this.baseApi.getData('common/social-media/list');
      }
 }
