@@ -16,8 +16,10 @@ import { MatPaginator, MatPaginatorModule, PageEvent } from '@angular/material/p
     // IconDirective,
     // IconComponent,
     // CommonModule,
-       MatTableModule,
-    MatPaginatorModule
+     MatTableModule,
+    MatPaginatorModule,
+    
+
   ],
   templateUrl: './event-user-list.component.html',
   styleUrl: './event-user-list.component.scss'
@@ -64,9 +66,9 @@ export class EventUserListComponent implements OnInit {
     );
   }
 
-   onPageChange(event: PageEvent): void {
-    this.page = event.pageIndex;
-    this.pageSize = event.pageSize;
+   onPageChange(registerUser: PageEvent): void {
+    this.page = registerUser.pageIndex;
+    this.pageSize = registerUser.pageSize;
     this.getAllEventUsers(this.page, this.pageSize);
   }
 

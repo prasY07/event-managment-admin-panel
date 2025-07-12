@@ -39,7 +39,6 @@ import { ToastrService } from 'ngx-toastr';
   styleUrl: './list.component.scss'
 })
 export class ListComponent implements OnInit {
-  events: any[] = [];
   eventId : String = '';
  showConfirmation = false;
   newStatus = '';
@@ -57,9 +56,7 @@ export class ListComponent implements OnInit {
   constructor(
     private eventService:EventService,
     private iconSet: IconSetService,
-        private toastr: ToastrService,
-    
-    
+    private toastr: ToastrService,
   ) {
         this.iconSet.icons = { ...freeSet };
         // this.cilinfo = freeSet.cilInfo;
