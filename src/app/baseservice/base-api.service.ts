@@ -54,7 +54,6 @@ export class BaseApiService {
     return this.http.patch<any>(`${this.apiUrl}/${endpoint}`, data,{ headers: this.applyHeaders() });
   }
 
-
   deleteData(endpoint: string): Observable<any> {
     return this.http.delete<any>(`${this.apiUrl}/${endpoint}`, { headers: this.applyHeaders() });
   }

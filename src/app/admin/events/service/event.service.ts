@@ -1,8 +1,6 @@
 import { Injectable } from '@angular/core';
-// import { BaseApiServiceService } from '../../service/base-api-service.service';
 import { Observable } from 'rxjs';
-import { BaseApiService } from 'src/app/baseservice/base-api.service';
-// import { BaseApiServiceService } from 'src/app/baseservice/base-api-service.service';
+import { BaseApiService } from '../../../baseservice/base-api.service';
 
 @Injectable({
   providedIn: 'root'
@@ -75,6 +73,10 @@ constructor(private baseApi: BaseApiService) { }
     return this.baseApi.getData(`admin/event-member/${id}/update-fees`);
   }
 
+  updateEventStatus(id: String): Observable<any> {
+    console.log("updateEventStatus called with id:", id);
+    return this.baseApi.updateStatus(`admin/event/${id}/update-status`,{});
+  }
   
 }
 

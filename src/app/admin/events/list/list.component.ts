@@ -11,6 +11,7 @@ import { MatTableDataSource, MatTableModule  } from '@angular/material/table';
 import { MatPaginator, MatPaginatorModule, PageEvent } from '@angular/material/paginator';
 import { MatIconModule } from '@angular/material/icon';
 import { ConfirmationDialogComponent } from '../../../common/component/confirmation-dialog/confirmation-dialog.component';
+import { ToastrService } from 'ngx-toastr';
 
 @Component({
   selector: 'app-list',
@@ -40,7 +41,9 @@ import { ConfirmationDialogComponent } from '../../../common/component/confirmat
 export class ListComponent implements OnInit {
   events: any[] = [];
   eventId : String = '';
- 
+ showConfirmation = false;
+  newStatus = '';
+  currentElement: any = null; // To store the current element for status update
   displayedColumns: string[] = ['position', 'title', 'startDate', 'eventStatus', 'status', 'action'];
   dataSource = new MatTableDataSource<any>([]);
 
@@ -49,12 +52,13 @@ export class ListComponent implements OnInit {
   page = 0;
 
   @ViewChild(MatPaginator) paginator!: MatPaginator;
-
   @ViewChild('bannerUpload') bannerUpload!: BannerUploadComponent;
 
   constructor(
     private eventService:EventService,
     private iconSet: IconSetService,
+        private toastr: ToastrService,
+    
     
   ) {
         this.iconSet.icons = { ...freeSet };
@@ -68,21 +72,6 @@ export class ListComponent implements OnInit {
     this.loadEvents(this.page, this.pageSize);
   }
 
-  // loadEvents(page: number, size: number) {
-  //   this.eventService.getEventsWithPagination(page)
-  //     .subscribe(
-  //       (res: any) => {
-  //         this.events = res.data.items;
-  //         this.page = res.data.page;
-  //         this.totalItems = res.data.totalElements;
-  //       },
-  //       error => {
-  //         console.error('Error fetching users:', error);
-  //       }
-  //     );
-
-  // }
-
   loadEvents(page: number, size: number): void {
     this.eventService.getEventsWithPagination(page).subscribe(
       (res: any) => {
@@ -95,13 +84,12 @@ export class ListComponent implements OnInit {
     );
   }
 
-   showConfirmation = false;
-  newStatus = '';
-  currentElement: any;
+  
 
    openConfirmationDialog(element: any, status: string) {
     this.showConfirmation = true;
-    this.currentElement = element;
+    this.currentElement = element; // Store the current element for status update
+    this.eventId = element.id;
     status = status === 'ACTIVE' ? 'INACTIVE' : 'ACTIVE'; // Toggle status
     this.newStatus = status;
   }
@@ -109,10 +97,18 @@ export class ListComponent implements OnInit {
   onDialogResult(confirmed: boolean) {
     this.showConfirmation = false;
     if (confirmed) {
-      // Example call
-      console.log('Confirmed to change status:', this.newStatus);
-      // Call your service here
-      // this.eventService.changeEventStatus(this.currentElement.id, this.newStatus).subscribe(...)
+      console.log(this.eventId)
+       this.eventService.updateEventStatus(this.eventId).subscribe(
+      (res: any) => {
+        this.toastr.success('Status Updated successfully.', 'Success');
+        this.currentElement.status = this.newStatus; // 👈 Updates UI directly
+
+      },
+      (error) => {
+        this.toastr.success('OOPS! Something Went Wrong.', 'Error');
+
+      }
+    );
     } else {
       console.log('User cancelled.');
     }
