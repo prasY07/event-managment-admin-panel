@@ -9,8 +9,8 @@ import { Component, EventEmitter, Input, Output } from '@angular/core';
 export class ConfirmationDialogComponent {
  @Input() title: string = '';
   @Input() message: string = '';
-  @Input() confirmButtonText: string = 'Yes';
-  @Input() cancelButtonText: string = 'No';
+  @Input() confirmButtonText: string = 'Update';
+  @Input() cancelButtonText: string = 'Cancel';
 
   @Output() confirmed = new EventEmitter<boolean>();
 

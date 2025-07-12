@@ -102,6 +102,7 @@ export class ListComponent implements OnInit {
    openConfirmationDialog(element: any, status: string) {
     this.showConfirmation = true;
     this.currentElement = element;
+    status = status === 'ACTIVE' ? 'INACTIVE' : 'ACTIVE'; // Toggle status
     this.newStatus = status;
   }
 

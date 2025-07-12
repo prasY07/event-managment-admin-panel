@@ -149,7 +149,7 @@
   *ngIf="showConfirmation"
   [title]="'Change Status'"
   [message]="'Are you sure you want to change status to ' + newStatus + '?'"
-  [confirmButtonText]="'Yes'"
-  [cancelButtonText]="'No'"
+  [confirmButtonText]="'Update'"
+  [cancelButtonText]="'Cancel'"
   (confirmed)="onDialogResult($event)">
 </app-confirmation-dialog>
