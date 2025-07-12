@@ -24,6 +24,13 @@ constructor(private baseApi: BaseApiService) { }
     });
   }
 
+   getEventsRegisterUser(pageNumber: number,id: String): Observable<any> {
+    return this.baseApi.getDataWithParams(`admin/event-register/${id}/list`, {
+      page: pageNumber,
+      // size: pageSize
+    });
+  }
+
   getEvents(): Observable<any> {
     return this.baseApi.getData('admin/event/list');
   }

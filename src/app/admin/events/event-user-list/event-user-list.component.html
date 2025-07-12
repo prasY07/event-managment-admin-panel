@@ -9,28 +9,47 @@
             <button  [routerLink]="['/admin/events/add-user', 1]" class="btn btn-primary ms-auto">Add New User</button>
           </div>
 
-          <table class="table table-striped">
-            <thead>
-              <tr>
-                <th scope="col">#</th>
-                <th scope="col">Name</th>
-                <th scope="col">Email</th>
-                <th scope="col">Register Date</th>
-                <th scope="col">Action</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr *ngFor="let event of events; let i = index">
-                <th scope="row">{{i + 1}}</th>
-                <td>Prashant</td>
-                <td>gmail</td>
-                <td></td>
-                <td></td>
+         <table mat-table [dataSource]="dataSource" class="mat-elevation-z8" matSort>
 
-                
-              </tr>
-            </tbody>
-          </table>
+          <!-- Position Column -->
+          <ng-container matColumnDef="position">
+            <th mat-header-cell *matHeaderCellDef> # </th>
+            <td mat-cell *matCellDef="let element; let i = index"> {{ i + 1 + page * pageSize }} </td>
+          </ng-container>
+
+          <!-- Name Column -->
+          <ng-container matColumnDef="name">
+            <th mat-header-cell *matHeaderCellDef> Name </th>
+            <td mat-cell *matCellDef="let element"> {{element.name}} </td>
+          </ng-container>
+
+
+             <!-- Email Column -->
+          <ng-container matColumnDef="email">
+            <th mat-header-cell *matHeaderCellDef> Email </th>
+            <td mat-cell *matCellDef="let element"> {{element.email}} </td>
+          </ng-container>
+
+          <!-- Date Column -->
+          <ng-container matColumnDef="registrationDate">
+            <th mat-header-cell *matHeaderCellDef> Date </th>
+            <td mat-cell *matCellDef="let element"> {{element.createdAt }} </td>
+          </ng-container>
+
+       
+
+          <!-- Action Column -->
+          <ng-container matColumnDef="action">
+            <th mat-header-cell *matHeaderCellDef> Action </th>
+           
+          </ng-container>
+
+
+
+          <!-- Header and Row Declarations -->
+          <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+          <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+        </table>
         </c-card-body>
       </c-card>
     </c-col>
