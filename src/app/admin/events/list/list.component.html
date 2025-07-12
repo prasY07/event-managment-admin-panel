@@ -100,7 +100,7 @@
 <!-- Status Column -->
 <ng-container matColumnDef="status">
   <th mat-header-cell *matHeaderCellDef> Status </th>
-  <td mat-cell *matCellDef="let element" [innerHTML]="element.status | eventStatus"></td>
+  <td  (click)="openConfirmationDialog(element, element.status)" mat-cell *matCellDef="let element" [innerHTML]="element.status | eventStatus"></td>
 
 </ng-container>
 
@@ -144,3 +144,12 @@
   </c-row>
 
   <app-banner-upload #bannerUpload></app-banner-upload>
+<!-- Show Confirmation Dialog -->
+<app-confirmation-dialog
+  *ngIf="showConfirmation"
+  [title]="'Change Status'"
+  [message]="'Are you sure you want to change status to ' + newStatus + '?'"
+  [confirmButtonText]="'Yes'"
+  [cancelButtonText]="'No'"
+  (confirmed)="onDialogResult($event)">
+</app-confirmation-dialog>

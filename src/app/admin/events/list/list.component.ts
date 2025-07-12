@@ -10,6 +10,7 @@ import { BannerUploadComponent } from '../banner-upload/banner-upload.component'
 import { MatTableDataSource, MatTableModule  } from '@angular/material/table';
 import { MatPaginator, MatPaginatorModule, PageEvent } from '@angular/material/paginator';
 import { MatIconModule } from '@angular/material/icon';
+import { ConfirmationDialogComponent } from '../../../common/component/confirmation-dialog/confirmation-dialog.component';
 
 @Component({
   selector: 'app-list',
@@ -28,7 +29,7 @@ import { MatIconModule } from '@angular/material/icon';
     MatTableModule,
     MatPaginatorModule,
     NgForOf,
-    MatIconModule
+    ConfirmationDialogComponent
     
     // DataSource
   ],
@@ -92,6 +93,28 @@ export class ListComponent implements OnInit {
         console.error('Error fetching events:', error);
       }
     );
+  }
+
+   showConfirmation = false;
+  newStatus = '';
+  currentElement: any;
+
+   openConfirmationDialog(element: any, status: string) {
+    this.showConfirmation = true;
+    this.currentElement = element;
+    this.newStatus = status;
+  }
+
+  onDialogResult(confirmed: boolean) {
+    this.showConfirmation = false;
+    if (confirmed) {
+      // Example call
+      console.log('Confirmed to change status:', this.newStatus);
+      // Call your service here
+      // this.eventService.changeEventStatus(this.currentElement.id, this.newStatus).subscribe(...)
+    } else {
+      console.log('User cancelled.');
+    }
   }
 
   onPageChange(event: PageEvent): void {
