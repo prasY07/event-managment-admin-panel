@@ -75,19 +75,20 @@ export class AddComponent implements OnInit , OnDestroy {
       category: ['', [Validators.required, Validators.minLength(3), Validators.maxLength(100)]],
       description: ['', [Validators.required, Validators.minLength(10), Validators.maxLength(3000)]],
       privacyPolicy: ['', [Validators.required, Validators.minLength(10), Validators.maxLength(3000)]],
-      // startDate: ['', [Validators.required, this.validateStartDate.bind(this)]],
-      // endDate: ['', [Validators.required, this.validateEndDate.bind(this)]],
-      // lastRegistrationDate: ['', [Validators.required, this.validateRegistrationDate.bind(this)]],
+      startDate: ['', [Validators.required, this.validateStartDate.bind(this)]],
+      endDate: ['', [Validators.required, this.validateEndDate.bind(this)]],
+      lastRegistrationDate: ['', [Validators.required, this.validateRegistrationDate.bind(this)]],
 
-      startDate: ['', [Validators.required]],
-      endDate: ['', [Validators.required]],
+      // startDate: ['', [Validators.required]],
+      // endDate: ['', [Validators.required]],
+      // lastRegistrationDate: ['', [Validators.required]],
       eventStartTime: ['', [Validators.required]],
       eventEndTime: ['', [Validators.required]],
-      lastRegistrationDate: ['', [Validators.required]],
 
       userId: [''],
       eventMemberType: ['', [Validators.required]],
-      eventAccessType: ['', [Validators.required]]
+      eventAccessType: ['', [Validators.required]],
+      eventServices:['', [Validators.required]],
     });
 
     this.getUsers();

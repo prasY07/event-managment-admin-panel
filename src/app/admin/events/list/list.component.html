@@ -91,7 +91,7 @@
           <ng-container matColumnDef="action">
             <th mat-header-cell *matHeaderCellDef> Action </th>
             <td mat-cell *matCellDef="let element"
-              style="margin-top:10px;display: flex; gap: 10px; align-items: center;">
+              style="margin-top:10px; align-items: center;">
               <a [routerLink]="['/admin/events/update-event', element.id]" title="Edit">
                 <svg cIcon name="cil-pencil" size="lg"></svg>
               </a>
