@@ -25,6 +25,8 @@ export class SettingComponent implements OnInit {
   memberType: any[] = [];
   accessType: any[] = [];
   selectedData: any[] = [];
+  eventDays: any[] = [];
+  eventServices: any[] = [];
   eventId = '';
   dropdownSettings:any = {};
   selectedAccessMap: { [memberId: number]: any[] } = {};
@@ -52,7 +54,8 @@ export class SettingComponent implements OnInit {
    ngOnInit(): void {
     this.loadMemberAccess();
     this.loadEventAccess();
-    // this.getAllAccess();
+    this.loadEventDays();
+    this.loadEventServices();
 
     this.dropdownSettings = {
       singleSelection: false,
@@ -82,19 +85,48 @@ export class SettingComponent implements OnInit {
     );
   }
 
-  loadEventAccess(){
-    this.eventService.getAllEventAccessType(this.eventId)
+    loadEventDays(){
+    this.eventService.getAllEventDays(this.eventId)
     .subscribe(
       (data: any) => {
-        this.accessType = data.data;
-        console.log("accessType",this.accessType);
-
+        this.eventDays = data.data;
+        console.log("eventDays",this.eventDays);
       },
       error => {
         console.error('Error fetching users:', error);
       }
     );
   }
+
+  loadEventAccess()
+  {
+    this.eventService.getAllEventAccessType(this.eventId)
+    .subscribe(
+      (data: any) => {
+        this.accessType = data.data;
+        console.log("accessType",this.accessType);
+      },
+      error => {
+        console.error('Error fetching users:', error);
+      }
+    );
+  }
+
+  loadEventServices(){
+    this.eventService.getAllEventServices(this.eventId)
+    .subscribe(
+      (data: any) => {
+        this.eventServices = data.data;
+        console.log("eventServices",this.eventServices);
+      },
+      error => {
+        console.error('Error fetching users:', error);
+      }
+    );
+  }
+
+
+
 
   submitAccess(memberId: number) {
 
@@ -237,4 +269,73 @@ export class SettingComponent implements OnInit {
     });
   }
   
+
+  assignDayServiecMemberAccess( dayId:string,serviceId:string )
+  {
+
+  const members = this.selectedMembers[dayId]?.[serviceId] || [];
+
+console.log("members",members);
+  if (!members) {
+    console.log("No members selected for this day");
+    return;
+  }
+
+const payload = {
+    eventId: Number(this.eventId),
+    dayId: Number(dayId),
+    serviceId: Number(serviceId),
+    memberTypeId: members.map(m => m.id)   // ✅ matches backend
+  };
+
+  console.log("payload ->", payload);
+
+      this.eventService.assignDayServiceToMember(payload).subscribe(
+      (res: any) => {
+        this.toastr.success('Day Service Assign to member Successfully.', 'Success');
+
+      },
+      error => {
+        let errorMsg = 'OOPS Something Went Wrong';
+        if (error.error && error.error.message) {
+          console.log("here", error.error.message);
+          errorMsg = error.error.message; // If error response has a message field
+        }
+        this.toastr.error(errorMsg, 'Error');
+
+      }
+    );
+
+  }
+
+
+selectedMembers: { [dayId: string]: { [serviceId: string]: any[] } } = {};
+
+private initSelection(dayId: number, serviceId: number) {
+  if (!this.selectedMembers[dayId]) this.selectedMembers[dayId] = {};
+  if (!this.selectedMembers[dayId][serviceId]) this.selectedMembers[dayId][serviceId] = [];
+}
+
+onMemberSelect(member: any, dayId: number, serviceId: number) {
+  this.initSelection(dayId, serviceId);
+  this.selectedMembers[dayId][serviceId].push(member);
+}
+
+onMemberDeSelect(member: any, dayId: number, serviceId: number) {
+  this.initSelection(dayId, serviceId);
+  this.selectedMembers[dayId][serviceId] =
+    this.selectedMembers[dayId][serviceId].filter(m => m.id !== member.id);
+}
+
+onSelectAll(members: any[], dayId: number, serviceId: number) {
+  this.initSelection(dayId, serviceId);
+  this.selectedMembers[dayId][serviceId] = [...members];
+}
+
+onDeSelectAll(_: any, dayId: number, serviceId: number) {
+  this.initSelection(dayId, serviceId);
+  this.selectedMembers[dayId][serviceId] = [];
+}
+
+
 }

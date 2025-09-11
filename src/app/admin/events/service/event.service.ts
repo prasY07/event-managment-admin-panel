@@ -43,6 +43,14 @@ constructor(private baseApi: BaseApiService) { }
     return this.baseApi.getInformation(`admin/event-member/${id}/list`);
   }
 
+  getAllEventDays(id:string):Observable<any>{
+    return this.baseApi.getInformation(`admin/event-service/${id}/day-list`);
+  }
+
+   getAllEventServices(id:string):Observable<any>{
+    return this.baseApi.getInformation(`admin/event-service/${id}/service-list`);
+  }
+
   getAllEventAccessType(id:string):Observable<any>{
     return this.baseApi.getInformation(`admin/event-access/${id}/list`);
   }
@@ -51,6 +59,9 @@ constructor(private baseApi: BaseApiService) { }
     return this.baseApi.submitData('admin/event-access/create-access',data);
   }
 
+  assignDayServiceToMember(data:object){
+    return this.baseApi.submitData('admin/event-service/assign-day-service-to-member',data);
+  }
 
   uploadBanner(formData: FormData, eventId: string) {
     return this.baseApi.uploadImage(`admin/event/${eventId}/upload-banner`, formData);
