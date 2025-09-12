@@ -1,0 +1,61 @@
+body {
+  margin: 0;
+  font-family: 'Arial', sans-serif;
+  scroll-behavior: smooth;
+}
+
+.hero-section {
+  height: 100vh;
+  background: linear-gradient(135deg, #000, #111);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+}
+
+.hero-overlay {
+  width: 100%;
+  height: 100%;
+  background: rgba(0,0,0,0.6);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.btn-gold {
+  background-color: #FFD700;
+  color: #000;
+  font-weight: bold;
+  border-radius: 50px;
+  padding: 10px 30px;
+  transition: 0.3s;
+}
+.btn-gold:hover {
+  background-color: #e6c200;
+  color: #000;
+}
+
+.service-card, .event-card {
+  border: none;
+  border-radius: 15px;
+  box-shadow: 0 8px 20px rgba(0,0,0,0.3);
+  transition: transform 0.3s;
+}
+.service-card:hover, .event-card:hover {
+  transform: translateY(-10px);
+}
+
+.event-card img {
+  border-top-left-radius: 15px;
+  border-top-right-radius: 15px;
+  height: 200px;
+  object-fit: cover;
+}
+
+footer a {
+  font-size: 1.2rem;
+  transition: 0.3s;
+}
+footer a:hover {
+  color: #FFD700;
+}
