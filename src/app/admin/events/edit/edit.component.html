@@ -37,6 +37,51 @@
                 </div>
               </div>
   
+                 <!-- Last Registration Date -->
+            <div class="col-6 mb-3">
+              <label>Last Registration Date</label>
+              <input class="form-control" formControlName="registrationEndDate" type="date" />
+              <div
+                *ngIf="eventForm.get('registrationEndDate')?.touched && eventForm.get('registrationEndDate')?.invalid"
+                class="text-danger">
+                <small *ngIf="eventForm.get('registrationEndDate')?.errors?.['required']">Last Registration Date is
+                  required.</small>
+                <small *ngIf="eventForm.get('registrationEndDate')?.errors?.['invalidRegistrationDate']">
+                  {{ eventForm.get('registrationEndDate')?.errors?.['invalidRegistrationDate'] }}
+                </small>
+              </div>
+            </div>
+
+
+            <!-- Event Start Time -->
+            <div class="col-6 mb-3">
+              <label>Event Start Time</label>
+              <input class="form-control" formControlName="eventStartTime" type="time" />
+              <div *ngIf="eventForm.get('eventStartTime')?.touched && eventForm.get('eventStartTime')?.invalid"
+                class="text-danger">
+                <small *ngIf="eventForm.get('eventStartTime')?.errors?.['required']">Last Registration Date is
+                  required.</small>
+                <small *ngIf="eventForm.get('eventStartTime')?.errors?.['invalidRegistrationDate']">
+                  {{ eventForm.get('eventStartTime')?.errors?.['invalidRegistrationDate'] }}
+                </small>
+              </div>
+            </div>
+
+
+            <!-- Event End Time -->
+            <div class="col-6 mb-3">
+              <label>Event End Time</label>
+              <input class="form-control" formControlName="eventEndTime" type="time" />
+              <div *ngIf="eventForm.get('eventEndTime')?.touched && eventForm.get('eventEndTime')?.invalid"
+                class="text-danger">
+                <small *ngIf="eventForm.get('eventEndTime')?.errors?.['required']">Last Registration Date is
+                  required.</small>
+                <small *ngIf="eventForm.get('eventEndTime')?.errors?.['invalidRegistrationDate']">
+                  {{ eventForm.get('eventEndTime')?.errors?.['invalidRegistrationDate'] }}
+                </small>
+              </div>
+            </div>
+
               <!-- Venue -->
               <div class="col-6 mb-3">
                 <label>Venue</label>
@@ -90,25 +135,39 @@
                 <textarea class="form-control" formControlName="eventAccessType" rows="3"></textarea>
               </div>
   
-              <!-- <div class="col-12 mb-3">
-                <label>Description</label>
-                <div [ngxSummernote]="summernoteConfig" formControlName="description"></div>
-                <div class="text-danger" *ngIf="eventForm.get('description')?.invalid && eventForm.get('description')?.touched">
-                  <div *ngIf="eventForm.get('description')?.errors?.['required']">Description is required.</div>
-                  <div *ngIf="eventForm.get('description')?.errors?.['minlength']">Minimum 10 characters required.</div>
-                  <div *ngIf="eventForm.get('description')?.errors?.['maxlength']">Maximum 500 characters allowed.</div>
-                </div>
+                  <div class="mb-3">
+              <label for="accessType">Service</label>
+              <textarea class="form-control" formControlName="eventServices" rows="3"></textarea>
+            </div>
+            
+                <div class="col-12 mb-3">
+              <label>Description</label>
+              <div class="NgxEditor__Wrapper">
+                <ngx-editor-menu [editor]="descriptionEditor" [toolbar]="toolbar"> </ngx-editor-menu>
+                <ngx-editor [editor]="descriptionEditor" formControlName="description"> </ngx-editor>
               </div>
-              
-              <div class="col-12 mb-3">
-                <label>Privacy Policy</label>
-                <div [ngxSummernote]="summernoteConfig" formControlName="privacyPolicy"></div>
-                <div class="text-danger" *ngIf="eventForm.get('privacyPolicy')?.invalid && eventForm.get('privacyPolicy')?.touched">
-                  <div *ngIf="eventForm.get('privacyPolicy')?.errors?.['required']">Privacy Policy is required.</div>
-                  <div *ngIf="eventForm.get('privacyPolicy')?.errors?.['minlength']">Minimum 10 characters required.</div>
-                  <div *ngIf="eventForm.get('privacyPolicy')?.errors?.['maxlength']">Maximum 500 characters allowed.</div>
-                </div>
-              </div> -->
+              <div class="text-danger"
+                *ngIf="eventForm.get('description')?.invalid && eventForm.get('description')?.touched">
+                <div *ngIf="eventForm.get('description')?.errors?.['required']">Description is required.</div>
+                <div *ngIf="eventForm.get('description')?.errors?.['minlength']">Minimum 10 characters required.</div>
+                <div *ngIf="eventForm.get('description')?.errors?.['maxlength']">Maximum 500 characters allowed.</div>
+              </div>
+            </div>
+
+            <div class="col-12 mb-3">
+              <label>Privacy Policy</label>
+              <!-- <div [ngxSummernote]="summernoteConfig" formControlName="privacyPolicy"></div> -->
+              <div class="NgxEditor__Wrapper">
+                <ngx-editor-menu [editor]="privacyPolicyEditor" [toolbar]="toolbar"> </ngx-editor-menu>
+                <ngx-editor [editor]="privacyPolicyEditor" formControlName="privacyPolicy"> </ngx-editor>
+              </div>
+              <div class="text-danger"
+                *ngIf="eventForm.get('privacyPolicy')?.invalid && eventForm.get('privacyPolicy')?.touched">
+                <div *ngIf="eventForm.get('privacyPolicy')?.errors?.['required']">Privacy Policy is required.</div>
+                <div *ngIf="eventForm.get('privacyPolicy')?.errors?.['minlength']">Minimum 10 characters required.</div>
+                <div *ngIf="eventForm.get('privacyPolicy')?.errors?.['maxlength']">Maximum 500 characters allowed.</div>
+              </div>
+            </div>
             </div>
             <button type="submit" class="btn btn-primary" [disabled]="eventForm.invalid">Submit</button>
           </form>

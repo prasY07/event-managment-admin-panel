@@ -29,23 +29,6 @@ import { Editor, NgxEditorComponent, NgxEditorMenuComponent, Toolbar } from 'ngx
 export class AddComponent implements OnInit , OnDestroy {
   eventForm!: FormGroup;
   users: any = [];
-  // summernoteConfig: any = {
-  //   placeholder: 'Enter text...',
-  //   tabsize: 2,
-  //   height: '300px',
-  //   toolbar: [
-  //     ['style', ['style']], // Enables paragraph, h1, h2, etc.
-  //     ['font', ['bold', 'italic', 'underline', 'strikethrough']],
-  //     ['fontsize', ['fontsize']],
-  //     ['color', ['color']],
-  //     ['para', ['ul', 'ol', 'paragraph']],
-  //     ['insert', ['link']],
-  //     ['view', ['codeview']]
-  //   ],
-  //   styleTags: ['p', 'h1', 'h2', 'h3', 'h4', 'h5', 'h6'],  // Allow these in dropdown
-  //   fontNames: ['Arial', 'Comic Sans MS', 'Courier New']
-  // };
-    
   descriptionEditor!: Editor;
   privacyPolicyEditor!: Editor;
   toolbar: Toolbar = [
@@ -77,11 +60,7 @@ export class AddComponent implements OnInit , OnDestroy {
       privacyPolicy: ['', [Validators.required, Validators.minLength(10), Validators.maxLength(3000)]],
       startDate: ['', [Validators.required, this.validateStartDate.bind(this)]],
       endDate: ['', [Validators.required, this.validateEndDate.bind(this)]],
-      lastRegistrationDate: ['', [Validators.required, this.validateRegistrationDate.bind(this)]],
-
-      // startDate: ['', [Validators.required]],
-      // endDate: ['', [Validators.required]],
-      // lastRegistrationDate: ['', [Validators.required]],
+      registrationEndDate: ['', [Validators.required, this.validateRegistrationDate.bind(this)]],
       eventStartTime: ['', [Validators.required]],
       eventEndTime: ['', [Validators.required]],
 
