@@ -2,6 +2,9 @@
 import { Routes } from '@angular/router';
 import { adminRoutes } from './admin/routes';
 import { webRoutes  } from './web/routes';
+
+import { loginGuard } from './admin/guards/login.guard'; 
+import { authGuard } from './admin/guards/auth.guard'; 
 export const routes: Routes = [
   
   {
@@ -16,6 +19,7 @@ export const routes: Routes = [
   },
   {
     path: 'admin',
+    canActivate: [authGuard] , 
     children: adminRoutes
   },
   {
@@ -35,6 +39,7 @@ export const routes: Routes = [
   {
     path: 'admin/login',
     loadComponent: () => import('./admin/auth/login/login.component').then(m => m.LoginComponent),
+    canActivate: [loginGuard], 
     data: {
       title: 'Login Page'
     }

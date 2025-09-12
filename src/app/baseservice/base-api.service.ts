@@ -2,6 +2,7 @@ import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { environment } from '../../environments/environment';
+import { TokenService } from '../admin/service/token.service';
 
 @Injectable({
   providedIn: 'root'
@@ -10,7 +11,9 @@ export class BaseApiService {
 
   private apiUrl = environment.apiUrl;
 
-  constructor(private http: HttpClient) { }
+  constructor(private http: HttpClient,
+    private tokenService : TokenService
+  ) { }
 
   getData(endpoint: string): Observable<any> {
     return this.http.get<any>(`${this.apiUrl}/${endpoint}`, { headers: this.applyHeaders() });
@@ -64,8 +67,7 @@ export class BaseApiService {
 
   private applyHeaders(): HttpHeaders {
     return new HttpHeaders({
-      'Content-Type': 'application/json',
-      //  Authorization: 'Bearer ' + localStorage.getItem('adminToken'),
+       'Authorization': 'Bearer ' + this.tokenService.getToken() || ''
     });
   }
 }
