@@ -9,6 +9,6 @@ export class AuthService {
 constructor(private baseApi: BaseApiService) { }
 
   login(data:object){
-    return this.baseApi.submitData('admin/auth/login',data);
+    return this.baseApi.login('admin/auth/login',data);
   }
 }

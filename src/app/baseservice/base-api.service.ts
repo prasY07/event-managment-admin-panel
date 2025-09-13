@@ -15,6 +15,11 @@ export class BaseApiService {
     private tokenService : TokenService
   ) { }
 
+ 
+
+    login(endpoint: string, data: object): Observable<any> {
+    return this.http.post<any>(`${this.apiUrl}/${endpoint}`, data);
+  }
   getData(endpoint: string): Observable<any> {
     return this.http.get<any>(`${this.apiUrl}/${endpoint}`, { headers: this.applyHeaders() });
   }
