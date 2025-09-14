@@ -2,53 +2,70 @@
 
   <!-- Header -->
   <div class="text-center header-class" >
-    <h1>Annual Gala Night</h1>
+    <h1>{{ event.title | ucfirst }}</h1>
   </div>
 
   <!-- Event Details Card with Glass Effect -->
   <div class="event-card">
     <!-- <h2>Event Name: Annual Gala Night</h2> -->
-    <h4 class="text-dark">Title: Celebrating Excellence</h4>
+    <!-- <h4 class="text-dark">Title: Celebrating Excellence</h4> -->
 
     <!-- Description First -->
     <div class="event-section">
       <h6>Description</h6>
-      <p>This is the biggest corporate gala of the year, celebrating achievements, awards, and networking opportunities for all members. It is a night of recognition, entertainment, and social connection.</p>
+      <p  [innerHTML]="event.description"></p>
+       <!-- <div class="info-box mb-4">
+              <label class="text-muted"><i class="fas fa-align-left me-2 text-primary"></i><strong>Description</strong></label>
+              <div class="border rounded p-2 bg-light" [innerHTML]="event.description || 'N/A'"></div>
+            </div> -->
     </div>
 
-    <!-- Event Dates & Times -->
+    <!-- Event Dates -->
     <div class="event-section row row-cols-custom">
       <div class="col-md-6">
-        <h6>Start Date & Time</h6>
-        <p>October 15, 2025 at 6:00 PM</p>
+        <h6>Start Date</h6>
+        <!-- <p>October 15, 2025 at 6:00 PM</p> -->
+         <p>{{ event.startDate | date:'MMMM d, y'}}</p>
       </div>
       <div class="col-md-6">
-        <h6>End Date & Time</h6>
-        <p>October 15, 2025 at 11:00 PM</p>
+        <h6>End Date</h6>
+          <p>{{ event.endDate | date:'MMMM d, y' }}</p>
       </div>
-       <!-- <div class="col-md-6">
-        <h6>End Date & Time</h6>
-        <p>October 15, 2025 at 11:00 PM</p>
-      </div> -->
+    </div>
+
+     <!-- Event  Times -->
+    <div class="event-section row row-cols-custom">
+      <div class="col-md-6">
+        <h6>Event Start Time</h6>
+        <!-- <p>October 15, 2025 at 6:00 PM</p> -->
+         <p>{{ event.startDateTime  | date:'h:mm a' }}</p>
+      </div>
+      <div class="col-md-6">
+        <h6>Event End Time</h6>
+       
+          <p>{{ event.endDateTime | date:'h:mm a' }}</p>
+      </div>
     </div>
 
     <!-- Member Type -->
-    <div class="event-section">
+    <!-- <div class="event-section">
       <h6>Member Type</h6>
       <p>Premium Member</p>
-    </div>
+    </div> -->
 
     <!-- Privacy Policy at Last -->
     <div class="event-section">
       <h6>Privacy Policy</h6>
-      <ul>
+      <!-- <ul>
         <li>All attendees must register before the event.</li>
         <li>Event photos and videos may be used for promotional purposes.</li>
         <li>Sharing confidential business information during the event is prohibited.</li>
         <li>Food and drinks are provided, but external catering is not allowed.</li>
         <li>Attendees must follow the event code of conduct at all times.</li>
         <li>Cancellation policy applies for ticketed events.</li>
-      </ul>
+      </ul> -->
+      <p  [innerHTML]="event.privacyPolicy"></p>
+
     </div>
 
     <!-- Back Button -->

@@ -5,11 +5,11 @@ import { BaseApiService } from 'src/app/baseservice/base-api.service';
 @Injectable({
   providedIn: 'root'
 })
-export class EventService {
+export class WebEventService {
 
   constructor(private baseApi:BaseApiService ) { }
 
    getEventInformation(id:string):Observable<any>{
-      return this.baseApi.getInformation(`admin/web/${id}/event-information`);
+      return this.baseApi.getInformationWithoutToken(`web/event/${id}/information`);
     }
 }

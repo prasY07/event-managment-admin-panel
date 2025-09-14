@@ -63,8 +63,9 @@ export class AddComponent implements OnInit , OnDestroy {
       registrationEndDate: ['', [Validators.required, this.validateRegistrationDate.bind(this)]],
       eventStartTime: ['', [Validators.required]],
       eventEndTime: ['', [Validators.required]],
-
+      sponsoredBy : ['',[Validators.required,Validators.minLength(3), Validators.maxLength(50)]],
       userId: [''],
+      isFoc: [''],
       eventMemberType: ['', [Validators.required]],
       eventAccessType: ['', [Validators.required]],
       eventServices:['', [Validators.required]],

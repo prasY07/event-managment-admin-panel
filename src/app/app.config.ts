@@ -1,13 +1,26 @@
+// import { ApplicationConfig, importProvidersFrom } from '@angular/core';
+// import { provideAnimations } from '@angular/platform-browser/animations'; // ✅ Required
+// import { provideRouter, withEnabledBlockingInitialNavigation, withHashLocation, withInMemoryScrolling, withRouterConfig, withViewTransitions } from '@angular/router';
+
+// import { DropdownModule, SidebarModule } from '@coreui/angular';
+// import { IconSetService } from '@coreui/icons-angular';
+// import { routes } from './app.routes';
+// import { provideToastr } from 'ngx-toastr';
+// import { provideHttpClient, withFetch, withInterceptors } from '@angular/common/http';
+// import { NgxEditorModule, schema } from 'ngx-editor';
+// import {AuthInterceptor} from './admin/AuthInterceptor';
+
 import { ApplicationConfig, importProvidersFrom } from '@angular/core';
-import { provideAnimations } from '@angular/platform-browser/animations'; // ✅ Required
-import { provideRouter, withEnabledBlockingInitialNavigation, withHashLocation, withInMemoryScrolling, withRouterConfig, withViewTransitions } from '@angular/router';
+import { provideAnimations } from '@angular/platform-browser/animations';
+import { provideRouter, withEnabledBlockingInitialNavigation, withInMemoryScrolling, withRouterConfig, withViewTransitions } from '@angular/router';
 
 import { DropdownModule, SidebarModule } from '@coreui/angular';
 import { IconSetService } from '@coreui/icons-angular';
 import { routes } from './app.routes';
 import { provideToastr } from 'ngx-toastr';
-import { provideHttpClient, withFetch } from '@angular/common/http';
-import { NgxEditorModule, schema } from 'ngx-editor';
+import { provideHttpClient, withFetch, withInterceptors } from '@angular/common/http';
+import { NgxEditorModule } from 'ngx-editor';
+import { authInterceptor } from './admin/AuthInterceptor';
 
 export const appConfig: ApplicationConfig = {
   providers: [
@@ -31,7 +44,12 @@ export const appConfig: ApplicationConfig = {
     provideAnimations(),
     provideToastr(),
 
-    provideHttpClient(withFetch()),
+    provideHttpClient(
+      withFetch(),
+      withInterceptors([authInterceptor])
+
+
+    ),
     importProvidersFrom(
       NgxEditorModule.forRoot({
         locals: {

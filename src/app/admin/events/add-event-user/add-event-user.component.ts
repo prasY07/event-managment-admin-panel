@@ -130,6 +130,8 @@ export class AddEventUserComponent implements OnInit {
     );
   }
 
+  
+
   get f() {
   return this.eventUserRegisterForm.controls;
 }

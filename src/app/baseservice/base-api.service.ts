@@ -70,6 +70,11 @@ export class BaseApiService {
     return this.http.post<any>(`${this.apiUrl}/${endpoint}`, data);
   }
 
+
+    getInformationWithoutToken(endpoint: string): Observable<any> {
+    return this.http.get<any>(`${this.apiUrl}/${endpoint}`);
+  }
+
   private applyHeaders(): HttpHeaders {
     return new HttpHeaders({
        'Authorization': 'Bearer ' + this.tokenService.getToken() || ''

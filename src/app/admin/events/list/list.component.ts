@@ -45,7 +45,7 @@ export class ListComponent implements OnInit {
   currentElement: any = null; // To store the current element for status update
   displayedColumns: string[] = ['position', 'title', 'startDate', 'eventStatus', 'status', 'action'];
   dataSource = new MatTableDataSource<any>([]);
-
+  currentDomain = window.location.origin; 
   totalItems = 0;
   pageSize = 1;
   page = 0;
@@ -137,4 +137,16 @@ export class ListComponent implements OnInit {
 
     }
   }
+
+copyUrl(eventId: string, eventName: string) {
+  // encodeURIComponent prevents issues if eventName has spaces or special characters
+  const url = `${window.location.origin}/event/information/${eventId}?event-name=${encodeURIComponent(eventName)}`;
+
+  navigator.clipboard.writeText(url).then(() => {
+    alert('URL copied to clipboard'); // ✅ or replace with toast/snackbar
+  }).catch(err => {
+    console.error('Failed to copy: ', err);
+  });
+}
+
 }

@@ -122,6 +122,27 @@
               </div>
             </div>
 
+                 <!-- Category -->
+            <div class="col-6 mb-3">
+              <label>Sponsored By</label>
+              <input class="form-control" formControlName="sponsoredBy" type="text" placeholder="Enter Sponsored By" />
+              <div *ngIf="eventForm.get('sponsoredBy')?.touched && eventForm.get('sponsoredBy')?.invalid" class="text-danger">
+                <small *ngIf="eventForm.get('sponsoredBy')?.errors?.['required']">Sponsored By is required.</small>
+                <small *ngIf="eventForm.get('sponsoredBy')?.errors?.['minlength']">Minimum 3 characters.</small>
+                <small *ngIf="eventForm.get('sponsoredBy')?.errors?.['maxlength']">Maximum 50 characters.</small>
+              </div>
+            </div>
+
+
+            
+            <!-- FOC -->
+            <div class="col-6 mb-3">
+              <label>FOC</label>
+              <select class="form-control" formControlName="isFoc">
+                <option value="No">NO</option>
+                <option value="YES">YES</option>
+              </select>
+            </div>
 
             <!-- User -->
             <div class="col-6 mb-3">

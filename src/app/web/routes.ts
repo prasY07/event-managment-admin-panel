@@ -14,7 +14,7 @@ export const webRoutes: Routes = [
   {
     path:'event',
        children: [
-      { path: 'information', component: InformationComponent, data: { title: 'Event-Information' } },
+      { path: 'information/:id', component: InformationComponent, data: { title: 'Event-Information' } },
       { path: 'registration', component: RegistrationComponent, data: { title: 'Event Registration' } },
     ]
 
