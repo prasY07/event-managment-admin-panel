@@ -71,8 +71,12 @@ export class BaseApiService {
   }
 
 
-    getInformationWithoutToken(endpoint: string): Observable<any> {
+  getInformationWithoutToken(endpoint: string): Observable<any> {
     return this.http.get<any>(`${this.apiUrl}/${endpoint}`);
+  }
+
+  webEventRegistrationForm(endpoint: string): Observable<any> {
+    return this.http.get<any>(`${this.apiUrl}/${endpoint}`, );
   }
 
   private applyHeaders(): HttpHeaders {
