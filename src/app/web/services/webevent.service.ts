@@ -14,7 +14,7 @@ export class WebEventService {
     }
 
     registrationEvent(data:object):Observable<any>{
-      return this.baseApi.getInformationWithoutToken(`web/event/information`,data);
+      return this.baseApi.getInformationWithoutToken(`web/event/information`);
     }
 
 }

@@ -4,6 +4,9 @@ import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angula
 import { FormModule } from '@coreui/angular';
 import { ToastrService } from 'ngx-toastr';
 import { WebEventService } from '../../services/webevent.service';
+import { CountryService } from '../../../common/Service/country.service';
+import { SocialSourceService } from '../../../common/Service/social-source.service';
+
 
 
 @Component({
@@ -13,7 +16,8 @@ import { WebEventService } from '../../services/webevent.service';
   styleUrl: './registration.component.scss'
 })
 export class RegistrationComponent  implements OnInit{
-
+  allCountry : any = [];
+  allSocialSource : any = [];
   eventUserRegisterForm!: FormGroup;
 
 
@@ -21,6 +25,8 @@ export class RegistrationComponent  implements OnInit{
     private fb: FormBuilder,
     private toastr: ToastrService,
      private eventService: WebEventService,
+     private countryService : CountryService,
+     private socialSourceService:SocialSourceService 
   ) {}
 
   ngOnInit()
@@ -37,6 +43,21 @@ export class RegistrationComponent  implements OnInit{
           dob:['',Validators.required],
           phoneNumber: ['', [Validators.required, Validators.pattern(/^\d{10}$/)]],
         });
+  }
+
+
+   getAllCountry()
+  {
+this.countryService.getAllCountry().subscribe(
+      (data: any) => {
+        this.allCountry = data.data;
+        console.log("allCountry", this.allCountry);
+      },
+      error => {
+        console.error('Error fetching users:', error);
+        alert('No Counntry code found');
+      }
+    );
   }
 
 
