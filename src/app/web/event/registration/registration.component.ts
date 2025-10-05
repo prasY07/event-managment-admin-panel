@@ -19,6 +19,10 @@ export class RegistrationComponent  implements OnInit{
   allCountry : any = [];
   allSocialSource : any = [];
   eventUserRegisterForm!: FormGroup;
+  emailOtpSended : boolean = false;
+  emailVerified : boolean = false;
+  mobileOtpSended : boolean = false;
+  mobileVerified : boolean = false;
 
 
    constructor(
@@ -34,6 +38,7 @@ export class RegistrationComponent  implements OnInit{
     this.eventUserRegisterForm = this.fb.group({
           name: ['', Validators.required],
           email: ['', [Validators.required, Validators.email]],
+          emailOtp: ['', Validators.required],
           address: ['', Validators.required],
           pincode: ['', [Validators.required, Validators.pattern(/^\d{6}$/)]],
           eventSource: ['', Validators.required],
@@ -81,5 +86,19 @@ this.countryService.getAllCountry().subscribe(
     } else {
       alert('Please fill form');
     }
+  }
+
+  sendOtp()
+  {
+
+    this.emailOtpSended = true;
+    alert('Email OTP sent successfully');
+  }
+
+    sendPhoneOtp()
+  {
+
+    this.mobileOtpSended = true;
+    alert('Email OTP sent successfully');
   }
 }
