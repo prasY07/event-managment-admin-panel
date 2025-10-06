@@ -6,6 +6,7 @@ import { ToastrService } from 'ngx-toastr';
 import { WebEventService } from '../../services/webevent.service';
 import { CountryService } from '../../../common/Service/country.service';
 import { SocialSourceService } from '../../../common/Service/social-source.service';
+import { ActivatedRoute } from '@angular/router';
 
 
 
@@ -18,20 +19,29 @@ import { SocialSourceService } from '../../../common/Service/social-source.servi
 export class RegistrationComponent  implements OnInit{
   allCountry : any = [];
   allSocialSource : any = [];
+  memberTypes : any = [];
   eventUserRegisterForm!: FormGroup;
   emailOtpSended : boolean = false;
   emailVerified : boolean = false;
   mobileOtpSended : boolean = false;
   mobileVerified : boolean = false;
-
+  socialSources:any[] = [];
+  eventId = '';
 
    constructor(
     private fb: FormBuilder,
     private toastr: ToastrService,
      private eventService: WebEventService,
      private countryService : CountryService,
-     private socialSourceService:SocialSourceService 
-  ) {}
+     private socialSourceService:SocialSourceService ,
+    private aRoute: ActivatedRoute,
+
+  ) {
+      this.aRoute.params.subscribe(params => {
+        this.eventId = params['id'];
+      });
+
+  }
 
   ngOnInit()
   {
@@ -39,6 +49,7 @@ export class RegistrationComponent  implements OnInit{
           name: ['', Validators.required],
           email: ['', [Validators.required, Validators.email]],
           emailOtp: ['', Validators.required],
+          mobileOtp: ['', Validators.required],
           address: ['', Validators.required],
           pincode: ['', [Validators.required, Validators.pattern(/^\d{6}$/)]],
           eventSource: ['', Validators.required],
@@ -48,6 +59,8 @@ export class RegistrationComponent  implements OnInit{
           dob:['',Validators.required],
           phoneNumber: ['', [Validators.required, Validators.pattern(/^\d{10}$/)]],
         });
+        // this.getAllCountry();
+        // this.loadMemberAccess();
   }
 
 
@@ -65,6 +78,32 @@ this.countryService.getAllCountry().subscribe(
     );
   }
 
+
+    getSocialMediaPlateform() {
+    this.socialSourceService.getSocialMediaSources().subscribe(
+      (data: any) => {
+        this.socialSources = data.data;
+        console.log("social",this.socialSources);
+      },
+      error => {
+        console.error('Error fetching users:', error);
+        alert('social media source not found');
+      }
+    );
+  }
+
+    loadMemberAccess(){
+    this.eventService.getAllEventMemberType(this.eventId)
+    .subscribe(
+      (data: any) => {
+        this.memberTypes = data.data;
+        console.log("member",this.memberTypes);
+      },
+      error => {
+        console.error('Error fetching users:', error);
+      }
+    );
+  }
 
   onSubmit()
   {
@@ -100,5 +139,10 @@ this.countryService.getAllCountry().subscribe(
 
     this.mobileOtpSended = true;
     alert('Email OTP sent successfully');
+  }
+
+  resendOtp(type:string,key:string)
+  {
+
   }
 }

@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
-import { BaseApiService } from 'src/app/baseservice/base-api.service';
+import { BaseApiService } from '../../baseservice/base-api.service';
 
 @Injectable({
   providedIn: 'root'
@@ -16,5 +16,17 @@ export class WebEventService {
     registrationEvent(data:object):Observable<any>{
       return this.baseApi.getInformationWithoutToken(`web/event/information`);
     }
+
+    getAllEventMemberType(id:string):Observable<any>{
+    return this.baseApi.getInformationWithoutToken(`web/event/event-member/${id}/list`);
+  }
+
+  sendOtpApi(data:object):Observable<any>{
+    return this.baseApi.postInformationWithoutToken(`web/send-otp`,data);
+  }
+
+  resendOtpApi(data:object):Observable<any>{
+    return this.baseApi.postInformationWithoutToken(`web/resend-otp`,data);
+  }
 
 }

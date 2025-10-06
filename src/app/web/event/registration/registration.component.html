@@ -62,10 +62,10 @@
   <div class="d-flex align-items-center">
     <select id="countryCode" class="form-select me-2" style="max-width: 120px; border-radius: 8px;" formControlName="countryId">
       <option value="">Select</option>
-      <option value="+91">🇮🇳 +91</option>
-      <option value="+1">🇺🇸 +1</option>
-      <option value="+44">🇬🇧 +44</option>
-      <option value="+61">🇦🇺 +61</option>
+      <option *ngFor="let country of allCountry" [value]="country.code">
+          {{ country.name }}
+      </option>
+
     </select>
 
     <input type="number" id="phoneNumber" class="form-control me-2" placeholder="Enter 10-digit number" formControlName="phoneNumber">
@@ -84,6 +84,19 @@
     Country code is required.
   </div>
 </div>
+
+<div class="mb-3" *ngIf="mobileOtpSended"> 
+      <label for="mobileOtp" class="form-label fw-semibold">Mobile Number OTP</label>
+      <div class="d-flex">
+      <input type="number" id="mobileOtp" class="form-control me-2 " placeholder="Enter your email" formControlName="mobileOtp">
+      <button type="button" class="custom-btn"  style="padding: 2px 6px; font-size: 12px; border-radius: 4px;" (click)="sendPhoneOtp()">
+      Resend OTP
+      </button>
+
+      </div>
+      <div class="text-danger mt-1" *ngIf="eventUserRegisterForm.get('mobileOtp')?.invalid && eventUserRegisterForm.get('mobileOtp')?.touched">
+      </div>
+      </div>
 
 
       <!-- Address + Pincode -->
@@ -110,10 +123,10 @@
         <label for="eventSource" class="form-label fw-semibold">How did you hear about this event?</label>
         <select id="eventSource" class="form-select" formControlName="eventSource">
           <option value="">-- Select Source --</option>
-          <option value="friends">Friends</option>
-          <option value="social">Social Media</option>
-          <option value="ads">Advertisements</option>
-          <option value="others">Others</option>
+          
+            <option *ngFor="let source of socialSources" [value]="source.id">
+          {{ source.name }}
+      </option>
         </select>
         <div class="text-danger mt-1" *ngIf="eventUserRegisterForm.get('eventSource')?.invalid && eventUserRegisterForm.get('eventSource')?.touched">
           Event source is required.
@@ -134,18 +147,30 @@
       </div>
 
       <!-- Member Type -->
-      <div class="mb-3">
-        <label class="form-label fw-semibold">Member Type</label>
-        <div class="d-flex flex-wrap gap-3">
-          <div><input type="radio" id="regular" value="Regular" formControlName="memberType"> <label for="regular">Regular</label></div>
-          <div><input type="radio" id="vip" value="VIP" formControlName="memberType"> <label for="vip">VIP</label></div>
-          <div><input type="radio" id="premium" value="Premium" formControlName="memberType"> <label for="premium">Premium</label></div>
-          <div><input type="radio" id="student" value="Student" formControlName="memberType"> <label for="student">Student</label></div>
-        </div>
-        <div class="text-danger mt-1" *ngIf="eventUserRegisterForm.get('memberType')?.invalid && eventUserRegisterForm.get('memberType')?.touched">
-          Please select a member type.
-        </div>
-      </div>
+   <div class="mb-3">
+  <label class="form-label fw-semibold">Member Type</label>
+  <div class="d-flex flex-wrap gap-3">
+    <div *ngFor="let type of memberTypes">
+      <input
+        type="radio"
+        [id]="type.toLowerCase()"
+        [value]="type"
+        formControlName="memberType"
+      />
+      <label [for]="type.toLowerCase()">{{ type }}</label>
+    </div>
+  </div>
+  <div
+    class="text-danger mt-1"
+    *ngIf="
+      eventUserRegisterForm.get('memberType')?.invalid &&
+      eventUserRegisterForm.get('memberType')?.touched
+    "
+  >
+    Please select a member type.
+  </div>
+</div>
+
 
       <!-- DOB -->
       <div class="mb-3">

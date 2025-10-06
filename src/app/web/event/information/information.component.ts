@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute, Router } from '@angular/router';
+import { ActivatedRoute, Router, RouterLink } from '@angular/router';
 import { WebEventService } from '../../services/webevent.service';
 import { UcfirstPipe } from 'src/app/common/pipe/ucfirst.pipe';
 import { CommonModule } from '@angular/common';
@@ -7,7 +7,7 @@ import { CommonModule } from '@angular/common';
 @Component({
   selector: 'app-information',
   standalone: true,  // 👈 required if you’re using "imports"
-  imports: [UcfirstPipe, CommonModule],
+  imports: [UcfirstPipe, CommonModule, RouterLink],
   templateUrl: './information.component.html',
   styleUrls: ['./information.component.scss']  // 👈 fixed: styleUrls instead of styleUrl
 })
