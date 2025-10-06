@@ -44,6 +44,21 @@
               </div>
             </div>
 
+              <!--  Registration Start Date -->
+            <div class="col-6 mb-3">
+              <label> Registration Start Date</label>
+              <input class="form-control" formControlName="registrationStartDate" type="date" />
+              <div
+                *ngIf="eventForm.get('registrationStartDate')?.touched && eventForm.get('registrationStartDate')?.invalid"
+                class="text-danger">
+                <small *ngIf="eventForm.get('registrationStartDate')?.errors?.['required']">Last Registration Date is
+                  required.</small>
+                <small *ngIf="eventForm.get('registrationStartDate')?.errors?.['invalidRegistrationDate']">
+                  {{ eventForm.get('registrationStartDate')?.errors?.['invalidRegistrationDate'] }}
+                </small>
+              </div>
+            </div>
+
             <!-- Last Registration Date -->
             <div class="col-6 mb-3">
               <label>Last Registration Date</label>
@@ -58,6 +73,8 @@
                 </small>
               </div>
             </div>
+
+            
 
 
             <!-- Event Start Time -->

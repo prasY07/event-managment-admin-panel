@@ -27,6 +27,8 @@ export class RegistrationComponent  implements OnInit{
   mobileVerified : boolean = false;
   socialSources:any[] = [];
   eventId = '';
+  event: any = {};
+
 
    constructor(
     private fb: FormBuilder,
@@ -59,10 +61,18 @@ export class RegistrationComponent  implements OnInit{
           dob:['',Validators.required],
           phoneNumber: ['', [Validators.required, Validators.pattern(/^\d{10}$/)]],
         });
-        // this.getAllCountry();
-        // this.loadMemberAccess();
+        this.getAllCountry();
+        this.loadMemberList();
+        this.getSocialMediaPlateform();
+        this.getEvent();
   }
 
+  getEvent() {
+    this.eventService.getEventInformation(this.eventId).subscribe((data: any) => {
+      this.event = data.data;
+      
+    });
+  }
 
    getAllCountry()
   {
@@ -92,7 +102,7 @@ this.countryService.getAllCountry().subscribe(
     );
   }
 
-    loadMemberAccess(){
+    loadMemberList(){
     this.eventService.getAllEventMemberType(this.eventId)
     .subscribe(
       (data: any) => {
@@ -109,6 +119,22 @@ this.countryService.getAllCountry().subscribe(
   {
 
     if (this.eventUserRegisterForm.valid) {
+      const formValue = this.eventUserRegisterForm.value;
+
+        const payload = {
+    name: formValue.name,
+    email: formValue.email,
+    memberTypeId: formValue.memberType, // assuming this is the ID
+    gender: formValue.gender,
+    heardSourceId: formValue.eventSource, // assuming eventSource is an ID
+    phoneNumber: formValue.phoneNumber,
+    countryId: formValue.countryId,
+    eventId: this.eventId, // you should assign this somewhere in the component
+    address: formValue.address,
+    zipcode: formValue.pincode,
+    eventRegistrationAddedBy: 'USER' // or 'ADMIN' or enum value expected by backend
+  };
+
       console.log("this.eventUserRegisterForm.value",this.eventUserRegisterForm.value);
       this.eventService.registrationEvent(this.eventUserRegisterForm.value).subscribe(
         response => {

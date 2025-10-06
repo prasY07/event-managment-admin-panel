@@ -1,7 +1,7 @@
 <!-- Header -->
 <div class="text-center header-class py-4" 
      style="background: linear-gradient(135deg, #f9f9f9, #e8f0fe); box-shadow: 0 2px 6px rgba(0,0,0,0.1);">
-  <h1 style="font-weight: 600; color: #3a3a3a;">Annual Gala Night</h1>
+  <h1 style="font-weight: 600; color: #3a3a3a;">{{event.title}}</h1>
 </div>
 
 <!-- Form Wrapper -->
@@ -146,18 +146,20 @@
         </div>
       </div>
 
-      <!-- Member Type -->
-   <div class="mb-3">
+   <!-- Member Type -->
+<div class="mb-3">
   <label class="form-label fw-semibold">Member Type</label>
   <div class="d-flex flex-wrap gap-3">
     <div *ngFor="let type of memberTypes">
       <input
         type="radio"
-        [id]="type.toLowerCase()"
-        [value]="type"
+        [id]="'member-' + type.id"
+        [value]="type.id"
         formControlName="memberType"
       />
-      <label [for]="type.toLowerCase()">{{ type }}</label>
+      <label [for]="'member-' + type.id">
+               {{ type.memberType }} - ₹{{ type.fees | number: '1.2-2' }}
+      </label>
     </div>
   </div>
   <div
@@ -170,6 +172,7 @@
     Please select a member type.
   </div>
 </div>
+
 
 
       <!-- DOB -->

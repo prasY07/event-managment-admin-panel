@@ -14,11 +14,11 @@ export class WebEventService {
     }
 
     registrationEvent(data:object):Observable<any>{
-      return this.baseApi.getInformationWithoutToken(`web/event/information`);
+      return this.baseApi.postInformationWithoutToken(`web/event/user-registration`,data);
     }
 
     getAllEventMemberType(id:string):Observable<any>{
-    return this.baseApi.getInformationWithoutToken(`web/event/event-member/${id}/list`);
+    return this.baseApi.getInformationWithoutToken(`web/event/${id}/member-list`);
   }
 
   sendOtpApi(data:object):Observable<any>{
