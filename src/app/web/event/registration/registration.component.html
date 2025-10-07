@@ -62,7 +62,7 @@
   <div class="d-flex align-items-center">
     <select id="countryCode" class="form-select me-2" style="max-width: 120px; border-radius: 8px;" formControlName="countryId">
       <option value="">Select</option>
-      <option *ngFor="let country of allCountry" [value]="country.code">
+      <option *ngFor="let country of allCountry" [value]="country.id">
           {{ country.name }}
       </option>
 

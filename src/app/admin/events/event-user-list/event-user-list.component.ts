@@ -26,7 +26,7 @@ import { MatPaginator, MatPaginatorModule, PageEvent } from '@angular/material/p
 })
 export class EventUserListComponent implements OnInit {
 
-  displayedColumns: string[] = ['position','name', 'email', 'registrationDate', 'action'];
+  displayedColumns: string[] = ['position','name', 'email', 'registrationDate'];
   dataSource = new MatTableDataSource<any>([]);
 
   totalItems = 0;

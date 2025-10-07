@@ -121,7 +121,7 @@ this.countryService.getAllCountry().subscribe(
     if (this.eventUserRegisterForm.valid) {
       const formValue = this.eventUserRegisterForm.value;
 
-        const payload = {
+      const payload = {
     name: formValue.name,
     email: formValue.email,
     memberTypeId: formValue.memberType, // assuming this is the ID
@@ -132,11 +132,11 @@ this.countryService.getAllCountry().subscribe(
     eventId: this.eventId, // you should assign this somewhere in the component
     address: formValue.address,
     zipcode: formValue.pincode,
-    eventRegistrationAddedBy: 'USER' // or 'ADMIN' or enum value expected by backend
+    eventRegistrationAddedBy: 'SELF' // or 'ADMIN' or enum value expected by backend
   };
 
-      console.log("this.eventUserRegisterForm.value",this.eventUserRegisterForm.value);
-      this.eventService.registrationEvent(this.eventUserRegisterForm.value).subscribe(
+      console.log("this.eventUserRegisterForm.value",payload);
+      this.eventService.registrationEvent(payload).subscribe(
         response => {
           this.toastr.success('Event Registration successfully.', 'Success');
         },
