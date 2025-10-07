@@ -43,7 +43,7 @@
   <div class="mb-3" *ngIf="emailOtpSended"> 
       <label for="emailOtp" class="form-label fw-semibold">Email OTP</label>
       <div class="d-flex">
-      <input type="number" id="emailOtp" class="form-control me-2 " placeholder="Enter your email" formControlName="emailOtp">
+      <input type="number" id="emailOtp" class="form-control me-2 " placeholder="Enter your email otp" formControlName="emailOtp">
       <button type="button" class="custom-btn"  style="padding: 2px 6px; font-size: 12px; border-radius: 4px;" (click)="sendOtp()">
       Resend OTP
       </button>
@@ -88,7 +88,7 @@
 <div class="mb-3" *ngIf="mobileOtpSended"> 
       <label for="mobileOtp" class="form-label fw-semibold">Mobile Number OTP</label>
       <div class="d-flex">
-      <input type="number" id="mobileOtp" class="form-control me-2 " placeholder="Enter your email" formControlName="mobileOtp">
+      <input type="number" id="mobileOtp" class="form-control me-2 " placeholder="Enter your phone mumber otp" formControlName="mobileOtp">
       <button type="button" class="custom-btn"  style="padding: 2px 6px; font-size: 12px; border-radius: 4px;" (click)="sendPhoneOtp()">
       Resend OTP
       </button>
