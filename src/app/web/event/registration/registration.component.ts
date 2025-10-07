@@ -123,6 +123,17 @@ this.countryService.getAllCountry().subscribe(
 
   onSubmit()
   {
+    if(this.eventUserRegisterForm.value.emailOtp !='123456')
+    {
+      alert('Please enter valid email otp');
+      return;
+    }
+
+     if(this.eventUserRegisterForm.value.mobileOtp !='123456')
+    {
+      alert('Please enter valid phone number otp');
+      return;
+    }
 
     if (this.eventUserRegisterForm.valid) {
       const formValue = this.eventUserRegisterForm.value;
