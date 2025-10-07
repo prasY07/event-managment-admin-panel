@@ -6,7 +6,7 @@ import { ToastrService } from 'ngx-toastr';
 import { WebEventService } from '../../services/webevent.service';
 import { CountryService } from '../../../common/Service/country.service';
 import { SocialSourceService } from '../../../common/Service/social-source.service';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 
 
 
@@ -39,6 +39,7 @@ export class RegistrationComponent  implements OnInit{
      private countryService : CountryService,
      private socialSourceService:SocialSourceService ,
     private aRoute: ActivatedRoute,
+    private router: Router
 
   ) {
       this.aRoute.params.subscribe(params => {
@@ -144,7 +145,16 @@ this.countryService.getAllCountry().subscribe(
       this.eventService.registrationEvent(payload).subscribe(
         response => {
           this.toastr.success('Event Registration successfully.', 'Success');
-             window.location.reload();
+        this.router.navigate(
+  ['/event/information', this.eventId],
+  {
+    queryParams: {
+      'event-name': this.event.title
+    }
+  }
+);
+
+
 
         },
         error => {
@@ -164,14 +174,14 @@ this.countryService.getAllCountry().subscribe(
   {
 
     this.emailOtpSended = true;
-    alert('Email OTP sent successfully');
+    alert('OTP sent on email successfully');
   }
 
     sendPhoneOtp()
   {
 
     this.mobileOtpSended = true;
-    alert('Email OTP sent successfully');
+    alert('OTP sent mobile number successfully');
   }
 
   resendOtp(type:string,key:string)
