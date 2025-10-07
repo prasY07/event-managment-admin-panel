@@ -13,6 +13,6 @@ export class SocialSourceService {
  
    getSocialMediaSources()
    {
-      return this.baseApi.getData('common/social-media/list');
+      return this.baseApi.getInformationWithoutToken('common/social-media/list');
    }
 }

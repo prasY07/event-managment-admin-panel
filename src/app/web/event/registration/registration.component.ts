@@ -28,6 +28,8 @@ export class RegistrationComponent  implements OnInit{
   socialSources:any[] = [];
   eventId = '';
   event: any = {};
+  today: string = '';
+
 
 
    constructor(
@@ -65,6 +67,9 @@ export class RegistrationComponent  implements OnInit{
         this.loadMemberList();
         this.getSocialMediaPlateform();
         this.getEvent();
+        const now = new Date();
+  this.today = now.toISOString().split('T')[0]; // Format: 'YYYY-MM-DD'
+
   }
 
   getEvent() {
@@ -82,7 +87,7 @@ this.countryService.getAllCountry().subscribe(
         console.log("allCountry", this.allCountry);
       },
       error => {
-        console.error('Error fetching users:', error);
+        console.error('Error fetching Counntry:', error);
         alert('No Counntry code found');
       }
     );
@@ -139,6 +144,8 @@ this.countryService.getAllCountry().subscribe(
       this.eventService.registrationEvent(payload).subscribe(
         response => {
           this.toastr.success('Event Registration successfully.', 'Success');
+             window.location.reload();
+
         },
         error => {
           let errorMsg = 'OOPS Something Went Wrong';

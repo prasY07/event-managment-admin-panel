@@ -11,6 +11,6 @@ export class CountryService {
    
      getAllCountry()
      {
-        return this.baseApi.getData('common/country/list');
+        return this.baseApi.getInformationWithoutToken('common/country/list');
      }
 }

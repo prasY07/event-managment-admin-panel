@@ -1,8 +1,8 @@
 <!-- Header -->
-<div class="text-center header-class py-4" 
+<!-- <div class="text-center header-class py-4" 
      style="background: linear-gradient(135deg, #f9f9f9, #e8f0fe); box-shadow: 0 2px 6px rgba(0,0,0,0.1);">
   <h1 style="font-weight: 600; color: #3a3a3a;">{{event.title}}</h1>
-</div>
+</div> -->
 
 <!-- Form Wrapper -->
 <div class="registration-wrapper d-flex justify-content-center align-items-center py-5" 
@@ -178,7 +178,7 @@
       <!-- DOB -->
       <div class="mb-3">
         <label for="dob" class="form-label fw-semibold">Date of Birth</label>
-        <input type="date" id="dob" class="form-control" formControlName="dob">
+        <input type="date" id="dob" class="form-control" formControlName="dob" [max]="today">
       </div>
 
 
