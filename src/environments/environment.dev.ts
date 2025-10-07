@@ -1,5 +1,5 @@
 export const environment = {
     production: false,
-    apiUrl: 'https://dev-api.example.com'
+    apiUrl: 'https://dev-api.gokollective.com/api'
   };
   
