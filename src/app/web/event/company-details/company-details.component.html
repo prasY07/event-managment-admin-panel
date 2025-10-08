@@ -1,0 +1,110 @@
+<div class="container mt-5">
+  <div class="card shadow-lg p-4">
+    <h3 class="card-title text-center mb-4">Business Registration Form</h3>
+
+    <form [formGroup]="businessForm" (ngSubmit)="onSubmit()">
+
+      <div class="row g-3">
+
+        <!-- First Name -->
+        <div class="col-md-6 form-floating">
+          <input type="text" class="form-control" formControlName="fname" id="fname" placeholder="First Name">
+          <label for="fname">First Name</label>
+          <small *ngIf="f['fname'].touched && f['fname'].errors" class="text-danger">
+            <span *ngIf="f['fname'].errors['required']">First name is required.</span>
+            <span *ngIf="f['fname'].errors['minlength']">Minimum 2 characters required.</span>
+          </small>
+        </div>
+
+        <!-- Last Name -->
+        <div class="col-md-6 form-floating">
+          <input type="text" class="form-control" formControlName="lname" id="lname" placeholder="Last Name">
+          <label for="lname">Last Name</label>
+          <small *ngIf="f['lname'].touched && f['lname'].errors" class="text-danger">
+            <span *ngIf="f['lname'].errors['required']">Last name is required.</span>
+            <span *ngIf="f['lname'].errors['minlength']">Minimum 2 characters required.</span>
+          </small>
+        </div>
+
+        <!-- Gender -->
+        <div class="col-md-6 form-floating">
+          <select class="form-select" formControlName="gender" id="gender" aria-label="Gender">
+            <option value="">Select Gender</option>
+            <option>Male</option>
+            <option>Female</option>
+            <option>Other</option>
+          </select>
+          <label for="gender">Gender</label>
+          <small *ngIf="f['gender'].touched && f['gender'].errors" class="text-danger">
+            Gender is required.
+          </small>
+        </div>
+
+        <!-- Phone Number -->
+        <div class="col-md-6 form-floating">
+          <input type="text" class="form-control" formControlName="phoneNumber" id="phoneNumber" placeholder="Phone Number">
+          <label for="phoneNumber">Phone Number</label>
+          <small *ngIf="f['phoneNumber'].touched && f['phoneNumber'].errors" class="text-danger">
+            <span *ngIf="f['phoneNumber'].errors['required']">Phone number is required.</span>
+            <span *ngIf="f['phoneNumber'].errors['pattern']">Enter a valid 10-digit phone number.</span>
+          </small>
+        </div>
+
+        <!-- Email -->
+        <div class="col-md-6 form-floating">
+          <input type="email" class="form-control" formControlName="email" id="email" placeholder="Email">
+          <label for="email">Email</label>
+          <small *ngIf="f['email'].touched && f['email'].errors" class="text-danger">
+            <span *ngIf="f['email'].errors['required']">Email is required.</span>
+            <span *ngIf="f['email'].errors['email']">Enter a valid email address.</span>
+          </small>
+        </div>
+
+        <!-- Company Name -->
+        <div class="col-md-6 form-floating">
+          <input type="text" class="form-control" formControlName="companyName" id="companyName" placeholder="Company Name">
+          <label for="companyName">Company Name</label>
+          <small *ngIf="f['companyName'].touched && f['companyName'].errors" class="text-danger">
+            Company name is required.
+          </small>
+        </div>
+
+        <!-- GST -->
+        <div class="col-md-6 form-floating">
+          <input type="text" class="form-control" formControlName="gst" id="gst" placeholder="GST Number">
+          <label for="gst">GST Number (Optional)</label>
+          <small *ngIf="f['gst'].touched && f['gst'].errors?.['pattern']" class="text-danger">
+            Invalid GST format (15 uppercase alphanumeric characters).
+          </small>
+        </div>
+
+        <!-- Company Address -->
+        <div class="col-12 form-floating">
+          <textarea class="form-control" formControlName="companyAddress" id="companyAddress" placeholder="Company Address" style="height: 60px"></textarea>
+          <label for="companyAddress">Company Address</label>
+          <small *ngIf="f['companyAddress'].touched && f['companyAddress'].errors" class="text-danger">
+            Company address is required.
+          </small>
+        </div>
+
+        <!-- Business Summary -->
+        <div class="col-12 form-floating">
+          <textarea class="form-control" formControlName="businessSummary" id="businessSummary" placeholder="Business Summary" style="height: 100px"></textarea>
+          <label for="businessSummary">Business Summary</label>
+          <small *ngIf="f['businessSummary'].touched && f['businessSummary'].errors" class="text-danger">
+            <span *ngIf="f['businessSummary'].errors['required']">Business summary is required.</span>
+            <span *ngIf="f['businessSummary'].errors['minlength']">Minimum 10 characters required.</span>
+          </small>
+        </div>
+
+      </div>
+
+      <div class="text-center mt-4">
+        <button type="submit" class="btn btn-primary btn-lg px-5">
+          Submit
+        </button>
+      </div>
+
+    </form>
+  </div>
+</div>

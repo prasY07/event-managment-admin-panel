@@ -29,4 +29,9 @@ export class WebEventService {
     return this.baseApi.postInformationWithoutToken(`web/resend-otp`,data);
   }
 
+   registorBusinessDetails(data:object):Observable<any>{
+      return this.baseApi.postInformationWithoutToken(`web/event/business-registration`,data);
+    }
+
+
 }

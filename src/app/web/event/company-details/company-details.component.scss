@@ -1,0 +1,29 @@
+.card {
+  border-radius: 15px;
+  background-color: #ffffff;
+}
+
+h3.card-title {
+  font-weight: 600;
+  color: #0d6efd;
+}
+
+.form-control.ng-touched.ng-invalid,
+.form-select.ng-touched.ng-invalid,
+textarea.ng-touched.ng-invalid {
+  border-color: #dc3545;
+  box-shadow: 0 0 0 0.1rem rgba(220, 53, 69, 0.25);
+}
+
+small.text-danger {
+  font-size: 0.8rem;
+}
+
+.btn-primary {
+  background: linear-gradient(to right, #0d6efd, #6610f2);
+  border: none;
+}
+
+.btn-primary:hover {
+  background: linear-gradient(to right, #6610f2, #0d6efd);
+}
