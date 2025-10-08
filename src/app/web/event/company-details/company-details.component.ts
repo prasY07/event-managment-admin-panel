@@ -72,8 +72,11 @@ export class CompanyDetailsComponent implements OnInit {
       companyName: ['', Validators.required],
       companyAddress: ['', Validators.required],
       businessSummary: ['', [Validators.required, Validators.minLength(10)]],
-          categories: this.fb.array([], Validators.required), // for checkboxes
-            eemaMember: ['', Validators.required]  // new radio button group
+      categories: this.fb.array([], Validators.required), // for checkboxes
+      eemaMember: ['', Validators.required],
+      emaa: ['', Validators.required],
+            
+            // new radio button group
 
 
       // categories: [[], Validators.required]  // multi-select

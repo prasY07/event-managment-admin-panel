@@ -1,0 +1,38 @@
+#<IfModule mod_rewrite.c>
+ #   RewriteEngine On
+  #  RewriteBase /
+  #  RewriteCond %{REQUEST_FILENAME} !-f
+  #  RewriteCond %{REQUEST_FILENAME} !-d
+  #  RewriteRule . /index.html [L]
+#</IfModule>
+
+
+
+#<IfModule mod_rewrite.c>
+ #RewriteEngine On
+  #RewriteBase /
+
+   #Redirect all requests to index.html
+ # RewriteRule ^index\.html$ - [L]
+  #RewriteCond %{REQUEST_FILENAME} !-f
+  #RewriteCond %{REQUEST_FILENAME} !-d
+  #RewriteRule . /index.html [L]
+#</IfModule>
+
+
+
+  # === Remove HTTPS redirect ===
+  # Comment or remove any lines like this:
+  # RewriteCond %{HTTPS} off
+  # RewriteRule ^ https://%{HTTP_HOST}%{REQUEST_URI} [L,R=301]
+
+<IfModule mod_rewrite.c>
+  RewriteEngine On
+  RewriteBase /
+
+  # Angular routing support
+  RewriteRule ^index\.html$ - [L]
+  RewriteCond %{REQUEST_FILENAME} !-f
+  RewriteCond %{REQUEST_FILENAME} !-d
+  RewriteRule . /index.html [L]
+</IfModule>
