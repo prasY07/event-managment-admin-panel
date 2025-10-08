@@ -27,3 +27,8 @@ small.text-danger {
 .btn-primary:hover {
   background: linear-gradient(to right, #6610f2, #0d6efd);
 }
+
+select[multiple] {
+  height: auto;
+  min-height: 120px;
+}

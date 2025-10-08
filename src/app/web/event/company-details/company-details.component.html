@@ -70,13 +70,49 @@
         </div>
 
         <!-- GST -->
-        <div class="col-md-6 form-floating">
+        <!-- <div class="col-md-6 form-floating">
           <input type="text" class="form-control" formControlName="gst" id="gst" placeholder="GST Number">
           <label for="gst">GST Number (Optional)</label>
           <small *ngIf="f['gst'].touched && f['gst'].errors?.['pattern']" class="text-danger">
             Invalid GST format (15 uppercase alphanumeric characters).
           </small>
-        </div>
+        </div> -->
+
+    <!-- <ng-multiselect-dropdown
+  *ngIf="categories && dropdownSettings"
+  [placeholder]="'Select Categories'"
+  [data]="categories"
+  [(ngModel)]="selectedCategoriesObjects"
+  [settings]="dropdownSettings">
+</ng-multiselect-dropdown>
+
+<p class="mt-2">
+  Selected Categories: {{ selectedCategories.join(', ') }}
+</p> -->
+
+<h4>Select Categories</h4>
+<div class="form-check" *ngFor="let category of categories">
+  <input
+    type="checkbox"
+    class="form-check-input"
+    [value]="category"
+    (change)="onCheckboxChange($event)"
+    [checked]="f['categories'].value.includes(category)">
+  <label class="form-check-label">{{ category }}</label>
+</div>
+
+
+<h5>Are you an EEMA (Event and Entertainment Management Association) Member?</h5>
+
+<div class="form-check">
+  <input type="radio" class="form-check-input" formControlName="eemaMember" value="Yes" id="eemaYes">
+  <label class="form-check-label" for="eemaYes">Yes</label>
+</div>
+
+<div class="form-check">
+  <input type="radio" class="form-check-input" formControlName="eemaMember" value="No" id="eemaNo">
+  <label class="form-check-label" for="eemaNo">No</label>
+</div>
 
         <!-- Company Address -->
         <div class="col-12 form-floating">
