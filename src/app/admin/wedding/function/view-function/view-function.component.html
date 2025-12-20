@@ -1,0 +1,42 @@
+<c-row ngPreserveWhitespaces>
+  <c-col xs="12">
+    <c-card class="mb-4">
+      <c-card-header>
+        <strong>View Wedding Function</strong>
+      </c-card-header>
+      <c-card-body *ngIf="functionData">
+        <div class="mb-3">
+          <label class="form-label fw-bold">Function Name:</label>
+          <p class="ms-2">{{ functionData.functionName }}</p>
+        </div>
+        <div class="mb-3">
+          <label class="form-label fw-bold">Function Date:</label>
+          <p class="ms-2">{{ functionData.functionDate | date:'mediumDate' }}</p>
+        </div>
+        <div class="row">
+          <div class="col-md-6">
+            <div class="mb-3">
+              <label class="form-label fw-bold">Start Time:</label>
+              <p class="ms-2">{{ functionData.functionStartTime }}</p>
+            </div>
+          </div>
+          <div class="col-md-6">
+            <div class="mb-3">
+              <label class="form-label fw-bold">End Time:</label>
+              <p class="ms-2">{{ functionData.functionEndTime }}</p>
+            </div>
+          </div>
+        </div>
+        <div class="mb-3">
+          <label class="form-label fw-bold">Venue Name:</label>
+          <p class="ms-2">{{ functionData.venueName }}</p>
+        </div>
+        <div class="mb-3">
+          <button type="button" class="btn btn-secondary" (click)="onGoBack()">
+            Back
+          </button>
+        </div>
+      </c-card-body>
+    </c-card>
+  </c-col>
+</c-row>

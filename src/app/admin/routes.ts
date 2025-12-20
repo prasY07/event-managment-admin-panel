@@ -30,6 +30,10 @@ export const adminRoutes: Routes = [
         path: 'events',
         loadChildren: () => import('./events/routes').then((m) => m.routes)
       },
+      {
+        path: 'wedding',
+        loadChildren: () => import('./wedding/routes').then((m) => m.routes)
+      },
     
     ],
     

@@ -1,0 +1,47 @@
+<c-row ngPreserveWhitespaces>
+  <c-col xs="12">
+    <c-card class="mb-4">
+      <c-card-header>
+        <strong>Update Wedding Function</strong>
+      </c-card-header>
+      <c-card-body>
+        <form [formGroup]="functionForm" (ngSubmit)="onSubmit()">
+          <div class="mb-3">
+            <label for="functionName" class="form-label">Function Name</label>
+            <input type="text" id="functionName" formControlName="functionName" class="form-control">
+          </div>
+          <div class="mb-3">
+            <label for="functionDate" class="form-label">Function Date</label>
+            <input type="date" id="functionDate" formControlName="functionDate" class="form-control">
+          </div>
+          <div class="row">
+            <div class="col-md-6">
+              <div class="mb-3">
+                <label for="functionStartTime" class="form-label">Start Time</label>
+                <input type="time" id="functionStartTime" formControlName="functionStartTime" class="form-control">
+              </div>
+            </div>
+            <div class="col-md-6">
+              <div class="mb-3">
+                <label for="functionEndTime" class="form-label">End Time</label>
+                <input type="time" id="functionEndTime" formControlName="functionEndTime" class="form-control">
+              </div>
+            </div>
+          </div>
+          <div class="mb-3">
+            <label for="venueName" class="form-label">Venue Name</label>
+            <input type="text" id="venueName" formControlName="venueName" class="form-control">
+          </div>
+          <div class="mb-3">
+            <button type="submit" class="btn btn-primary" [disabled]="!functionForm.valid || isSubmitting">
+              {{ isSubmitting ? 'Updating...' : 'Update' }}
+            </button>
+            <button type="button" class="btn btn-secondary ms-2" (click)="onCancel()">
+              Cancel
+            </button>
+          </div>
+        </form>
+      </c-card-body>
+    </c-card>
+  </c-col>
+</c-row>

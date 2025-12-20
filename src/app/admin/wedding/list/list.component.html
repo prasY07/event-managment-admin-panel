@@ -1,1 +1,142 @@
-<p>list works!</p>
+<c-row ngPreserveWhitespaces>
+ <c-col xs="12">
+    <c-card class="mb-4">
+      <c-card-header>
+        <strong>Filter</strong>
+      </c-card-header>
+      <c-card-body>
+        <div class="row mb-4">
+          <div class="col-md-3 mb-3">
+            <label for="wedding-name" class="form-label">Title</label>
+            <input id="title" type="text" class="form-control" placeholder="Search Title" />
+          </div>
+
+          <div class="col-md-3 mb-3">
+            <label for="status" class="form-label">Status</label>
+            <select id="status" class="form-select">
+              <option value="">Wedding Status</option>
+              <option value="UPCOMING">Upcoming</option>
+              <option value="ONGOING">Ongoing</option>
+              <option value="COMPLETED">Completed</option>
+              <option value="CANCELLED">Cancelled</option>
+            </select>
+          </div>
+
+          <div class="col-md-3 mb-3">
+            <label for="start-date" class="form-label">Start Date</label>
+            <input id="start-date" type="date" class="form-control" />
+          </div>
+
+          <div class="col-md-3 mb-3">
+            <label for="last-date" class="form-label">Last Date</label>
+            <input id="last-date" type="date" class="form-control" />
+          </div>
+        </div>
+        <button class="btn btn-primary ms-auto">Submit</button>
+
+      </c-card-body>
+    </c-card>
+  </c-col>
+ 
+  <c-col xs="12">
+    <c-card class="mb-4">
+      <c-card-header>
+        <strong>Wedding List</strong>
+      </c-card-header>
+      <c-card-body>
+        <div class="d-flex mb-3">
+          <button routerLink="/admin/wedding/add-new-wedding" class="btn btn-primary ms-auto">
+            Add New Wedding
+          </button>
+        </div>
+        <table mat-table [dataSource]="dataSource" class="mat-elevation-z8" matSort>
+
+          <!-- Position Column -->
+          <ng-container matColumnDef="position">
+            <th mat-header-cell *matHeaderCellDef> # </th>
+            <td mat-cell *matCellDef="let element; let i = index"> {{ i + 1 + page * pageSize }} </td>
+          </ng-container>
+
+        <!-- Registration URL Column -->
+        <ng-container matColumnDef="registrationUrl">
+          <th mat-header-cell *matHeaderCellDef> Registration Url </th>
+          <td mat-cell *matCellDef="let element">
+          <a [href]="currentDomain + '/wedding/information/' + element.id + '?wedding-name=' + (element.coupleName || '')"
+          target="_blank">
+          {{ currentDomain + '/wedding/information/' + element.id + '?wedding-name=' + (element.coupleName || '') }}
+          </a>
+          </td>
+        </ng-container>
+
+          <!-- Couple Name Column -->
+          <ng-container matColumnDef="coupleName">
+            <th mat-header-cell *matHeaderCellDef> Couple Name </th>
+            <td mat-cell *matCellDef="let element"> {{element.coupleName || 'N/A'}} </td>
+          </ng-container>
+
+          <!-- Wedding Date Column -->
+          <ng-container matColumnDef="weddingDate">
+            <th mat-header-cell *matHeaderCellDef> Wedding Date </th>
+            <td mat-cell *matCellDef="let element"> {{element.weddingDate | date}} </td>
+          </ng-container>
+
+          <!-- Event Status Column -->
+          <ng-container matColumnDef="eventStatus">
+            <th mat-header-cell *matHeaderCellDef> Wedding Status </th>
+            <td mat-cell *matCellDef="let element" [innerHTML]="element.eventStatus | eventStatus"></td>
+          </ng-container>
+
+          <!-- Status Column -->
+          <ng-container matColumnDef="status">
+            <th mat-header-cell *matHeaderCellDef> Status </th>
+            <td (click)="openConfirmationDialog(element, element.status)" mat-cell *matCellDef="let element"
+              [innerHTML]="element.status | eventStatus"></td>
+          </ng-container>
+
+          <!-- Action Column -->
+          <ng-container matColumnDef="action">
+            <th mat-header-cell *matHeaderCellDef> Action </th>
+            <td mat-cell *matCellDef="let element"
+              style="margin-top:10px; align-items: center;">
+              <a [routerLink]="['/admin/wedding/wedding-information', element.id]" title="Info">
+                <svg cIcon name="cil-info" size="lg"></svg>
+              </a>
+              <a [routerLink]="['/admin/wedding/wedding-setting', element.id]" title="Settings">
+                <svg cIcon name="cil-settings" size="lg"></svg>
+              </a>
+              <a (click)="openCardUploadModal(element.id)" title="Upload Wedding Card" style="cursor: pointer;">
+                <svg cIcon name="cil-image" size="lg"></svg>
+              </a>
+              <a [routerLink]="['/admin/wedding/wedding-functions', element.id]" title="Functions">
+                <svg cIcon name="cil-list" size="lg"></svg>
+              </a>
+              <a (click)="copyUrl(element.id, element.coupleName)" title="Copy URL" style="cursor: pointer; margin-left: 8px;">
+              <svg cIcon name="cil-copy" size="lg"></svg>
+              </a>
+            </td>
+          </ng-container>
+
+
+
+          <!-- Header and Row Declarations -->
+          <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+          <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+        </table>
+
+        <mat-paginator [length]="totalItems" [pageSize]="pageSize" [pageSizeOptions]="[5, 10, 25]" showFirstLastButtons
+          (page)="onPageChange($event)">
+        </mat-paginator>
+
+      </c-card-body>
+    </c-card>
+  </c-col>
+
+</c-row>
+
+<app-banner-upload #bannerUpload></app-banner-upload>
+<app-card-upload #cardUpload></app-card-upload>
+<!-- Show Confirmation Dialog -->
+<app-confirmation-dialog *ngIf="showConfirmation" [title]="'Change Status'"
+  [message]="'Are you sure you want to change status to ' + newStatus + '?'" [confirmButtonText]="'Update'"
+  [cancelButtonText]="'Cancel'" (confirmed)="onDialogResult($event)">
+</app-confirmation-dialog>

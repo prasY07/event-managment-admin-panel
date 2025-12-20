@@ -1,0 +1,105 @@
+<c-row ngPreserveWhitespaces>
+  <c-col xs="12">
+    <c-card class="mb-4">
+      <c-card-header>
+        <strong>Add Wedding Function</strong>
+      </c-card-header>
+      <c-card-body>
+        <form [formGroup]="weddingFunctionForm" (ngSubmit)="onSubmit()">
+          <div class="row">
+
+            <!-- Function Name -->
+            <div class="col-6 mb-3">
+              <label>Function Name</label>
+              <input class="form-control" formControlName="functionName" type="text" placeholder="Enter function name" />
+              <div *ngIf="f['functionName'].touched && f['functionName'].invalid" class="text-danger">
+                <small *ngIf="f['functionName'].errors?.['required']">Function name is required.</small>
+              </div>
+            </div>
+
+            <!-- Function Date -->
+            <div class="col-6 mb-3">
+              <label>Function Date</label>
+              <input class="form-control" formControlName="functionDate" type="date" />
+              <div *ngIf="f['functionDate'].touched && f['functionDate'].invalid" class="text-danger">
+                <small *ngIf="f['functionDate'].errors?.['required']">Function date is required.</small>
+              </div>
+            </div>
+
+            <!-- Start Time -->
+            <div class="col-6 mb-3">
+              <label>Start Time</label>
+              <input class="form-control" formControlName="functionStartTime" type="time" />
+              <div *ngIf="f['functionStartTime'].touched && f['functionStartTime'].invalid" class="text-danger">
+                <small *ngIf="f['functionStartTime'].errors?.['required']">Start time is required.</small>
+              </div>
+            </div>
+
+            <!-- End Time -->
+            <div class="col-6 mb-3">
+              <label>End Time</label>
+              <input class="form-control" formControlName="functionEndTime" type="time" />
+              <div *ngIf="f['functionEndTime'].touched && f['functionEndTime'].invalid" class="text-danger">
+                <small *ngIf="f['functionEndTime'].errors?.['required']">End time is required.</small>
+              </div>
+            </div>
+
+            <!-- Venue Name -->
+            <div class="col-6 mb-3">
+              <label>Venue Name</label>
+              <input class="form-control" formControlName="venueName" type="text" placeholder="Enter venue name" />
+              <div *ngIf="f['venueName'].touched && f['venueName'].invalid" class="text-danger">
+                <small *ngIf="f['venueName'].errors?.['required']">Venue name is required.</small>
+              </div>
+            </div>
+
+            <!-- Venue Address -->
+            <div class="col-12 mb-3">
+              <label>Venue Address</label>
+              <input class="form-control" formControlName="venueAddress" type="text" placeholder="Enter venue address" />
+              <div *ngIf="f['venueAddress'].touched && f['venueAddress'].invalid" class="text-danger">
+                <small *ngIf="f['venueAddress'].errors?.['required']">Venue address is required.</small>
+              </div>
+            </div>
+
+            <!-- Side -->
+            <div class="col-6 mb-3">
+              <label>Side</label>
+              <select class="form-select" formControlName="sideId" (change)="onSideChange($event)">
+                <option value="">Select Side</option>
+                <option *ngFor="let side of sides" [value]="side.id">{{ side.sideName }}</option>
+              </select>
+              <div *ngIf="f['sideId'].touched && f['sideId'].invalid" class="text-danger">
+                <small *ngIf="f['sideId'].errors?.['required']">Side is required.</small>
+              </div>
+            </div>
+
+            <!-- Side Name -->
+            <div class="col-6 mb-3">
+              <label>Side Name</label>
+              <input class="form-control" formControlName="sideName" type="text" placeholder="Side name" />
+              <div *ngIf="f['sideName'].touched && f['sideName'].invalid" class="text-danger">
+                <small *ngIf="f['sideName'].errors?.['required']">Side name is required.</small>
+              </div>
+            </div>
+
+            <!-- Side Description -->
+            <div class="col-12 mb-3">
+              <label>Side Description</label>
+              <textarea class="form-control" formControlName="sideDescription" rows="3" placeholder="Side description"></textarea>
+              <div *ngIf="f['sideDescription'].touched && f['sideDescription'].invalid" class="text-danger">
+                <small *ngIf="f['sideDescription'].errors?.['required']">Side description is required.</small>
+              </div>
+            </div>
+
+
+
+          </div>
+
+          <button type="submit" class="btn btn-primary" [disabled]="weddingFunctionForm.invalid">Submit</button>
+        </form>
+      </c-card-body>
+    </c-card>
+  </c-col>
+</c-row>
+

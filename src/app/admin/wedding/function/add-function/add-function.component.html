@@ -1,0 +1,95 @@
+<c-row ngPreserveWhitespaces>
+  <c-col xs="12">
+    <c-card class="mb-4">
+      <c-card-header>
+        <strong>Add Wedding Function</strong>
+      </c-card-header>
+      <c-card-body>
+        <form [formGroup]="weddingFunctionForm" (ngSubmit)="onSubmit()">
+          <div class="mb-3">
+            <label for="functionName" class="form-label">Function Name <span class="text-danger">*</span></label>
+            <input 
+              type="text" 
+              id="functionName" 
+              formControlName="functionName" 
+              class="form-control"
+              placeholder="e.g., Mehendi, Sangeet, Haldi, Wedding, Reception">
+            <small class="text-danger" *ngIf="weddingFunctionForm.get('functionName')?.invalid && weddingFunctionForm.get('functionName')?.touched">
+              Function name is required (2-100 characters)
+            </small>
+          </div>
+
+          <div class="mb-3">
+            <label for="functionDate" class="form-label">Function Date <span class="text-danger">*</span></label>
+            <input 
+              type="date" 
+              id="functionDate" 
+              formControlName="functionDate" 
+              class="form-control">
+            <small class="text-danger" *ngIf="weddingFunctionForm.get('functionDate')?.invalid && weddingFunctionForm.get('functionDate')?.touched">
+              Function date is required
+            </small>
+          </div>
+
+          <div class="row">
+            <div class="col-md-6">
+              <div class="mb-3">
+                <label for="functionStartTime" class="form-label">Start Time <span class="text-danger">*</span></label>
+                <input 
+                  type="time" 
+                  id="functionStartTime" 
+                  formControlName="functionStartTime" 
+                  class="form-control">
+                <small class="text-danger" *ngIf="weddingFunctionForm.get('functionStartTime')?.invalid && weddingFunctionForm.get('functionStartTime')?.touched">
+                  Start time is required
+                </small>
+              </div>
+            </div>
+
+            <div class="col-md-6">
+              <div class="mb-3">
+                <label for="functionEndTime" class="form-label">End Time <span class="text-danger">*</span></label>
+                <input 
+                  type="time" 
+                  id="functionEndTime" 
+                  formControlName="functionEndTime" 
+                  class="form-control">
+                <small class="text-danger" *ngIf="weddingFunctionForm.get('functionEndTime')?.invalid && weddingFunctionForm.get('functionEndTime')?.touched">
+                  End time is required
+                </small>
+              </div>
+            </div>
+          </div>
+
+          <div class="mb-3">
+            <label for="venueName" class="form-label">Venue Name <span class="text-danger">*</span></label>
+            <input 
+              type="text" 
+              id="venueName" 
+              formControlName="venueName" 
+              class="form-control"
+              placeholder="e.g., Hotel Grand Palace">
+            <small class="text-danger" *ngIf="weddingFunctionForm.get('venueName')?.invalid && weddingFunctionForm.get('venueName')?.touched">
+              Venue name is required (2-150 characters)
+            </small>
+          </div>
+
+          <div class="mb-3">
+            <button 
+              type="submit" 
+              class="btn btn-primary" 
+              [disabled]="!weddingFunctionForm.valid || isSubmitting">
+              {{ isSubmitting ? 'Creating...' : 'Create Function' }}
+            </button>
+            <button 
+              type="button" 
+              class="btn btn-secondary ms-2" 
+              (click)="onCancel()">
+              Cancel
+            </button>
+          </div>
+        </form>
+      </c-card-body>
+    </c-card>
+  </c-col>
+</c-row>
