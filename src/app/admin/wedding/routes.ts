@@ -58,5 +58,26 @@ export const routes: Routes = [
     data: {
       title: 'View Wedding Function'
     }
+  },
+  {
+    path: 'notification-list/:weddingId/:functionId',
+    loadComponent: () => import('./function/notification-list/notification-list.component').then(m => m.NotificationListComponent),
+    data: {
+      title: 'Wedding Function Notifications'
+    }
+  },
+  {
+    path: 'notification-add/:weddingId/:functionId',
+    loadComponent: () => import('./function/notification-add/notification-add.component').then(m => m.NotificationAddComponent),
+    data: {
+      title: 'Add Notification'
+    }
+  },
+  {
+    path: 'notification-edit/:id/:weddingId/:functionId',
+    loadComponent: () => import('./function/notification-edit/notification-edit.component').then(m => m.NotificationEditComponent),
+    data: {
+      title: 'Edit Notification'
+    }
   }
 ];

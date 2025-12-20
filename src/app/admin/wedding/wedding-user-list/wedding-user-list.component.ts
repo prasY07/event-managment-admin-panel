@@ -5,10 +5,10 @@ import { WeddingService } from '../service/wedding.service';
 import { MatTableDataSource, MatTableModule  } from '@angular/material/table';
 import { MatPaginator, MatPaginatorModule, PageEvent } from '@angular/material/paginator';
 import { CommonModule } from '@angular/common';
-import { MatIconModule } from '@angular/material/icon';
 import { MatDialog } from '@angular/material/dialog';
 import { ConfirmationDialogComponent } from '../../../common/component/confirmation-dialog/confirmation-dialog.component';
 import { ToastrService } from 'ngx-toastr';
+import { IconModule } from '@coreui/icons-angular';
 
 @Component({
   selector: 'app-wedding-user-list',
@@ -22,7 +22,7 @@ import { ToastrService } from 'ngx-toastr';
     CommonModule,
      MatTableModule,
     MatPaginatorModule,
-    MatIconModule,
+    IconModule,
     ConfirmationDialogComponent
   ],
   templateUrl: './wedding-user-list.component.html',
@@ -61,8 +61,21 @@ export class WeddingUserListComponent implements OnInit {
   getAllFunctions(page: number, size: number): void {
     this.weddingService.getWeddingFunctions(page, this.weddingId).subscribe(
       (res: any) => {
-        this.dataSource.data = res.data.items;
-        this.totalItems = res.data.totalElements;
+        // Defensive mapping: ensure each item exposes an `id` property
+        const items = (res?.data?.items || []).map((it: any) => ({
+          ...it,
+          id:
+            it.id ??
+            it._id ??
+            it.functionId ??
+            it.function_id ??
+            it.ID ??
+            it.uuid ??
+            null,
+        }));
+
+        this.dataSource.data = items;
+        this.totalItems = res?.data?.totalElements ?? items.length;
       },
       (error) => {
         console.error('Error fetching wedding functions:', error);

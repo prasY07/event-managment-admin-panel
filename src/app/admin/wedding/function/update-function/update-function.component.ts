@@ -19,6 +19,7 @@ export class UpdateFunctionComponent implements OnInit {
   functionId: string;
   weddingId: string = '';
   isSubmitting = false;
+  originalData: any = null;
 
   constructor(
     private fb: FormBuilder,
@@ -34,7 +35,11 @@ export class UpdateFunctionComponent implements OnInit {
       functionEndTime: ['', Validators.required],
       venueName: ['', Validators.required],
     });
-    this.functionId = this.route.snapshot.paramMap.get('id')!;
+    this.functionId = this.route.snapshot.paramMap.get('id') || '';
+    if (!this.functionId) {
+      this.toastr.error('Function ID not found', 'Error');
+      this.router.navigate(['/admin/wedding']);
+    }
     
     // Try to get weddingId from navigation extras state
     const navigation = this.router.getCurrentNavigation();
@@ -46,10 +51,18 @@ export class UpdateFunctionComponent implements OnInit {
   ngOnInit(): void {
     this.weddingService.getWeddingFunction(this.functionId).subscribe(
       (res: any) => {
-        this.functionForm.patchValue(res.data);
+        // store full data so we can merge missing fields on submit
+        this.originalData = res.data || {};
+        this.functionForm.patchValue({
+          functionName: this.originalData.functionName,
+          functionDate: this.originalData.functionDate,
+          functionStartTime: this.originalData.functionStartTime,
+          functionEndTime: this.originalData.functionEndTime,
+          venueName: this.originalData.venueName,
+        });
         // If we don't have weddingId, try to extract it from the data
-        if (!this.weddingId && res.data.weddingId) {
-          this.weddingId = res.data.weddingId;
+        if (!this.weddingId && this.originalData.weddingId) {
+          this.weddingId = this.originalData.weddingId;
         }
       },
       (error) => {
@@ -62,8 +75,31 @@ export class UpdateFunctionComponent implements OnInit {
   onSubmit(): void {
     if (this.functionForm.valid && !this.isSubmitting) {
       this.isSubmitting = true;
-      this.weddingService.updateWeddingFunction(this.functionId, this.functionForm.value).subscribe(
+
+      const formValues = this.functionForm.value || {};
+      const payload: any = {
+        ...(this.originalData || {}),
+        ...formValues,
+      };
+
+      // Ensure weddingId is present
+      if (!payload.weddingId && this.weddingId) {
+        payload.weddingId = this.weddingId;
+      }
+
+      // Normalize time inputs (append seconds if missing)
+      const normalizeTime = (t: any) => {
+        if (!t && t !== 0) return t;
+        if (typeof t === 'string' && /^\d{2}:\d{2}$/.test(t)) return `${t}:00`;
+        return t;
+      };
+
+      payload.functionStartTime = normalizeTime(payload.functionStartTime);
+      payload.functionEndTime = normalizeTime(payload.functionEndTime);
+
+      this.weddingService.updateWeddingFunction(this.functionId, payload).subscribe(
         () => {
+          this.isSubmitting = false;
           this.toastr.success('Wedding function updated successfully', 'Success');
           // Navigate back to wedding functions list - if we have weddingId, use it; otherwise go back
           if (this.weddingId) {
@@ -75,7 +111,8 @@ export class UpdateFunctionComponent implements OnInit {
         (error) => {
           this.isSubmitting = false;
           console.error('Error updating wedding function:', error);
-          this.toastr.error('Failed to update wedding function', 'Error');
+          const msg = error?.error?.message || error?.message || 'Failed to update wedding function';
+          this.toastr.error(msg, 'Error');
         }
       );
     }
