@@ -7,13 +7,13 @@
       <c-card-body>
         <div class="row mb-4">
           <div class="col-md-3 mb-3">
-            <label for="wedding-name" class="form-label">Title</label>
-            <input id="title" type="text" class="form-control" placeholder="Search Title" />
+            <label for="title" class="form-label">Title</label>
+            <input id="title" type="text" [(ngModel)]="filterTitle" class="form-control" placeholder="Search Title" />
           </div>
 
           <div class="col-md-3 mb-3">
             <label for="status" class="form-label">Status</label>
-            <select id="status" class="form-select">
+            <select id="status" [(ngModel)]="filterStatus" class="form-select">
               <option value="">Wedding Status</option>
               <option value="UPCOMING">Upcoming</option>
               <option value="ONGOING">Ongoing</option>
@@ -24,15 +24,16 @@
 
           <div class="col-md-3 mb-3">
             <label for="start-date" class="form-label">Start Date</label>
-            <input id="start-date" type="date" class="form-control" />
+            <input id="start-date" [(ngModel)]="filterStartDate" type="date" class="form-control" />
           </div>
 
           <div class="col-md-3 mb-3">
             <label for="last-date" class="form-label">Last Date</label>
-            <input id="last-date" type="date" class="form-control" />
+            <input id="last-date" [(ngModel)]="filterEndDate" type="date" class="form-control" />
           </div>
         </div>
-        <button class="btn btn-primary ms-auto">Submit</button>
+        <button type="button" class="btn btn-primary me-2" (click)="applyFilters()">Submit</button>
+        <button type="button" class="btn btn-secondary" (click)="clearFilters()">Clear Filters</button>
 
       </c-card-body>
     </c-card>
@@ -103,6 +104,9 @@
               </a>
               <a [routerLink]="['/admin/wedding/wedding-setting', element.id]" title="Settings">
                 <svg cIcon name="cil-settings" size="lg"></svg>
+              </a>
+              <a (click)="openImageUploadModal(element.id)" title="Upload Wedding Banner" style="cursor: pointer;">
+                <svg cIcon name="cil-picture" size="lg"></svg>
               </a>
               <a (click)="openCardUploadModal(element.id)" title="Upload Wedding Card" style="cursor: pointer;">
                 <svg cIcon name="cil-image" size="lg"></svg>

@@ -1,5 +1,6 @@
 import { CommonModule, NgForOf } from '@angular/common';
 import { Component, OnInit, ViewChild } from '@angular/core';
+import { FormsModule } from '@angular/forms';
 import { RouterLink } from '@angular/router';
 import { RowComponent, ColComponent, TextColorDirective, CardComponent, CardHeaderComponent, CardBodyComponent } from '@coreui/angular';
 import { IconComponent, IconDirective, IconSetService } from '@coreui/icons-angular';
@@ -32,9 +33,8 @@ import { ToastrService } from 'ngx-toastr';
     MatTableModule,
     MatPaginatorModule,
     NgForOf,
-    ConfirmationDialogComponent
-    
-    // DataSource
+    ConfirmationDialogComponent,
+    FormsModule
   ],
   
   templateUrl: './list.component.html',
@@ -51,6 +51,12 @@ export class ListComponent implements OnInit {
   totalItems = 0;
   pageSize = 1;
   page = 0;
+
+  // Filter properties
+  filterTitle = '';
+  filterStatus = '';
+  filterStartDate = '';
+  filterEndDate = '';
 
   @ViewChild(MatPaginator) paginator!: MatPaginator;
   @ViewChild('bannerUpload') bannerUpload!: BannerUploadComponent;
@@ -82,6 +88,36 @@ export class ListComponent implements OnInit {
         console.error('Error fetching weddings:', error);
       }
     );
+  }
+
+  applyFilters(): void {
+    this.page = 0; // Reset to first page when filtering
+    const filters = {
+      title: this.filterTitle,
+      status: this.filterStatus,
+      startDate: this.filterStartDate,
+      endDate: this.filterEndDate,
+    };
+    
+    this.weddingService.getWeddingsWithFilter(this.page, filters).subscribe(
+      (res: any) => {
+        this.dataSource.data = res.data.items;
+        this.totalItems = res.data.totalElements;
+      },
+      (error) => {
+        console.error('Error fetching filtered weddings:', error);
+        this.toastr.error('Error applying filters', 'Error');
+      }
+    );
+  }
+
+  clearFilters(): void {
+    this.filterTitle = '';
+    this.filterStatus = '';
+    this.filterStartDate = '';
+    this.filterEndDate = '';
+    this.page = 0;
+    this.loadWeddings(this.page, this.pageSize);
   }
 
   

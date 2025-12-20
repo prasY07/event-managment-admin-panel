@@ -34,13 +34,13 @@
           <!-- Notification Date Column -->
           <ng-container matColumnDef="notificationDate">
             <th mat-header-cell *matHeaderCellDef> Date </th>
-            <td mat-cell *matCellDef="let element"> {{ element.notificationDate | date }} </td>
+            <td mat-cell *matCellDef="let element"> {{ element.date | date }} </td>
           </ng-container>
 
           <!-- Notification Time Column -->
           <ng-container matColumnDef="notificationTime">
             <th mat-header-cell *matHeaderCellDef> Time </th>
-            <td mat-cell *matCellDef="let element"> {{ element.notificationTime }} </td>
+            <td mat-cell *matCellDef="let element"> {{ element.time }} </td>
           </ng-container>
 
           <!-- Status Column -->

@@ -19,6 +19,17 @@ constructor(private baseApi: BaseApiService) { }
     });
   }
 
+  getWeddingsWithFilter(pageNumber: number, filters: any): Observable<any> {
+    const params: any = {
+      page: pageNumber,
+    };
+    if (filters.title) params.title = filters.title;
+    if (filters.status) params.eventStatus = filters.status;
+    if (filters.startDate) params.startDate = filters.startDate;
+    if (filters.endDate) params.endDate = filters.endDate;
+    return this.baseApi.getDataWithParams('admin/wedding/list', params);
+  }
+
   getWeddingFunctions(pageNumber: number, weddingId: string): Observable<any> {
     return this.baseApi.getDataWithParams('admin/wedding/function/list', {
       page: pageNumber,
@@ -124,7 +135,7 @@ constructor(private baseApi: BaseApiService) { }
   }
 
   getWeddingFunctionNotifications(weddingId: string): Observable<any> {
-    return this.baseApi.getDataWithParams('wedding/function/notification/list', {
+    return this.baseApi.getDataWithParams('admin/wedding/function/notification/list', {
       weddingId: weddingId
     });
   }
