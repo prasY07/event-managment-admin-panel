@@ -53,6 +53,10 @@ constructor(private baseApi: BaseApiService) { }
     return this.baseApi.getInformation(`wedding/${id}/information`);
   }
 
+  getSingleWeddingInfo(id:string):Observable<any>{
+    return this.baseApi.getInformation(`admin/wedding/${id}/wedding-information`);
+  }
+
   getAllWeddingMemberType(id:string):Observable<any>{
     return this.baseApi.getInformation(`admin/wedding-member/${id}/list`);
   }

@@ -1,7 +1,7 @@
 import { CommonModule, NgForOf } from '@angular/common';
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { FormsModule } from '@angular/forms';
-import { RouterLink } from '@angular/router';
+import { Router, RouterLink } from '@angular/router';
 import { RowComponent, ColComponent, TextColorDirective, CardComponent, CardHeaderComponent, CardBodyComponent } from '@coreui/angular';
 import { IconComponent, IconDirective, IconSetService } from '@coreui/icons-angular';
 import { WeddingService } from '../service/wedding.service';
@@ -45,7 +45,7 @@ export class ListComponent implements OnInit {
  showConfirmation = false;
   newStatus = '';
   currentElement: any = null; // To store the current element for status update
-  displayedColumns: string[] = ['position', 'coupleName', 'weddingDate', 'eventStatus', 'status', 'action'];
+  displayedColumns: string[] = ['position', 'groomName', 'brideName', 'coupleName', 'weddingDate',  'action'];
   dataSource = new MatTableDataSource<any>([]);
   currentDomain = window.location.origin; 
   totalItems = 0;
@@ -66,6 +66,7 @@ export class ListComponent implements OnInit {
     private weddingService:WeddingService,
     private iconSet: IconSetService,
     private toastr: ToastrService,
+    private router: Router
   ) {
         this.iconSet.icons = { ...freeSet };
         // this.cilinfo = freeSet.cilInfo;
@@ -200,6 +201,10 @@ copyUrl(weddingId: string, coupleName: string) {
     console.error('Failed to copy: ', err);
     this.toastr.error('Failed to copy URL', 'Error');
   });
+}
+
+viewWeddingInfo(weddingId: string) {
+  this.router.navigate(['/admin/wedding/wedding-information', weddingId]);
 }
 
 }
