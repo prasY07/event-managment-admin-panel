@@ -6,9 +6,9 @@
       </c-card-header>
       <c-card-body>
         <div class="d-flex">
-          <button [routerLink]="['/admin/wedding/notification-add', weddingId, functionId]" class="btn btn-primary ms-auto">
+          <!-- <button [routerLink]="['/admin/wedding/notification-add', weddingId, functionId]" class="btn btn-primary ms-auto">
             Add Notification
-          </button>
+          </button> -->
         </div>
 
         <table mat-table [dataSource]="dataSource" class="mat-elevation-z8" matSort>
@@ -63,10 +63,10 @@
             <td mat-cell *matCellDef="let element"
               style="margin-top:10px; align-items: center;">
               <!-- Edit -->
-              <a [routerLink]="['/admin/wedding/notification-edit', element.id]" 
+              <!-- <a [routerLink]="['/admin/wedding/notification-edit', element.id]" 
                 title="Edit">
                 <svg cIcon name="cil-pencil" size="lg"></svg>
-              </a>
+              </a> -->
 
               <!-- Delete -->
               <a (click)="deleteNotification(element.id)" title="Delete" style="cursor: pointer;">
