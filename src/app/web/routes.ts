@@ -26,7 +26,7 @@ export const webRoutes: Routes = [
     path:'wedding',
        children: [
       { path: 'information/:id', component: WeddingInformationComponent, data: { title: 'Wedding-Information' } },
-      { path: ':id/registration', component: RegistrationComponent, data: { title: 'Wedding Registration' } },
+      { path: ':id/registration', loadComponent: () => import('./wedding/registration/registration.component').then(m => m.WeddingRegistrationComponent), data: { title: 'Wedding Registration' } },
     ]
 
   }
