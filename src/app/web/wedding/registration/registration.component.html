@@ -1,0 +1,142 @@
+<div class="container py-4">
+  <div class="card p-4">
+    <h4>Wedding Registration <small *ngIf="coupleName" class="text-muted">- {{ coupleName }}</small></h4>
+    <form [formGroup]="registerForm" (ngSubmit)="submit()">
+      <div class="mb-3">
+        <label class="form-label">Full Name</label>
+        <input formControlName="fullName" class="form-control" />
+      </div>
+
+      <div class="row">
+        <div class="col-md-6 mb-3">
+          <label class="form-label">Mobile Number</label>
+          <input formControlName="mobileNumber" class="form-control" />
+        </div>
+        <div class="col-md-6 mb-3">
+          <label class="form-label">Email</label>
+          <input formControlName="email" class="form-control" />
+        </div>
+      </div>
+
+      <div class="mb-3">
+        <label class="form-label">Gender</label>
+        <select formControlName="gender" class="form-select">
+          <option value="MALE">Male</option>
+          <option value="FEMALE">Female</option>
+          <option value="OTHER">Other</option>
+        </select>
+      </div>
+
+      <hr />
+      <h5>Onward Journey</h5>
+      <div formGroupName="onwardJourney">
+        <div class="row">
+          <div class="col-md-4 mb-3">
+            <label class="form-label">Mode</label>
+            <select formControlName="mode" class="form-select">
+              <option value="FLIGHT">Flight</option>
+              <option value="TRAIN">Train</option>
+              <option value="ROAD">Road</option>
+            </select>
+          </div>
+          <div class="col-md-4 mb-3">
+            <label class="form-label">Arrival Date</label>
+            <input type="date" formControlName="arrivalDate" class="form-control" />
+          </div>
+          <div class="col-md-4 mb-3">
+            <label class="form-label">Arrival Time</label>
+            <input type="time" formControlName="arrivalTime" class="form-control" />
+          </div>
+        </div>
+
+        <div class="row">
+          <div class="col-md-6 mb-3">
+            <label class="form-label">Departure City</label>
+            <input formControlName="departureCity" class="form-control" />
+          </div>
+          <div class="col-md-6 mb-3">
+            <label class="form-label">Destination City</label>
+            <input formControlName="destinationCity" class="form-control" />
+          </div>
+        </div>
+
+        <div class="row">
+          <div class="col-md-6 mb-3">
+            <label class="form-label">Carrier Name</label>
+            <input formControlName="carrierName" class="form-control" />
+          </div>
+          <div class="col-md-6 mb-3">
+            <label class="form-label">Carrier Number</label>
+            <input formControlName="carrierNumber" class="form-control" />
+          </div>
+        </div>
+
+        <div class="mb-3">
+          <label class="form-label">Co-passengers</label>
+          <div *ngFor="let cp of coPassengers.controls; let i = index" [formGroupName]="i" class="d-flex gap-2 mb-2">
+            <input formControlName="name" placeholder="Name" class="form-control" />
+            <input formControlName="age" placeholder="Age" class="form-control" type="number" />
+            <input formControlName="relationship" placeholder="Relationship" class="form-control" />
+            <button type="button" class="btn btn-danger" (click)="removeCoPassenger(i)">Remove</button>
+          </div>
+          <button type="button" class="btn btn-sm btn-secondary" (click)="addCoPassenger()">Add Co-passenger</button>
+        </div>
+
+        <div class="mb-3">
+          <label class="form-label">Onward Ticket File</label>
+          <input type="file" (change)="onOnwardFileChange($event)" class="form-control" />
+        </div>
+      </div>
+
+      <hr />
+      <h5>Return Journey</h5>
+      <div formGroupName="returnJourney">
+        <div class="row">
+          <div class="col-md-4 mb-3">
+            <label class="form-label">Mode</label>
+            <select formControlName="mode" class="form-select">
+              <option value="FLIGHT">Flight</option>
+              <option value="TRAIN">Train</option>
+              <option value="ROAD">Road</option>
+            </select>
+          </div>
+          <div class="col-md-4 mb-3">
+            <label class="form-label">Departure Date</label>
+            <input type="date" formControlName="departureDate" class="form-control" />
+          </div>
+          <div class="col-md-4 mb-3">
+            <label class="form-label">Departure Time</label>
+            <input type="time" formControlName="departureTime" class="form-control" />
+          </div>
+        </div>
+
+        <div class="row">
+          <div class="col-md-6 mb-3">
+            <label class="form-label">Destination City</label>
+            <input formControlName="destinationCity" class="form-control" />
+          </div>
+          <div class="col-md-6 mb-3">
+            <label class="form-label">Carrier Name</label>
+            <input formControlName="carrierName" class="form-control" />
+          </div>
+        </div>
+
+        <div class="mb-3">
+          <label class="form-label">Carrier Number</label>
+          <input formControlName="carrierNumber" class="form-control" />
+        </div>
+
+        <div class="mb-3">
+          <label class="form-label">Return Ticket File</label>
+          <input type="file" (change)="onReturnFileChange($event)" class="form-control" />
+        </div>
+      </div>
+
+      <div class="text-end mt-3">
+        <button type="submit" class="btn btn-primary" [disabled]="isSubmitting">
+          {{ isSubmitting ? 'Registering...' : 'Register' }}
+        </button>
+      </div>
+    </form>
+  </div>
+</div>

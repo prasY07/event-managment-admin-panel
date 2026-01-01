@@ -1,0 +1,42 @@
+<!-- Modal Structure -->
+<div class="modal fade" id="cardUploadModal" tabindex="-1" aria-labelledby="cardUploadModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="cardUploadModalLabel">Upload Wedding Card</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" (click)="closeModal()"></button>
+      </div>
+      <div class="p-3">
+        <form [formGroup]="cardUpload" (ngSubmit)="onSubmit()">
+          <div class="mb-3">
+            <label for="file" class="form-label">Wedding Card Image</label>
+            <input
+              type="file"
+              class="form-control"
+              id="file"
+              (change)="onFileChange($event)"
+              accept="image/png, image/jpeg, image/jpg"
+            />
+            <div *ngIf="cardUpload.get('file')?.hasError('required') && cardUpload.get('file')?.touched">
+              <small class="text-danger">Please select an image file.</small>
+            </div>
+            <div *ngIf="cardUpload.get('file')?.hasError('invalidImageType') && cardUpload.get('file')?.touched">
+              <small class="text-danger">Only PNG, JPG, and JPEG files are allowed.</small>
+            </div>
+          </div>
+
+          <div class="d-flex gap-2">
+            <button type="submit" class="btn btn-primary" [disabled]="cardUpload.invalid || loading">
+              {{ loading ? 'Uploading...' : 'Submit' }}
+            </button>
+            <button type="button" class="btn btn-secondary" (click)="closeModal()">Close</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+
+

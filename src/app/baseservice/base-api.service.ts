@@ -70,6 +70,14 @@ export class BaseApiService {
     return this.http.post<any>(`${this.apiUrl}/${endpoint}`, data);
   }
 
+  uploadImageWithAuth(endpoint: string, data: FormData): Observable<any> {
+    // For FormData, only set Authorization header, let browser set Content-Type with boundary
+    // Don't set Content-Type - browser will set it automatically with boundary for FormData
+    const token = this.tokenService.getToken();
+    const headers = new HttpHeaders().set('Authorization', `Bearer ${token || ''}`);
+    return this.http.post<any>(`${this.apiUrl}/${endpoint}`, data, { headers: headers });
+  }
+
   // ------------------------------------------withoutToken----------------------------------------------------------
 
   getInformationWithoutToken(endpoint: string): Observable<any> {

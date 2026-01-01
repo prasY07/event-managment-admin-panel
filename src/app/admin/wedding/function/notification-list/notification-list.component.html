@@ -1,0 +1,89 @@
+<c-row ngPreserveWhitespaces>
+  <c-col xs="12">
+    <c-card class="mb-4">
+      <c-card-header>
+        <strong>Wedding Function Notifications</strong>
+      </c-card-header>
+      <c-card-body>
+        <div class="d-flex">
+          <button [routerLink]="['/admin/wedding/notification-add', weddingId, functionId]" class="btn btn-primary ms-auto">
+            Add Notification
+          </button>
+        </div>
+
+        <table mat-table [dataSource]="dataSource" class="mat-elevation-z8" matSort>
+
+          <!-- Position Column -->
+          <ng-container matColumnDef="position">
+            <th mat-header-cell *matHeaderCellDef> # </th>
+            <td mat-cell *matCellDef="let element; let i = index"> {{ i + 1 }} </td>
+          </ng-container>
+
+          <!-- Title Column -->
+          <ng-container matColumnDef="title">
+            <th mat-header-cell *matHeaderCellDef> Title </th>
+            <td mat-cell *matCellDef="let element"> {{ element.title }} </td>
+          </ng-container>
+
+          <!-- Message Column -->
+          <ng-container matColumnDef="message">
+            <th mat-header-cell *matHeaderCellDef> Message </th>
+            <td mat-cell *matCellDef="let element"> {{ element.message | slice:0:50 }}{{ element.message?.length > 50 ? '...' : '' }} </td>
+          </ng-container>
+
+          <!-- Notification Date Column -->
+          <ng-container matColumnDef="notificationDate">
+            <th mat-header-cell *matHeaderCellDef> Date </th>
+            <td mat-cell *matCellDef="let element"> {{ element.date | date }} </td>
+          </ng-container>
+
+          <!-- Notification Time Column -->
+          <ng-container matColumnDef="notificationTime">
+            <th mat-header-cell *matHeaderCellDef> Time </th>
+            <td mat-cell *matCellDef="let element"> {{ element.time }} </td>
+          </ng-container>
+
+          <!-- Status Column -->
+          <ng-container matColumnDef="status">
+            <th mat-header-cell *matHeaderCellDef> Status </th>
+            <td mat-cell *matCellDef="let element">
+              <span class="badge" 
+                [ngClass]="element.status === 'ACTIVE' ? 'bg-success' : 'bg-warning'"
+                style="cursor: pointer;"
+                (click)="toggleStatus(element.id, element.status)"
+                title="Click to toggle status">
+                {{ element.status || 'PENDING' }}
+              </span>
+            </td>
+          </ng-container>
+
+          <!-- Action Column -->
+          <ng-container matColumnDef="action">
+            <th mat-header-cell *matHeaderCellDef> Action </th>
+            <td mat-cell *matCellDef="let element"
+              style="margin-top:10px; align-items: center;">
+              <!-- Edit -->
+              <!-- <a [routerLink]="['/admin/wedding/notification-edit', element.id]" 
+                title="Edit">
+                <svg cIcon name="cil-pencil" size="lg"></svg>
+              </a> -->
+
+              <!-- Delete -->
+              <a (click)="deleteNotification(element.id)" title="Delete" style="cursor: pointer;">
+                <svg cIcon name="cil-trash" size="lg"></svg>
+              </a>
+            </td>
+          </ng-container>
+
+          <!-- Header and Row Declarations -->
+          <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+          <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+        </table>
+
+        <mat-paginator [length]="totalItems" [pageSize]="pageSize" [pageSizeOptions]="[5, 10, 25]" showFirstLastButtons
+          (page)="onPageChange($event)">
+        </mat-paginator>
+      </c-card-body>
+    </c-card>
+  </c-col>
+</c-row>

@@ -1,0 +1,91 @@
+<c-row ngPreserveWhitespaces>
+  <c-col xs="12">
+    <c-card class="mb-4 shadow-sm border-0">
+      <c-card-header class="bg-dark text-white d-flex justify-content-between align-items-center">
+        <strong><i class="fas fa-calendar-alt me-2"></i>Wedding Information</strong>
+        <a routerLink="/admin/wedding" class="btn btn-sm btn-light">
+          <i class="fas fa-arrow-left me-1"></i>Back to List
+        </a>
+      </c-card-header>
+      <c-card-body>
+        <div *ngIf="isLoading" class="text-center py-5">
+          <div class="spinner-border" role="status">
+            <span class="visually-hidden">Loading...</span>
+          </div>
+          <p class="mt-2">Loading wedding information...</p>
+        </div>
+
+        <div *ngIf="!isLoading && !wedding" class="alert alert-warning" role="alert">
+          No wedding information found.
+        </div>
+
+        <div *ngIf="!isLoading && wedding" class="row">
+
+          <!-- Left Column -->
+          <div class="col-md-6">
+            <div class="info-box mb-4">
+              <label class="text-muted"><i class="fas fa-heart me-2 text-danger"></i><strong>Couple Name</strong></label>
+              <p class="fs-5 fw-bold">{{ wedding.coupleName || 'N/A' }}</p>
+            </div>
+
+            <div class="info-box mb-4">
+              <label class="text-muted"><i class="fas fa-user me-2 text-primary"></i><strong>Groom Name</strong></label>
+              <p class="fs-5">{{ wedding.groomName || 'N/A' }}</p>
+            </div>
+
+            <div class="info-box mb-4">
+              <label class="text-muted"><i class="fas fa-user me-2 text-success"></i><strong>Bride Name</strong></label>
+              <p class="fs-5">{{ wedding.brideName || 'N/A' }}</p>
+            </div>
+
+            <!-- <div class="info-box mb-4">
+              <label class="text-muted"><i class="fas fa-user-tie me-2 text-warning"></i><strong>Groom Father Name</strong></label>
+              <p>{{ wedding.groomFatherName || 'N/A' }}</p>
+            </div> -->
+
+            <!-- <div class="info-box mb-4">
+              <label class="text-muted"><i class="fas fa-user-tie me-2 text-info"></i><strong>Groom Mother Name</strong></label>
+              <p>{{ wedding.groomMotherName || 'N/A' }}</p>
+            </div> -->
+
+            <div class="info-box mb-4">
+              <label class="text-muted"><i class="fas fa-calendar-plus me-2 text-danger"></i><strong>Wedding Date</strong></label>
+              <p class="fs-5 fw-bold">{{ wedding.weddingDate ? (wedding.weddingDate | date: 'medium') : 'N/A' }}</p>
+            </div>
+          </div>
+
+          <!-- Right Column -->
+          <div class="col-md-6">
+            <!-- <div class="info-box mb-4">
+              <label class="text-muted"><i class="fas fa-user-tie me-2 text-dark"></i><strong>Bride Father Name</strong></label>
+              <p>{{ wedding.brideFatherName || 'N/A' }}</p>
+            </div> -->
+
+            <!-- <div class="info-box mb-4">
+              <label class="text-muted"><i class="fas fa-user-tie me-2 text-primary"></i><strong>Bride Mother Name</strong></label>
+              <p>{{ wedding.brideMotherName || 'N/A' }}</p>
+            </div> -->
+
+            <div class="info-box mb-4">
+              <label class="text-muted"><i class="fas fa-calendar-check me-2 text-success"></i><strong>Registration Start Date</strong></label>
+              <p>{{ wedding.registrationStartDate ? (wedding.registrationStartDate | date: 'medium') : 'N/A' }}</p>
+            </div>
+
+            <div class="info-box mb-4">
+              <label class="text-muted"><i class="fas fa-calendar-minus me-2 text-warning"></i><strong>Registration End Date</strong></label>
+              <p>{{ wedding.registrationEndDate ? (wedding.registrationEndDate | date: 'medium') : 'N/A' }}</p>
+            </div>
+
+            <!-- <div class="info-box mb-4">
+              <label class="text-muted"><i class="fas fa-image me-2 text-success"></i><strong>Wedding Card</strong></label>
+              <p *ngIf="wedding.weddingCard && !wedding.weddingCard.includes('http')">{{ wedding.weddingCard }}</p>
+              <img *ngIf="wedding.weddingCard && wedding.weddingCard.includes('http')" [src]="wedding.weddingCard" alt="Wedding Card" class="img-fluid mt-2" style="max-width: 300px;" />
+              <p *ngIf="!wedding.weddingCard">N/A</p>
+            </div> -->
+          </div>
+
+        </div>
+      </c-card-body>
+    </c-card>
+  </c-col>
+</c-row>

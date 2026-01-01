@@ -1,10 +1,8 @@
-<div class="modal-overlay">
-  <div class="modal-content">
-    <h2>{{ title }}</h2>
-    <p>{{ message }}</p>
-    <div class="actions">
-      <button class="btn btn-primary" (click)="cancel()">{{ cancelButtonText }}</button>
-      <button class="btn btn-primary" (click)="confirm()">{{ confirmButtonText }}</button>
-    </div>
-  </div>
+<h1 mat-dialog-title>Confirmation</h1>
+<div mat-dialog-content>
+  <p>{{ message }}</p>
+</div>
+<div mat-dialog-actions>
+  <button mat-button (click)="onNoClick()">{{ cancelButtonText }}</button>
+  <button mat-button (click)="onConfirm()" cdkFocusInitial>{{ confirmButtonText }}</button>
 </div>

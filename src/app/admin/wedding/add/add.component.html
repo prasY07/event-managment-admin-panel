@@ -1,1 +1,131 @@
-<p>add works!</p>
+<c-row ngPreserveWhitespaces>
+  <c-col xs="12">
+    <c-card class="mb-4">
+      <c-card-header>
+        <strong>Add New Wedding</strong>
+      </c-card-header>
+      <c-card-body>
+        <form [formGroup]="weddingForm" (ngSubmit)="onSubmit()">
+          <div class="row">
+
+            <!-- Groom Name -->
+            <div class="col-6 mb-3">
+              <label>Groom Name</label>
+              <input class="form-control" formControlName="groomName" type="text" placeholder="Enter groom name" />
+              <div *ngIf="weddingForm.get('groomName')?.touched && weddingForm.get('groomName')?.invalid" class="text-danger">
+                <small *ngIf="weddingForm.get('groomName')?.errors?.['required']">Groom name is required.</small>
+                <small *ngIf="weddingForm.get('groomName')?.errors?.['minlength']">Minimum 2 characters.</small>
+                <small *ngIf="weddingForm.get('groomName')?.errors?.['maxlength']">Maximum 50 characters.</small>
+              </div>
+            </div>
+
+            <!-- Bride Name -->
+            <div class="col-6 mb-3">
+              <label>Bride Name</label>
+              <input class="form-control" formControlName="brideName" type="text" placeholder="Enter bride name" />
+              <div *ngIf="weddingForm.get('brideName')?.touched && weddingForm.get('brideName')?.invalid" class="text-danger">
+                <small *ngIf="weddingForm.get('brideName')?.errors?.['required']">Bride name is required.</small>
+                <small *ngIf="weddingForm.get('brideName')?.errors?.['minlength']">Minimum 2 characters.</small>
+                <small *ngIf="weddingForm.get('brideName')?.errors?.['maxlength']">Maximum 50 characters.</small>
+              </div>
+            </div>
+
+            <!-- Groom Father Name -->
+            <div class="col-6 mb-3">
+              <label>Groom Father Name</label>
+              <input class="form-control" formControlName="groomFatherName" type="text" placeholder="Enter groom father name" />
+              <div *ngIf="weddingForm.get('groomFatherName')?.touched && weddingForm.get('groomFatherName')?.invalid" class="text-danger">
+                <small *ngIf="weddingForm.get('groomFatherName')?.errors?.['required']">Groom father name is required.</small>
+                <small *ngIf="weddingForm.get('groomFatherName')?.errors?.['minlength']">Minimum 2 characters.</small>
+                <small *ngIf="weddingForm.get('groomFatherName')?.errors?.['maxlength']">Maximum 50 characters.</small>
+              </div>
+            </div>
+
+            <!-- Groom Mother Name -->
+            <div class="col-6 mb-3">
+              <label>Groom Mother Name</label>
+              <input class="form-control" formControlName="groomMotherName" type="text" placeholder="Enter groom mother name" />
+              <div *ngIf="weddingForm.get('groomMotherName')?.touched && weddingForm.get('groomMotherName')?.invalid" class="text-danger">
+                <small *ngIf="weddingForm.get('groomMotherName')?.errors?.['required']">Groom mother name is required.</small>
+                <small *ngIf="weddingForm.get('groomMotherName')?.errors?.['minlength']">Minimum 2 characters.</small>
+                <small *ngIf="weddingForm.get('groomMotherName')?.errors?.['maxlength']">Maximum 50 characters.</small>
+              </div>
+            </div>
+
+            <!-- Bride Father Name -->
+            <div class="col-6 mb-3">
+              <label>Bride Father Name</label>
+              <input class="form-control" formControlName="brideFatherName" type="text" placeholder="Enter bride father name" />
+              <div *ngIf="weddingForm.get('brideFatherName')?.touched && weddingForm.get('brideFatherName')?.invalid" class="text-danger">
+                <small *ngIf="weddingForm.get('brideFatherName')?.errors?.['required']">Bride father name is required.</small>
+                <small *ngIf="weddingForm.get('brideFatherName')?.errors?.['minlength']">Minimum 2 characters.</small>
+                <small *ngIf="weddingForm.get('brideFatherName')?.errors?.['maxlength']">Maximum 50 characters.</small>
+              </div>
+            </div>
+
+            <!-- Bride Mother Name -->
+            <div class="col-6 mb-3">
+              <label>Bride Mother Name</label>
+              <input class="form-control" formControlName="brideMotherName" type="text" placeholder="Enter bride mother name" />
+              <div *ngIf="weddingForm.get('brideMotherName')?.touched && weddingForm.get('brideMotherName')?.invalid" class="text-danger">
+                <small *ngIf="weddingForm.get('brideMotherName')?.errors?.['required']">Bride mother name is required.</small>
+                <small *ngIf="weddingForm.get('brideMotherName')?.errors?.['minlength']">Minimum 2 characters.</small>
+                <small *ngIf="weddingForm.get('brideMotherName')?.errors?.['maxlength']">Maximum 50 characters.</small>
+              </div>
+            </div>
+
+            <!-- Couple Name -->
+            <div class="col-6 mb-3">
+              <label>Couple Name</label>
+              <input class="form-control" formControlName="coupleName" type="text" placeholder="Enter couple name" />
+              <div *ngIf="weddingForm.get('coupleName')?.touched && weddingForm.get('coupleName')?.invalid" class="text-danger">
+                <small *ngIf="weddingForm.get('coupleName')?.errors?.['required']">Couple name is required.</small>
+                <small *ngIf="weddingForm.get('coupleName')?.errors?.['minlength']">Minimum 2 characters.</small>
+                <small *ngIf="weddingForm.get('coupleName')?.errors?.['maxlength']">Maximum 100 characters.</small>
+              </div>
+            </div>
+
+            <!-- Wedding Date -->
+            <div class="col-6 mb-3">
+              <label>Wedding Date</label>
+              <input class="form-control" formControlName="weddingDate" type="date" />
+              <div *ngIf="weddingForm.get('weddingDate')?.touched && weddingForm.get('weddingDate')?.invalid" class="text-danger">
+                <small *ngIf="weddingForm.get('weddingDate')?.errors?.['required']">Wedding date is required.</small>
+                <small *ngIf="weddingForm.get('weddingDate')?.errors?.['invalidWeddingDate']">
+                  {{ weddingForm.get('weddingDate')?.errors?.['invalidWeddingDate'] }}
+                </small>
+              </div>
+            </div>
+
+            <!-- Registration Start Date -->
+            <div class="col-6 mb-3">
+              <label>Registration Start Date</label>
+              <input class="form-control" formControlName="registrationStartDate" type="date" />
+              <div *ngIf="weddingForm.get('registrationStartDate')?.touched && weddingForm.get('registrationStartDate')?.invalid" class="text-danger">
+                <small *ngIf="weddingForm.get('registrationStartDate')?.errors?.['required']">Registration start date is required.</small>
+                <small *ngIf="weddingForm.get('registrationStartDate')?.errors?.['invalidRegistrationStartDate']">
+                  {{ weddingForm.get('registrationStartDate')?.errors?.['invalidRegistrationStartDate'] }}
+                </small>
+              </div>
+            </div>
+
+            <!-- Registration End Date -->
+            <div class="col-6 mb-3">
+              <label>Registration End Date</label>
+              <input class="form-control" formControlName="registrationEndDate" type="date" />
+              <div *ngIf="weddingForm.get('registrationEndDate')?.touched && weddingForm.get('registrationEndDate')?.invalid" class="text-danger">
+                <small *ngIf="weddingForm.get('registrationEndDate')?.errors?.['required']">Registration end date is required.</small>
+                <small *ngIf="weddingForm.get('registrationEndDate')?.errors?.['invalidRegistrationEndDate']">
+                  {{ weddingForm.get('registrationEndDate')?.errors?.['invalidRegistrationEndDate'] }}
+                </small>
+              </div>
+            </div>
+
+          </div>
+
+          <button type="submit" class="btn btn-primary" [disabled]="weddingForm.invalid">Submit</button>
+        </form>
+      </c-card-body>
+    </c-card>
+  </c-col>
+</c-row>
