@@ -1,0 +1,17 @@
+.view-guest-dialog {
+  mat-dialog-content {
+    max-height: 70vh;
+    overflow-y: auto;
+  }
+
+  .form-label {
+    min-width: 150px;
+    display: inline-block;
+  }
+
+  p {
+    display: inline-block;
+    margin: 0;
+  }
+}
+

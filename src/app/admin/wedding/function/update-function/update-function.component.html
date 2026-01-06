@@ -32,6 +32,35 @@
             <label for="venueName" class="form-label">Venue Name</label>
             <input type="text" id="venueName" formControlName="venueName" class="form-control">
           </div>
+
+          <div class="mb-3">
+            <label for="venueAddress" class="form-label">Venue Address</label>
+            <input type="text" id="venueAddress" formControlName="venueAddress" class="form-control">
+          </div>
+
+          <div class="row">
+            <div class="col-md-6">
+              <label for="sideId" class="form-label">Side</label>
+              <select id="sideId" class="form-select" formControlName="sideId">
+                <option value="">Select Side</option>
+                <option *ngFor="let side of sides" [value]="side.id">
+                  {{ side.sideName }}
+                </option>
+              </select>
+            </div>
+
+            <div class="col-md-6">
+              <label for="sideName" class="form-label">Side Name</label>
+              <input type="text" id="sideName" formControlName="sideName" class="form-control">
+            </div>
+          </div>
+          
+          <div>
+            <label for="sideAddress" class="form-label">Side Description</label>
+            <input type="text" id="sideAddress" formControlName="sideAddress" class="form-control">
+          </div>
+          <br>
+
           <div class="mb-3">
             <button type="submit" class="btn btn-primary" [disabled]="!functionForm.valid || isSubmitting">
               {{ isSubmitting ? 'Updating...' : 'Update' }}

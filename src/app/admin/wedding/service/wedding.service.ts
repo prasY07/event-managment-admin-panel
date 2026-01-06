@@ -37,6 +37,12 @@ constructor(private baseApi: BaseApiService) { }
     });
   }
 
+  getWeddingGuests(pageNumber: number, weddingId: string): Observable<any> {
+    return this.baseApi.getDataWithParams(`wedding/registration/guest/list/${weddingId}`, {
+      page: pageNumber
+    });
+  }
+
   createWeddingFunction(data: object): Observable<any> {
     return this.baseApi.submitData('admin/wedding/function/create', data);
   }

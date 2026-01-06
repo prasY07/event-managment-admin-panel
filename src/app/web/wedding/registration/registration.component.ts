@@ -18,6 +18,8 @@ export class WeddingRegistrationComponent implements OnInit {
   weddingId = '';
   coupleName: string | null = null;
   isSubmitting = false;
+  onwardFileError = '';
+  returnFileError = '';
 
   constructor(
     private fb: FormBuilder,
@@ -39,34 +41,27 @@ export class WeddingRegistrationComponent implements OnInit {
         mode: ['FLIGHT'],
         arrivalDate: [''],
         arrivalTime: [''],
-        departureCity: [''],
-        destinationCity: [''],
+        departureCity: ['', Validators.required],
+        destinationCity: ['', Validators.required],
         carrierName: [''],
         carrierNumber: [''],
-        coPassengers: this.fb.array([])
+        coPassengers: this.fb.array([]) // This is the coPassengers FormArray
       }),
       returnJourney: this.fb.group({
         mode: ['FLIGHT'],
         departureDate: [''],
         departureTime: [''],
-        destinationCity: [''],
+        destinationCity: ['', Validators.required],
         carrierName: [''],
         carrierNumber: ['']
       })
     });
-
-    // Ensure weddingId is present (snapshot fallback) and load couple name
-    if (!this.weddingId) {
-      const id = this.aRoute.snapshot.params['id'];
-      if (id) this.weddingId = id;
-    }
 
     this.loadWeddingDetails();
   }
 
   private loadWeddingDetails() {
     if (!this.weddingId) {
-      // Try query param 'wedding-name' as a fallback
       this.coupleName = this.aRoute.snapshot.queryParamMap.get('wedding-name') || null;
       return;
     }
@@ -74,37 +69,40 @@ export class WeddingRegistrationComponent implements OnInit {
     this.weddingService.getWeddingDetails(this.weddingId).subscribe(
       (res: any) => {
         const payload = res?.data ?? res;
-        if (!payload) {
-          // fallback to query param if API didn't return details
-          this.coupleName = this.aRoute.snapshot.queryParamMap.get('wedding-name') || null;
-          return;
-        }
+        if (!payload) return;
 
-        if (typeof payload === 'string') {
-          // payload is likely an image URL, not details
-          this.coupleName = this.aRoute.snapshot.queryParamMap.get('wedding-name') || null;
-          return;
-        }
-
-        // Try common field names, fallback to groom + bride
         this.coupleName = payload.coupleName || payload.couple_name ||
-          ((payload.groomName || payload.groom_name) && (payload.brideName || payload.bride_name)
-            ? `${payload.groomName || payload.groom_name} & ${payload.brideName || payload.bride_name}`
-            : (payload.groomName || payload.brideName || null));
+          ((payload.groomName && payload.brideName) ? `${payload.groomName} & ${payload.brideName}` : payload.groomName || payload.brideName || null);
       },
       (err: any) => {
-        console.warn('Failed to load wedding details for registration page', err);
+        console.warn('Failed to load wedding details', err);
         this.coupleName = this.aRoute.snapshot.queryParamMap.get('wedding-name') || null;
       }
     );
   }
 
   get coPassengers(): FormArray {
-    return this.registerForm.get('onwardJourney')!.get('coPassengers') as FormArray;
+    return this.registerForm.get('onwardJourney.coPassengers') as FormArray;
+  }
+
+  getCoPassengersArray(parent: string): FormArray {
+    return this.registerForm.get(`${parent}.coPassengers`) as FormArray;
+  }
+
+  createCoPassenger(): FormGroup {
+    return this.fb.group({
+      name: ['', Validators.required],
+      age: [null, Validators.required],
+      relationship: ['', Validators.required]
+    });
   }
 
   addCoPassenger() {
-    this.coPassengers.push(this.fb.group({ name: [''], age: [null], relationship: [''] }));
+    const coPassenger = this.createCoPassenger();
+    this.coPassengers.push(coPassenger);
+    // Mark as untouched and pristine so errors don't show immediately
+    coPassenger.markAsUntouched();
+    coPassenger.markAsPristine();
   }
 
   removeCoPassenger(index: number) {
@@ -113,17 +111,56 @@ export class WeddingRegistrationComponent implements OnInit {
 
   onOnwardFileChange(event: any) {
     const f = event.target.files?.[0];
-    if (f) this.onwardFile = f;
+    if (f) {
+      this.onwardFile = f;
+      this.onwardFileError = '';
+    }
   }
 
   onReturnFileChange(event: any) {
     const f = event.target.files?.[0];
-    if (f) this.returnFile = f;
+    if (f) {
+      this.returnFile = f;
+      this.returnFileError = '';
+    }
+  }
+
+  /**
+   * Check if a form control is invalid and has been touched
+   * Shows error state only after user interaction
+   */
+  isInvalid(controlName: string, parent: string = ''): boolean {
+    const control = parent 
+      ? this.registerForm.get(`${parent}.${controlName}`) 
+      : this.registerForm.get(controlName);
+    return !!(control && control.invalid && control.touched);
+  }
+
+  /**
+   * Check if a co-passenger field is invalid and has been touched
+   * Shows error state only after user interaction
+   */
+  isCoPassengerFieldInvalid(control: any, fieldName: string): boolean {
+    const field = control.get(fieldName);
+    return !!(field && field.invalid && field.touched);
   }
 
   submit() {
-    if (!this.registerForm.valid) {
+    if (this.registerForm.invalid) {
+      this.registerForm.markAllAsTouched(); // Highlight invalid fields
       this.toastr.error('Please fill required fields', 'Error');
+      return;
+    }
+
+    if (!this.onwardFile) {
+      this.onwardFileError = 'Onward ticket file is required';
+      this.toastr.error('Onward ticket file is required', 'Error');
+      return;
+    }
+
+    if (!this.returnFile) {
+      this.returnFileError = 'Return ticket file is required';
+      this.toastr.error('Return ticket file is required', 'Error');
       return;
     }
 
@@ -148,13 +185,15 @@ export class WeddingRegistrationComponent implements OnInit {
     if (this.returnFile) formData.append('returnTicketFile', this.returnFile, this.returnFile.name);
 
     this.weddingService.registerGuest(formData).subscribe(
-      (res: any) => {
+      () => {
         this.isSubmitting = false;
         this.toastr.success('Registration successful', 'Success');
         this.registerForm.reset();
-        setTimeout(() => {
-          window.location.reload();
-        }, 1000); 
+        this.coPassengers.clear(); // reset co-passengers
+        this.onwardFile = null;
+        this.returnFile = null;
+        this.onwardFileError = '';
+        this.returnFileError = '';
       },
       (err: any) => {
         this.isSubmitting = false;

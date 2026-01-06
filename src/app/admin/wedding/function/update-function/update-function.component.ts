@@ -20,6 +20,8 @@ export class UpdateFunctionComponent implements OnInit {
   weddingId: string = '';
   isSubmitting = false;
   originalData: any = null;
+  sides: any[] = [];
+
 
   constructor(
     private fb: FormBuilder,
@@ -34,13 +36,17 @@ export class UpdateFunctionComponent implements OnInit {
       functionStartTime: ['', Validators.required],
       functionEndTime: ['', Validators.required],
       venueName: ['', Validators.required],
+      venueAddress: ['', Validators.required],
+      sideId: ['', Validators.required],
+      sideName: [''],
+      sideAddress: ['']
     });
     this.functionId = this.route.snapshot.paramMap.get('id') || '';
     if (!this.functionId) {
       this.toastr.error('Function ID not found', 'Error');
       this.router.navigate(['/admin/wedding']);
     }
-    
+
     // Try to get weddingId from navigation extras state
     const navigation = this.router.getCurrentNavigation();
     if (navigation?.extras?.state?.['weddingId']) {
@@ -51,72 +57,97 @@ export class UpdateFunctionComponent implements OnInit {
   ngOnInit(): void {
     this.weddingService.getWeddingFunction(this.functionId).subscribe(
       (res: any) => {
-        // store full data so we can merge missing fields on submit
         this.originalData = res.data || {};
+
         this.functionForm.patchValue({
           functionName: this.originalData.functionName,
-          functionDate: this.originalData.functionDate,
-          functionStartTime: this.originalData.functionStartTime,
-          functionEndTime: this.originalData.functionEndTime,
+          functionDate: this.originalData.functionDate
+            ? this.originalData.functionDate.split('T')[0]
+            : '',
+          functionStartTime: this.originalData.functionStartTime?.substring(0, 5),
+          functionEndTime: this.originalData.functionEndTime?.substring(0, 5),
           venueName: this.originalData.venueName,
+          venueAddress: this.originalData.venueAddress ?? '',
+          sideId: this.originalData.sideId ?? '',
+          sideName: this.originalData.sideName ?? '',
+          sideAddress: this.originalData.sideDescription ?? '',
         });
-        // If we don't have weddingId, try to extract it from the data
+
         if (!this.weddingId && this.originalData.weddingId) {
           this.weddingId = this.originalData.weddingId;
         }
       },
-      (error) => {
-        console.error('Error fetching wedding function:', error);
+      () => {
         this.toastr.error('Failed to load wedding function', 'Error');
+      }
+    );
+
+    this.loadSides();
+    this.functionForm.get('sideId')?.valueChanges.subscribe(sideId => {
+      const side = this.sides.find(s => s.id === Number(sideId));
+      if (side) {
+        this.functionForm.patchValue(
+          { sideName: side.sideName },
+          { emitEvent: false }
+        );
+      }
+    });
+  }
+
+  loadSides() {
+
+    this.weddingService.getWeddingSides().subscribe(
+      (res: any) => {
+        this.sides = res?.data || [];
+      },
+      () => {
+        this.toastr.error('Failed to load sides', 'Error');
       }
     );
   }
 
   onSubmit(): void {
-    if (this.functionForm.valid && !this.isSubmitting) {
-      this.isSubmitting = true;
-
-      const formValues = this.functionForm.value || {};
-      const payload: any = {
-        ...(this.originalData || {}),
-        ...formValues,
-      };
-
-      // Ensure weddingId is present
-      if (!payload.weddingId && this.weddingId) {
-        payload.weddingId = this.weddingId;
-      }
-
-      // Normalize time inputs (append seconds if missing)
-      const normalizeTime = (t: any) => {
-        if (!t && t !== 0) return t;
-        if (typeof t === 'string' && /^\d{2}:\d{2}$/.test(t)) return `${t}:00`;
-        return t;
-      };
-
-      payload.functionStartTime = normalizeTime(payload.functionStartTime);
-      payload.functionEndTime = normalizeTime(payload.functionEndTime);
-
-      this.weddingService.updateWeddingFunction(this.functionId, payload).subscribe(
-        () => {
-          this.isSubmitting = false;
-          this.toastr.success('Wedding function updated successfully', 'Success');
-          // Navigate back to wedding functions list - if we have weddingId, use it; otherwise go back
-          if (this.weddingId) {
-            this.router.navigate(['/admin/wedding/wedding-functions', this.weddingId]);
-          } else {
-            this.router.navigate(['/admin/wedding']);
-          }
-        },
-        (error) => {
-          this.isSubmitting = false;
-          console.error('Error updating wedding function:', error);
-          const msg = error?.error?.message || error?.message || 'Failed to update wedding function';
-          this.toastr.error(msg, 'Error');
-        }
-      );
+    if (this.functionForm.invalid || this.isSubmitting) {
+      return;
     }
+
+    this.isSubmitting = true;
+
+    const payload = {
+      weddingId: this.weddingId,
+      functionName: this.functionForm.value.functionName,
+      functionDate: this.functionForm.value.functionDate,
+      functionStartTime: `${this.functionForm.value.functionStartTime}:00`,
+      functionEndTime: `${this.functionForm.value.functionEndTime}:00`,
+      venueName: this.functionForm.value.venueName,
+      venueAddress: this.functionForm.value.venueAddress,
+      sideId: Number(this.functionForm.value.sideId),
+      sideName: this.functionForm.value.sideName,
+      sideAddress: this.functionForm.value.sideAddress
+    };
+
+    this.weddingService.updateWeddingFunction(this.functionId, payload).subscribe(
+      () => {
+        this.isSubmitting = false;
+        this.toastr.success('Wedding function updated successfully', 'Success');
+
+        if (this.weddingId) {
+            this.router.navigate(['/admin/wedding/wedding-functions', this.weddingId]);
+        } else {
+          this.router.navigate(['/admin/wedding']);
+        }
+        
+      },
+      (error) => {
+        this.isSubmitting = false;
+        this.toastr.error(
+          error?.error?.message || 'Failed to update wedding function',
+          'Error'
+        );
+      }
+    );
   }
+
 
   onCancel(): void {
     if (this.weddingId) {
