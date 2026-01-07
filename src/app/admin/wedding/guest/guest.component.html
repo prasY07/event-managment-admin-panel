@@ -46,11 +46,10 @@
           <!-- Action Column -->
           <ng-container matColumnDef="action">
               <th mat-header-cell *matHeaderCellDef> Action </th>
-              <td mat-cell *matCellDef="let element" style="margin-top:10px; align-items: center;">
+              <td mat-cell *matCellDef="let element" style="display: flex; align-items: center; gap: 8px;">
                 <!-- View -->
-                <a (click)="viewGuest(element)" title="View Guest Details" style="cursor: pointer;">
-                  <!-- <svg cIcon name="cil-info" size="lg"></svg> -->
-                   view
+                <a (click)="viewGuest(element)" title="View Guest Details" style="cursor: pointer; display: inline-flex; align-items: center; text-decoration: none;">
+                  <svg cIcon name="cil-info" size="lg" style="color: #0d6efd;"></svg>
                 </a>
               </td>
             </ng-container>

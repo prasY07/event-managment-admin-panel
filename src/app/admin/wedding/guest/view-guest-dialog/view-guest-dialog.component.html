@@ -33,40 +33,40 @@
       </c-col>
     </c-row>
 
-    <c-row *ngIf="onwardJourney && (onwardJourney.departureCity || onwardJourney.destinationCity || onwardJourney.arrivalDate || onwardJourney.arrivalTime || onwardJourney.mode)">
+    <c-row *ngIf="hasOnwardJourney()">
       <c-col xs="12">
         <c-card class="mt-3">
           <c-card-header>
             <strong>Onward Journey</strong>
           </c-card-header>
           <c-card-body>
-            <div class="mb-3" *ngIf="onwardJourney.mode">
+            <div class="mb-3">
               <label class="form-label fw-bold">Mode:</label>
-              <p class="ms-2">{{ onwardJourney.mode }}</p>
+              <p class="ms-2">{{ onwardJourney.mode || 'N/A' }}</p>
             </div>
-            <div class="mb-3" *ngIf="onwardJourney.departureCity">
+            <div class="mb-3">
               <label class="form-label fw-bold">Departure City:</label>
-              <p class="ms-2">{{ onwardJourney.departureCity }}</p>
+              <p class="ms-2">{{ onwardJourney.departureCity || 'N/A' }}</p>
             </div>
-            <div class="mb-3" *ngIf="onwardJourney.destinationCity">
+            <div class="mb-3">
               <label class="form-label fw-bold">Destination City:</label>
-              <p class="ms-2">{{ onwardJourney.destinationCity }}</p>
+              <p class="ms-2">{{ onwardJourney.destinationCity || 'N/A' }}</p>
             </div>
-            <div class="mb-3" *ngIf="onwardJourney.arrivalDate">
+            <div class="mb-3">
               <label class="form-label fw-bold">Arrival Date:</label>
-              <p class="ms-2">{{ onwardJourney.arrivalDate | date }}</p>
+              <p class="ms-2">{{ onwardJourney.arrivalDate ? (onwardJourney.arrivalDate | date) : 'N/A' }}</p>
             </div>
-            <div class="mb-3" *ngIf="onwardJourney.arrivalTime">
+            <div class="mb-3">
               <label class="form-label fw-bold">Arrival Time:</label>
-              <p class="ms-2">{{ onwardJourney.arrivalTime }}</p>
+              <p class="ms-2">{{ onwardJourney.arrivalTime || 'N/A' }}</p>
             </div>
-            <div class="mb-3" *ngIf="onwardJourney.carrierName">
+            <div class="mb-3">
               <label class="form-label fw-bold">Carrier Name:</label>
-              <p class="ms-2">{{ onwardJourney.carrierName }}</p>
+              <p class="ms-2">{{ onwardJourney.carrierName || 'N/A' }}</p>
             </div>
-            <div class="mb-3" *ngIf="onwardJourney.carrierNumber">
+            <div class="mb-3">
               <label class="form-label fw-bold">Carrier Number:</label>
-              <p class="ms-2">{{ onwardJourney.carrierNumber }}</p>
+              <p class="ms-2">{{ onwardJourney.carrierNumber || 'N/A' }}</p>
             </div>
             <div class="mb-3" *ngIf="onwardJourney.coPassengers && onwardJourney.coPassengers.length > 0">
               <label class="form-label fw-bold">Co-passengers:</label>
@@ -83,7 +83,7 @@
       </c-col>
     </c-row>
 
-    <c-row *ngIf="returnJourney && (returnJourney.destinationCity || returnJourney.departureDate || returnJourney.departureTime || returnJourney.mode)">
+    <c-row *ngIf="hasReturnJourney()">
       <c-col xs="12">
         <c-card class="mt-3">
           <c-card-header>
@@ -93,6 +93,10 @@
             <div class="mb-3" *ngIf="returnJourney.mode">
               <label class="form-label fw-bold">Mode:</label>
               <p class="ms-2">{{ returnJourney.mode }}</p>
+            </div>
+            <div class="mb-3" *ngIf="returnJourney.departureCity">
+              <label class="form-label fw-bold">Departure City:</label>
+              <p class="ms-2">{{ returnJourney.departureCity }}</p>
             </div>
             <div class="mb-3" *ngIf="returnJourney.destinationCity">
               <label class="form-label fw-bold">Destination City:</label>

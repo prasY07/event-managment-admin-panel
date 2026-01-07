@@ -71,6 +71,18 @@
           </div>
         </div>
 
+        <!-- Carrier Name & Number -->
+        <div class="row">
+          <div class="col-md-6 mb-3">
+            <label class="form-label">Carrier Name</label>
+            <input formControlName="carrierName" class="form-control" placeholder="e.g., IndiGo, Air India" />
+          </div>
+          <div class="col-md-6 mb-3">
+            <label class="form-label">Carrier Number</label>
+            <input formControlName="carrierNumber" class="form-control" placeholder="e.g., 6E-512" />
+          </div>
+        </div>
+
         <!-- Co-passengers -->
         <div class="mb-3">
           <label class="form-label">Co-passengers</label>
@@ -123,19 +135,25 @@
 
         <div class="row">
           <div class="col-md-6 mb-3">
+            <label class="form-label">Departure City</label>
+            <input formControlName="departureCity" class="form-control" />
+          </div>
+          <div class="col-md-6 mb-3">
             <label class="form-label">Destination City</label>
             <input formControlName="destinationCity" class="form-control" [class.is-invalid]="isInvalid('destinationCity','returnJourney')" />
             <div class="invalid-feedback" *ngIf="isInvalid('destinationCity','returnJourney')">Destination city is required</div>
           </div>
-          <div class="col-md-6 mb-3">
-            <label class="form-label">Carrier Name</label>
-            <input formControlName="carrierName" class="form-control" />
-          </div>
         </div>
 
-        <div class="mb-3">
-          <label class="form-label">Carrier Number</label>
-          <input formControlName="carrierNumber" class="form-control" />
+        <div class="row">
+          <div class="col-md-6 mb-3">
+            <label class="form-label">Carrier Name</label>
+            <input formControlName="carrierName" class="form-control" placeholder="e.g., IndiGo, Air India" />
+          </div>
+          <div class="col-md-6 mb-3">
+            <label class="form-label">Carrier Number</label>
+            <input formControlName="carrierNumber" class="form-control" placeholder="e.g., 6E-521" />
+          </div>
         </div>
 
         <div class="mb-3">

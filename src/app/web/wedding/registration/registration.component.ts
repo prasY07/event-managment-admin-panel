@@ -51,6 +51,7 @@ export class WeddingRegistrationComponent implements OnInit {
         mode: ['FLIGHT'],
         departureDate: [''],
         departureTime: [''],
+        departureCity: [''],
         destinationCity: ['', Validators.required],
         carrierName: [''],
         carrierNumber: ['']
