@@ -38,19 +38,25 @@
           </ng-container>
 
           <!-- Function Name -->
-          <ng-container matColumnDef="functionName">
+          <!-- <ng-container matColumnDef="functionName">
             <th mat-header-cell *matHeaderCellDef> Function </th>
             <td mat-cell *matCellDef="let element"> {{element.functionName || element.function?.functionName || 'N/A'}} </td>
-          </ng-container>
+          </ng-container> -->
 
           <!-- Action Column -->
           <ng-container matColumnDef="action">
               <th mat-header-cell *matHeaderCellDef> Action </th>
-              <td mat-cell *matCellDef="let element" style="display: flex; align-items: center; gap: 8px;">
+              <td mat-cell *matCellDef="let element" style="text-align: center;">
                 <!-- View -->
-                <a (click)="viewGuest(element)" title="View Guest Details" style="cursor: pointer; display: inline-flex; align-items: center; text-decoration: none;">
-                  <svg cIcon name="cil-info" size="lg" style="color: #0d6efd;"></svg>
-                </a>
+                <button 
+                  type="button" 
+                  (click)="viewGuest(element)" 
+                  title="View Guest Details" 
+                  class="btn btn-sm btn-primary"
+                  style="min-width: 80px; display: inline-flex; align-items: center; justify-content: center; gap: 4px;">
+                  <svg cIcon name="cil-info" size="sm"></svg>
+                  <span>View</span>
+                </button>
               </td>
             </ng-container>
 

@@ -90,33 +90,33 @@
             <strong>Return Journey</strong>
           </c-card-header>
           <c-card-body>
-            <div class="mb-3" *ngIf="returnJourney.mode">
+            <div class="mb-3">
               <label class="form-label fw-bold">Mode:</label>
-              <p class="ms-2">{{ returnJourney.mode }}</p>
+              <p class="ms-2">{{ returnJourney.mode || 'N/A' }}</p>
             </div>
-            <div class="mb-3" *ngIf="returnJourney.departureCity">
+            <div class="mb-3">
               <label class="form-label fw-bold">Departure City:</label>
-              <p class="ms-2">{{ returnJourney.departureCity }}</p>
+              <p class="ms-2">{{ returnJourney.departureCity || 'N/A' }}</p>
             </div>
-            <div class="mb-3" *ngIf="returnJourney.destinationCity">
+            <div class="mb-3">
               <label class="form-label fw-bold">Destination City:</label>
-              <p class="ms-2">{{ returnJourney.destinationCity }}</p>
+              <p class="ms-2">{{ returnJourney.destinationCity || 'N/A' }}</p>
             </div>
-            <div class="mb-3" *ngIf="returnJourney.departureDate">
+            <div class="mb-3">
               <label class="form-label fw-bold">Departure Date:</label>
-              <p class="ms-2">{{ returnJourney.departureDate | date }}</p>
+              <p class="ms-2">{{ returnJourney.departureDate ? (returnJourney.departureDate | date) : 'N/A' }}</p>
             </div>
-            <div class="mb-3" *ngIf="returnJourney.departureTime">
+            <div class="mb-3">
               <label class="form-label fw-bold">Departure Time:</label>
-              <p class="ms-2">{{ returnJourney.departureTime }}</p>
+              <p class="ms-2">{{ returnJourney.departureTime || 'N/A' }}</p>
             </div>
-            <div class="mb-3" *ngIf="returnJourney.carrierName">
+            <div class="mb-3">
               <label class="form-label fw-bold">Carrier Name:</label>
-              <p class="ms-2">{{ returnJourney.carrierName }}</p>
+              <p class="ms-2">{{ returnJourney.carrierName || 'N/A' }}</p>
             </div>
-            <div class="mb-3" *ngIf="returnJourney.carrierNumber">
+            <div class="mb-3">
               <label class="form-label fw-bold">Carrier Number:</label>
-              <p class="ms-2">{{ returnJourney.carrierNumber }}</p>
+              <p class="ms-2">{{ returnJourney.carrierNumber || 'N/A' }}</p>
             </div>
           </c-card-body>
         </c-card>

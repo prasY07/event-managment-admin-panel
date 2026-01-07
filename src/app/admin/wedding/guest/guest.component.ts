@@ -29,7 +29,7 @@ import { ViewGuestDialogComponent } from './view-guest-dialog/view-guest-dialog.
 })
 export class GuestComponent implements OnInit {
 
-  displayedColumns: string[] = ['position', 'fullName', 'mobileNumber', 'email', 'gender', 'functionName', 'action'];
+  displayedColumns: string[] = ['position', 'fullName', 'mobileNumber', 'email', 'gender', 'action'];
   dataSource = new MatTableDataSource<any>([]);
 
   totalItems = 0;
