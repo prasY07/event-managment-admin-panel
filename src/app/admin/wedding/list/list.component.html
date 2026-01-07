@@ -112,6 +112,9 @@
               <a (click)="copyUrl(element.weddingId, element.coupleName)" title="Copy URL" style="cursor: pointer; margin-left: 8px;">
               <svg cIcon name="cil-copy" size="lg"></svg>
               </a>
+               <a [routerLink]="['/admin/wedding/wedding-functions/guest', element.weddingId]" title="Functions Guest">
+                <svg cIcon name="cil-list" size="lg"></svg>
+              </a>
             </td>
           </ng-container>
 

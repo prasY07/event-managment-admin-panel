@@ -2,25 +2,32 @@
   <div class="card p-4">
     <h4>Wedding Registration <small *ngIf="coupleName" class="text-muted">- {{ coupleName }}</small></h4>
     <form [formGroup]="registerForm" (ngSubmit)="submit()">
+
+      <!-- Full Name -->
       <div class="mb-3">
         <label class="form-label">Full Name</label>
-        <input formControlName="fullName" class="form-control" />
+        <input formControlName="fullName" class="form-control" [class.is-invalid]="isInvalid('fullName')" />
+        <div class="invalid-feedback" *ngIf="isInvalid('fullName')">Full name is required</div>
       </div>
 
+      <!-- Mobile & Email -->
       <div class="row">
         <div class="col-md-6 mb-3">
           <label class="form-label">Mobile Number</label>
-          <input formControlName="mobileNumber" class="form-control" />
+          <input formControlName="mobileNumber" class="form-control" [class.is-invalid]="isInvalid('mobileNumber')" />
+          <div class="invalid-feedback" *ngIf="isInvalid('mobileNumber')">Valid 10-digit mobile number required</div>
         </div>
         <div class="col-md-6 mb-3">
           <label class="form-label">Email</label>
-          <input formControlName="email" class="form-control" />
+          <input formControlName="email" class="form-control" [class.is-invalid]="isInvalid('email')" />
+          <div class="invalid-feedback" *ngIf="isInvalid('email')">Valid email is required</div>
         </div>
       </div>
 
+      <!-- Gender -->
       <div class="mb-3">
         <label class="form-label">Gender</label>
-        <select formControlName="gender" class="form-select">
+        <select formControlName="gender" class="form-select" [class.is-invalid]="isInvalid('gender')">
           <option value="MALE">Male</option>
           <option value="FEMALE">Female</option>
           <option value="OTHER">Other</option>
@@ -30,6 +37,7 @@
       <hr />
       <h5>Onward Journey</h5>
       <div formGroupName="onwardJourney">
+
         <div class="row">
           <div class="col-md-4 mb-3">
             <label class="form-label">Mode</label>
@@ -49,42 +57,45 @@
           </div>
         </div>
 
+        <!-- Departure & Destination -->
         <div class="row">
           <div class="col-md-6 mb-3">
             <label class="form-label">Departure City</label>
-            <input formControlName="departureCity" class="form-control" />
+            <input formControlName="departureCity" class="form-control" [class.is-invalid]="isInvalid('departureCity','onwardJourney')" />
+            <div class="invalid-feedback" *ngIf="isInvalid('departureCity','onwardJourney')">Departure city is required</div>
           </div>
           <div class="col-md-6 mb-3">
             <label class="form-label">Destination City</label>
-            <input formControlName="destinationCity" class="form-control" />
+            <input formControlName="destinationCity" class="form-control" [class.is-invalid]="isInvalid('destinationCity','onwardJourney')" />
+            <div class="invalid-feedback" *ngIf="isInvalid('destinationCity','onwardJourney')">Destination city is required</div>
           </div>
         </div>
 
-        <div class="row">
-          <div class="col-md-6 mb-3">
-            <label class="form-label">Carrier Name</label>
-            <input formControlName="carrierName" class="form-control" />
-          </div>
-          <div class="col-md-6 mb-3">
-            <label class="form-label">Carrier Number</label>
-            <input formControlName="carrierNumber" class="form-control" />
-          </div>
-        </div>
-
+        <!-- Co-passengers -->
         <div class="mb-3">
           <label class="form-label">Co-passengers</label>
-          <div *ngFor="let cp of coPassengers.controls; let i = index" [formGroupName]="i" class="d-flex gap-2 mb-2">
-            <input formControlName="name" placeholder="Name" class="form-control" />
-            <input formControlName="age" placeholder="Age" class="form-control" type="number" />
-            <input formControlName="relationship" placeholder="Relationship" class="form-control" />
-            <button type="button" class="btn btn-danger" (click)="removeCoPassenger(i)">Remove</button>
+          <div formArrayName="coPassengers">
+            <div *ngFor="let cp of getCoPassengersArray('onwardJourney').controls; let i = index" [formGroupName]="i" class="d-flex gap-2 mb-3">
+              <div class="flex-grow-1">
+                <input formControlName="name" placeholder="Name" class="form-control" />
+              </div>
+              <div class="flex-grow-1">
+                <input formControlName="age" type="number" placeholder="Age" class="form-control" />
+              </div>
+              <div class="flex-grow-1">
+                <input formControlName="relationship" placeholder="Relationship" class="form-control" />
+              </div>
+              <button type="button" class="btn btn-danger" (click)="removeCoPassenger(i)">Remove</button>
+            </div>
           </div>
           <button type="button" class="btn btn-sm btn-secondary" (click)="addCoPassenger()">Add Co-passenger</button>
         </div>
 
+        <!-- Ticket -->
         <div class="mb-3">
           <label class="form-label">Onward Ticket File</label>
-          <input type="file" (change)="onOnwardFileChange($event)" class="form-control" />
+          <input type="file" (change)="onOnwardFileChange($event)" class="form-control" [class.is-invalid]="onwardFileError.length > 0" />
+          <div class="invalid-feedback" *ngIf="onwardFileError">{{ onwardFileError }}</div>
         </div>
       </div>
 
@@ -113,7 +124,8 @@
         <div class="row">
           <div class="col-md-6 mb-3">
             <label class="form-label">Destination City</label>
-            <input formControlName="destinationCity" class="form-control" />
+            <input formControlName="destinationCity" class="form-control" [class.is-invalid]="isInvalid('destinationCity','returnJourney')" />
+            <div class="invalid-feedback" *ngIf="isInvalid('destinationCity','returnJourney')">Destination city is required</div>
           </div>
           <div class="col-md-6 mb-3">
             <label class="form-label">Carrier Name</label>
@@ -128,11 +140,12 @@
 
         <div class="mb-3">
           <label class="form-label">Return Ticket File</label>
-          <input type="file" (change)="onReturnFileChange($event)" class="form-control" />
+          <input type="file" (change)="onReturnFileChange($event)" class="form-control" [class.is-invalid]="returnFileError.length > 0" />
+          <div class="invalid-feedback" *ngIf="returnFileError">{{ returnFileError }}</div>
         </div>
       </div>
 
-      <div class="text-end mt-3">
+      <div class="text-end mt-4">
         <button type="submit" class="btn btn-primary" [disabled]="isSubmitting">
           {{ isSubmitting ? 'Registering...' : 'Register' }}
         </button>

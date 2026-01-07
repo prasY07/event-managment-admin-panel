@@ -39,6 +39,13 @@ export const routes: Routes = [
     }
   },
   {
+    path: 'wedding-functions/guest/:id',
+    loadComponent: () => import('./guest/guest.component').then(m => m.GuestComponent),
+    data: {
+      title: 'Wedding Functions' 
+    }
+  },
+  {
     path: 'add-function/:id',
     loadComponent: () => import('./function/add-function/add-function.component').then(m => m.AddFunctionComponent),
     data: {

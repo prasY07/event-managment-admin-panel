@@ -3,7 +3,7 @@ import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators } 
 import { ToastrService } from 'ngx-toastr';
 import { WeddingService } from '../../service/wedding.service';
 import { ActivatedRoute, Router } from '@angular/router';
-import { CardBodyComponent, CardComponent, CardHeaderComponent, ColComponent, RowComponent } from '@coreui/angular';
+import { CardBodyComponent, CardComponent, CardHeaderComponent, ColComponent, RowComponent, TextColorDirective } from '@coreui/angular';
 import { CommonModule } from '@angular/common';
 
 @Component({
@@ -12,6 +12,7 @@ import { CommonModule } from '@angular/common';
   imports: [
     RowComponent,
     ColComponent,
+    TextColorDirective,
     CardComponent,
     CardHeaderComponent,
     CardBodyComponent,
@@ -26,7 +27,7 @@ export class AddFunctionComponent implements OnInit {
 
   weddingFunctionForm!: FormGroup;
   weddingId = '';
-  isSubmitting = false;
+  sides: any[] = [];
 
   constructor(
     private fb: FormBuilder,
@@ -42,6 +43,7 @@ export class AddFunctionComponent implements OnInit {
 
   ngOnInit(): void {
     this.buildForm();
+    this.loadSides();
   }
 
   buildForm() {
@@ -51,33 +53,60 @@ export class AddFunctionComponent implements OnInit {
       functionStartTime: ['', Validators.required],
       functionEndTime: ['', Validators.required],
       venueName: ['', [Validators.required, Validators.minLength(2), Validators.maxLength(150)]],
+      venueAddress: ['', [Validators.required, Validators.minLength(5), Validators.maxLength(200)]],
+      sideId: ['', Validators.required],
+      sideName: ['', Validators.required],
+      sideDescription: ['', Validators.required],
     });
   }
 
-  onSubmit(): void {
-    if (this.weddingFunctionForm.valid && !this.isSubmitting) {
-      this.isSubmitting = true;
-      const formData = {
-        ...this.weddingFunctionForm.value,
-        weddingId: this.weddingId
-      };
-      
-      this.weddingService.createWeddingFunction(formData).subscribe(
-        (res: any) => {
-          this.toastr.success('Wedding function created successfully', 'Success');
-          this.router.navigate(['/admin/wedding/wedding-functions', this.weddingId]);
-        },
-        (error) => {
-          this.isSubmitting = false;
-          this.toastr.error('Failed to create wedding function', 'Error');
-          console.error('Error creating wedding function:', error);
-        }
-      );
+  loadSides() {
+    this.weddingService.getWeddingSides().subscribe(
+      (res: any) => {
+        this.sides = res?.data || [];
+      },
+      () => {
+        this.toastr.error('Failed to load sides', 'Error');
+      }
+    );
+  }
+
+  onSideChange(event: any) {
+    const selectedId = event.target.value;
+    const side = this.sides.find((s: any) => s.id == selectedId);
+    if (side) {
+      this.weddingFunctionForm.patchValue({
+        sideName: side.name || '',
+        sideDescription: side.description || ''
+      });
     }
   }
 
-  onCancel(): void {
-    this.router.navigate(['/admin/wedding/wedding-functions', this.weddingId]);
+  onSubmit(): void {
+    if (this.weddingFunctionForm.invalid) {
+      this.weddingFunctionForm.markAllAsTouched();
+      return;
+    }
+
+    const payload = {
+      ...this.weddingFunctionForm.value,
+      weddingId: Number(this.weddingId)
+    };
+
+    this.weddingService.createWeddingFunction(payload).subscribe(
+      () => {
+        this.toastr.success('Wedding function created', 'Success');
+        this.router.navigate(['/admin/wedding/wedding-functions', this.weddingId]);
+      },
+      (error) => {
+        const msg = error.error?.message || 'OOPS Something Went Wrong';
+        this.toastr.error(msg, 'Error');
+      }
+    );
   }
 
+  get f() {
+    return this.weddingFunctionForm.controls;
+  }
 }
+
