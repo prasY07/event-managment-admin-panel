@@ -115,6 +115,9 @@
                <a [routerLink]="['/admin/wedding/wedding-functions/guest', element.weddingId]" title="Functions Guest">
                 <svg cIcon name="cil-list" size="lg"></svg>
               </a>
+              <a (click)="openBulkGuestUploadModal(element.id)" title="Bulk Upload Guests" style="cursor: pointer;">
+                <svg cIcon name="cil-cloud-upload" size="lg"></svg>
+              </a>
             </td>
           </ng-container>
 
@@ -137,6 +140,7 @@
 
 <app-banner-upload #bannerUpload></app-banner-upload>
 <app-card-upload #cardUpload></app-card-upload>
+<app-bulk-guest-upload #bulkGuestUpload></app-bulk-guest-upload>
 <!-- Show Confirmation Dialog -->
 <app-confirmation-dialog *ngIf="showConfirmation" [title]="'Change Status'"
   [message]="'Are you sure you want to change status to ' + newStatus + '?'" [confirmButtonText]="'Update'"

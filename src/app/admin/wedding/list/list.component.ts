@@ -9,6 +9,7 @@ import { EventStatusPipe } from '../../pipes/event-status.pipe';
 import { freeSet } from '@coreui/icons';
 import { BannerUploadComponent } from '../banner-upload/banner-upload.component';
 import { CardUploadComponent } from '../card-upload/card-upload.component';
+import { BulkGuestUploadComponent } from '../bulk-guest-upload/bulk-guest-upload.component';
 import { MatTableDataSource, MatTableModule  } from '@angular/material/table';
 import { MatPaginator, MatPaginatorModule, PageEvent } from '@angular/material/paginator';
 import { MatIconModule } from '@angular/material/icon';
@@ -30,6 +31,7 @@ import { ToastrService } from 'ngx-toastr';
     EventStatusPipe,
     BannerUploadComponent,
     CardUploadComponent,
+    BulkGuestUploadComponent,
     MatTableModule,
     MatPaginatorModule,
     NgForOf,
@@ -61,6 +63,7 @@ export class ListComponent implements OnInit {
   @ViewChild(MatPaginator) paginator!: MatPaginator;
   @ViewChild('bannerUpload') bannerUpload!: BannerUploadComponent;
   @ViewChild('cardUpload') cardUpload!: CardUploadComponent;
+  @ViewChild('bulkGuestUpload') bulkGuestUpload!: BulkGuestUploadComponent;
 
   constructor(
     private weddingService:WeddingService,
@@ -205,6 +208,19 @@ copyUrl(weddingId: string, coupleName: string) {
 
 viewWeddingInfo(weddingId: string) {
   this.router.navigate(['/admin/wedding/wedding-information', weddingId]);
+}
+
+openBulkGuestUploadModal(weddingId: string) {
+  const modalElement = document.getElementById('bulkGuestUploadModal');
+  if (modalElement) {
+    modalElement.classList.add('show');
+    modalElement.style.display = 'block';
+    document.body.classList.add('modal-open');
+    const modalBackdrop = document.createElement('div');
+    modalBackdrop.classList.add('modal-backdrop', 'fade', 'show');
+    document.body.appendChild(modalBackdrop);
+    this.bulkGuestUpload.weddingId = weddingId;
+  }
 }
 
 }
