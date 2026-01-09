@@ -38,8 +38,8 @@ export class UpdateFunctionComponent implements OnInit {
       venueName: ['', Validators.required],
       venueAddress: ['', Validators.required],
       sideId: ['', Validators.required],
-      sideName: [''],
-      sideAddress: ['']
+      // sideName: [''],
+      // sideAddress: ['']
     });
     this.functionId = this.route.snapshot.paramMap.get('id') || '';
     if (!this.functionId) {
@@ -69,8 +69,8 @@ export class UpdateFunctionComponent implements OnInit {
           venueName: this.originalData.venueName,
           venueAddress: this.originalData.venueAddress ?? '',
           sideId: this.originalData.sideId ?? '',
-          sideName: this.originalData.sideName ?? '',
-          sideAddress: this.originalData.sideDescription ?? '',
+          // sideName: this.originalData.sideName ?? '',
+          // sideAddress: this.originalData.sideDescription ?? '',
         });
 
         if (!this.weddingId && this.originalData.weddingId) {
@@ -122,8 +122,8 @@ export class UpdateFunctionComponent implements OnInit {
       venueName: this.functionForm.value.venueName,
       venueAddress: this.functionForm.value.venueAddress,
       sideId: Number(this.functionForm.value.sideId),
-      sideName: this.functionForm.value.sideName,
-      sideAddress: this.functionForm.value.sideAddress
+      // sideName: this.functionForm.value.sideName,
+      // sideAddress: this.functionForm.value.sideAddress
     };
 
     this.weddingService.updateWeddingFunction(this.functionId, payload).subscribe(

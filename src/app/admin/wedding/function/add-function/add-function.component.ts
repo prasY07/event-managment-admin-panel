@@ -55,8 +55,8 @@ export class AddFunctionComponent implements OnInit {
       venueName: ['', [Validators.required, Validators.minLength(2), Validators.maxLength(150)]],
       venueAddress: ['', [Validators.required, Validators.minLength(5), Validators.maxLength(200)]],
       sideId: ['', Validators.required],
-      sideName: ['', Validators.required],
-      sideDescription: ['', Validators.required],
+      // sideName: ['', Validators.required],
+      // sideDescription: ['', Validators.required],
     });
   }
 
