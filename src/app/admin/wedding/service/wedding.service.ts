@@ -177,5 +177,9 @@ constructor(private baseApi: BaseApiService) { }
   updateWeddingFunction(id: string, data: object): Observable<any> {
     return this.baseApi.updateData(`admin/wedding/function/${id}/update`, data);
   }
+
+  bulkUploadGuests(weddingId: string, formData: FormData): Observable<any> {
+    return this.baseApi.uploadImageWithAuth(`wedding/registration/guest/bulk-upload/${weddingId}`, formData);
+  }
   
 }
