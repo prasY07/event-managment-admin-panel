@@ -10,6 +10,7 @@ import { Router, ActivatedRoute } from '@angular/router';
   standalone: true,
   imports: [CommonModule, ReactiveFormsModule],
   templateUrl: './registration.component.html',
+  styleUrl: './registration.component.scss'
 })
 export class WeddingRegistrationComponent implements OnInit {
   registerForm!: FormGroup;
@@ -20,6 +21,8 @@ export class WeddingRegistrationComponent implements OnInit {
   isSubmitting = false;
   onwardFileError = '';
   returnFileError = '';
+  currentStep = 1;
+  totalSteps = 3;
 
   constructor(
     private fb: FormBuilder,
@@ -136,6 +139,52 @@ export class WeddingRegistrationComponent implements OnInit {
     return !!(control && control.invalid && control.touched);
   }
 
+  isStepValid(step: number): boolean {
+    switch(step) {
+      case 1:
+        return this.registerForm.get('fullName')?.valid === true &&
+               this.registerForm.get('mobileNumber')?.valid === true &&
+               this.registerForm.get('email')?.valid === true &&
+               this.registerForm.get('gender')?.valid === true;
+      case 2:
+        return this.registerForm.get('onwardJourney.departureCity')?.valid === true &&
+               this.registerForm.get('onwardJourney.destinationCity')?.valid === true;
+      case 3:
+        return this.registerForm.get('returnJourney.destinationCity')?.valid === true;
+      default:
+        return false;
+    }
+  }
+
+  nextStep(): void {
+    if (this.isStepValid(this.currentStep)) {
+      if (this.currentStep < this.totalSteps) {
+        this.currentStep++;
+      }
+    } else {
+      this.registerForm.markAllAsTouched();
+      if (this.currentStep === 1) {
+        this.toastr.warning('Please fill all required personal information fields', 'Incomplete');
+      } else if (this.currentStep === 2) {
+        this.toastr.warning('Please fill all required onward journey fields', 'Incomplete');
+      } else if (this.currentStep === 3) {
+        this.toastr.warning('Please fill all required return journey fields', 'Incomplete');
+      }
+    }
+  }
+
+  previousStep(): void {
+    if (this.currentStep > 1) {
+      this.currentStep--;
+    }
+  }
+
+  goToStep(step: number): void {
+    if (step >= 1 && step <= this.totalSteps && step <= this.currentStep + 1) {
+      this.currentStep = step;
+    }
+  }
+
   /**
    * Check if a co-passenger field is invalid and has been touched
    * Shows error state only after user interaction
@@ -152,13 +201,17 @@ export class WeddingRegistrationComponent implements OnInit {
       return;
     }
 
-    if (!this.onwardFile) {
+    const onwardMode = this.registerForm.get('onwardJourney.mode')?.value;
+    const returnMode = this.registerForm.get('returnJourney.mode')?.value;
+
+    // Only require ticket file if mode is not ROAD
+    if (onwardMode !== 'ROAD' && !this.onwardFile) {
       this.onwardFileError = 'Onward ticket file is required';
       this.toastr.error('Onward ticket file is required', 'Error');
       return;
     }
 
-    if (!this.returnFile) {
+    if (returnMode !== 'ROAD' && !this.returnFile) {
       this.returnFileError = 'Return ticket file is required';
       this.toastr.error('Return ticket file is required', 'Error');
       return;
@@ -186,14 +239,11 @@ export class WeddingRegistrationComponent implements OnInit {
 
     this.weddingService.registerGuest(formData).subscribe(
       () => {
-        this.isSubmitting = false;
         this.toastr.success('Registration successful', 'Success');
-        this.registerForm.reset();
-        this.coPassengers.clear(); // reset co-passengers
-        this.onwardFile = null;
-        this.returnFile = null;
-        this.onwardFileError = '';
-        this.returnFileError = '';
+        // Refresh the page after a short delay to show success message
+        setTimeout(() => {
+          window.location.reload();
+        }, 1500);
       },
       (err: any) => {
         this.isSubmitting = false;

@@ -17,6 +17,7 @@ export class InformationComponent implements OnInit {
   isLoading: boolean = true;
   hasError: boolean = false;
   errorMessage: string = '';
+  isExpired: boolean = false;
 
   constructor(
     private weddingService: WebWeddingService,
@@ -34,9 +35,22 @@ export class InformationComponent implements OnInit {
   getWedding() {
     this.isLoading = true;
     this.hasError = false;
+    this.isExpired = false;
 
     this.weddingService.getWeddingInformation(this.weddingId).subscribe(
       (resp: any) => {
+        
+        if (resp?.isExpired == true) {
+          // isExpired is true, so show the card and register link
+          this.isExpired = false;
+        } else {
+          this.isExpired = true;
+          this.hasError = true;
+          this.errorMessage = 'This wedding URL has expired. The link is no longer valid.';
+          this.isLoading = false;
+          return;
+        }
+
         // Defensive handling for API shapes:
         // - { success:true, message:'Wedding Card', data: null }
         // - { success:true, message:'Wedding Card', data: 'http://.../image.png' }

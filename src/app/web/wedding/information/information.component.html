@@ -7,15 +7,35 @@
     <p class="mt-3">Loading wedding information...</p>
   </div>
 
-  <!-- Error State -->
-  <div *ngIf="hasError && !isLoading" class="alert alert-danger text-center py-5">
-    <h4>Error</h4>
-    <p>{{ errorMessage }}</p>
+  <!-- Expired State -->
+  <div *ngIf="isExpired && !isLoading" class="expired-container">
+    <div class="expired-content">
+      <div class="expired-icon">
+        <svg xmlns="http://www.w3.org/2000/svg" width="80" height="80" fill="currentColor" viewBox="0 0 16 16">
+          <path d="M8 16A8 8 0 1 0 8 0a8 8 0 0 0 0 16zM8 4a.905.905 0 1 1 0 1.818A.905.905 0 0 1 8 4zm0 3.75c-.414 0-.75.336-.75.75v3.5c0 .414.336.75.75.75s.75-.336.75-.75v-3.5c0-.414-.336-.75-.75-.75z"/>
+        </svg>
+      </div>
+      <h2 class="expired-title">⚠️ Wedding URL Expired</h2>
+      <p class="expired-message">{{ errorMessage }}</p>
+      <div class="expired-divider"></div>
+      <button (click)="goBack()" class="btn btn-primary btn-lg expired-button">
+        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" viewBox="0 0 16 16" style="margin-right: 8px;">
+          <path fill-rule="evenodd" d="M15 8a.5.5 0 0 0-.5-.5H2.707l3.147-3.146a.5.5 0 1 0-.708-.708l-4 4a.5.5 0 0 0 0 .708l4 4a.5.5 0 0 0 .708-.708L2.707 8.5H14.5A.5.5 0 0 0 15 8z"/>
+        </svg>
+        Go Back
+      </button>
+    </div>
+  </div>
+
+  <!-- Error State (for non-expired errors) -->
+  <div *ngIf="hasError && !isLoading && !isExpired" class="alert alert-danger text-center py-5 mx-3" style="margin-top: 2rem;">
+    <h4 style="color: #dc3545; margin-bottom: 1rem;">Error</h4>
+    <p style="font-size: 1.1rem; margin-bottom: 1.5rem;">{{ errorMessage }}</p>
     <button (click)="goBack()" class="btn btn-primary">Go Back</button>
   </div>
 
   <!-- Wedding Information -->
-  <div *ngIf="!isLoading && !hasError" class="wedding-content">
+  <div *ngIf="!isLoading && !hasError && !isExpired" class="wedding-content">
 
     <!-- Wedding Card with Image -->
     <div class="wedding-card">

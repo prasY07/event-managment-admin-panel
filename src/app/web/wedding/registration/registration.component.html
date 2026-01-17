@@ -1,155 +1,670 @@
-<div class="container py-4">
-  <div class="card p-4">
-    <h4>Wedding Registration <small *ngIf="coupleName" class="text-muted">- {{ coupleName }}</small></h4>
-    <form [formGroup]="registerForm" (ngSubmit)="submit()">
+<style>
+  @keyframes fadeInUp {
+    from {
+      opacity: 0;
+      transform: translateY(30px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+  
+  @keyframes fadeIn {
+    from {
+      opacity: 0;
+    }
+    to {
+      opacity: 1;
+    }
+  }
+  
+  @keyframes slideInLeft {
+    from {
+      opacity: 0;
+      transform: translateX(-30px);
+    }
+    to {
+      opacity: 1;
+      transform: translateX(0);
+    }
+  }
+  
+  @keyframes slideInRight {
+    from {
+      opacity: 0;
+      transform: translateX(30px);
+    }
+    to {
+      opacity: 1;
+      transform: translateX(0);
+    }
+  }
+  
+  @keyframes pulse {
+    0%, 100% {
+      transform: scale(1);
+    }
+    50% {
+      transform: scale(1.05);
+    }
+  }
+  
+  @keyframes envelopeFlap {
+    0% {
+      transform: rotateX(0deg);
+    }
+    50% {
+      transform: rotateX(-10deg);
+    }
+    100% {
+      transform: rotateX(0deg);
+    }
+  }
+  
+  @keyframes stepSlideIn {
+    from {
+      opacity: 0;
+      transform: translateX(50px);
+    }
+    to {
+      opacity: 1;
+      transform: translateX(0);
+    }
+  }
+  
+  @keyframes stepSlideOut {
+    from {
+      opacity: 1;
+      transform: translateX(0);
+    }
+    to {
+      opacity: 0;
+      transform: translateX(-50px);
+    }
+  }
+  
+  .envelope-wrapper {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    min-height: 100vh;
+    padding: 3rem 1rem;
+    position: relative;
+    animation: fadeIn 0.5s ease-out;
+  }
+  
+  .envelope-card {
+    max-width: 900px;
+    margin: 0 auto;
+    position: relative;
+    animation: fadeInUp 0.6s ease-out;
+  }
+  
+  .envelope-flap {
+    position: relative;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: white;
+    padding: 2.5rem 2rem;
+    border-radius: 8px 8px 0 0;
+    text-align: center;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+    animation: envelopeFlap 2s ease-in-out infinite;
+    transform-origin: top center;
+  }
+  
+  .envelope-flap::after {
+    content: '';
+    position: absolute;
+    bottom: -20px;
+    left: 0;
+    right: 0;
+    width: 0;
+    height: 0;
+    border-left: 450px solid transparent;
+    border-right: 450px solid transparent;
+    border-top: 20px solid #667eea;
+  }
+  
+  .envelope-body {
+    background: white;
+    border-radius: 0 0 8px 8px;
+    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.3);
+    padding: 2rem;
+    margin-top: -1px;
+  }
+  
+  /* Stepper Styles */
+  .stepper {
+    margin-bottom: 2.5rem;
+    position: relative;
+  }
+  
+  .stepper-progress {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    position: relative;
+    margin-bottom: 2rem;
+  }
+  
+  .stepper-progress::before {
+    content: '';
+    position: absolute;
+    top: 20px;
+    left: 0;
+    right: 0;
+    height: 3px;
+    background: #e9ecef;
+    z-index: 1;
+  }
+  
+  .stepper-progress-line {
+    position: absolute;
+    top: 20px;
+    left: 0;
+    height: 3px;
+    background: linear-gradient(90deg, #667eea 0%, #764ba2 100%);
+    z-index: 2;
+    transition: width 0.5s ease;
+  }
+  
+  .stepper-step {
+    position: relative;
+    z-index: 3;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    flex: 1;
+    cursor: pointer;
+  }
+  
+  .stepper-step-circle {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    background: #e9ecef;
+    color: #6c757d;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 600;
+    font-size: 0.9rem;
+    transition: all 0.3s ease;
+    border: 3px solid #e9ecef;
+    position: relative;
+  }
+  
+  .stepper-step.active .stepper-step-circle {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: white;
+    border-color: #667eea;
+    transform: scale(1.1);
+    box-shadow: 0 4px 15px rgba(102, 126, 234, 0.4);
+  }
+  
+  .stepper-step.completed .stepper-step-circle {
+    background: #28a745;
+    color: white;
+    border-color: #28a745;
+  }
+  
+  .stepper-step.completed .stepper-step-circle::after {
+    content: '✓';
+    font-size: 1.2rem;
+  }
+  
+  .stepper-step-label {
+    margin-top: 0.5rem;
+    font-size: 0.85rem;
+    color: #6c757d;
+    font-weight: 500;
+    text-align: center;
+    transition: all 0.3s ease;
+  }
+  
+  .stepper-step.active .stepper-step-label {
+    color: #667eea;
+    font-weight: 600;
+  }
+  
+  .stepper-content {
+    position: relative;
+    min-height: 400px;
+  }
+  
+  .step-panel {
+    animation: stepSlideIn 0.4s ease-out;
+    display: none;
+  }
+  
+  .step-panel.active {
+    display: block;
+  }
+  
+  .card {
+    border: none;
+    border-radius: 8px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    margin-bottom: 1.5rem;
+    transition: all 0.3s ease;
+    overflow: hidden;
+  }
+  
+  .card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 5px 20px rgba(0, 0, 0, 0.15);
+  }
+  
+  .card-header {
+    background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+    border-bottom: 3px solid #667eea;
+    padding: 1rem 1.5rem;
+    font-weight: 600;
+    color: #667eea;
+    font-size: 1.1rem;
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+  }
+  
+  .card-header::before {
+    content: '';
+    width: 4px;
+    height: 24px;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    border-radius: 2px;
+  }
+  
+  .card-body {
+    padding: 1.5rem;
+  }
+  
+  .form-input {
+    transition: all 0.3s ease;
+  }
+  
+  .form-input:focus {
+    border-color: #667eea !important;
+    box-shadow: 0 0 0 0.2rem rgba(102, 126, 234, 0.25) !important;
+    transform: scale(1.02);
+  }
+  
+  .btn-animated {
+    transition: all 0.3s ease;
+    position: relative;
+    overflow: hidden;
+  }
+  
+  .btn-animated:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(102, 126, 234, 0.5) !important;
+  }
+  
+  .btn-animated:active {
+    transform: translateY(0);
+  }
+  
+  .envelope-stamp {
+    position: absolute;
+    top: 20px;
+    right: 30px;
+    width: 60px;
+    height: 60px;
+    background: radial-gradient(circle, #fff 0%, #f0f0f0 100%);
+    border: 3px dashed #667eea;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 0.75rem;
+    color: #667eea;
+    font-weight: bold;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  }
+  
+  .stepper-actions {
+    display: flex;
+    justify-content: space-between;
+    gap: 1rem;
+    margin-top: 2rem;
+    padding-top: 2rem;
+    border-top: 2px solid #e9ecef;
+  }
+  
+  @media (max-width: 768px) {
+    .envelope-wrapper {
+      min-height: auto !important;
+      padding: 1rem 0.5rem !important;
+    }
+    
+    .envelope-stamp {
+      width: 45px !important;
+      height: 45px !important;
+      top: 10px !important;
+      right: 15px !important;
+      font-size: 0.6rem !important;
+      border: 2px dashed #667eea !important;
+    }
+    
+    .stepper-actions {
+      flex-direction: column;
+      gap: 0.75rem;
+      margin-top: 1rem !important;
+      padding-top: 1rem !important;
+    }
+    
+    .stepper-actions .btn {
+      width: 100%;
+      padding: 0.75rem 1rem !important;
+      font-size: 0.9rem !important;
+    }
+    
+    .stepper-actions .btn-lg {
+      padding: 0.75rem 1rem !important;
+      font-size: 0.9rem !important;
+    }
+    
+    .stepper-step-circle {
+      width: 32px !important;
+      height: 32px !important;
+      font-size: 0.8rem !important;
+    }
+    
+    .stepper-step-label {
+      font-size: 0.75rem !important;
+    }
+    
+    .stepper-progress {
+      margin-bottom: 1rem !important;
+    }
+    
+    .envelope-body {
+      padding: 1rem !important;
+    }
+    
+    .envelope-flap {
+      padding: 1.5rem 1rem !important;
+    }
+    
+    .envelope-flap h4 {
+      font-size: 1.4rem !important;
+    }
+    
+    .card {
+      margin-bottom: 1rem !important;
+    }
+    
+    .card-body {
+      padding: 1rem !important;
+    }
+    
+    .card-header {
+      padding: 0.75rem 1rem !important;
+      font-size: 1rem !important;
+    }
+    
+    .stepper-content {
+      min-height: auto !important;
+    }
+    
+    .mb-3 {
+      margin-bottom: 0.75rem !important;
+    }
+    
+    .mb-4 {
+      margin-bottom: 1rem !important;
+    }
+  }
+</style>
 
-      <!-- Full Name -->
-      <div class="mb-3">
-        <label class="form-label">Full Name</label>
-        <input formControlName="fullName" class="form-control" [class.is-invalid]="isInvalid('fullName')" />
-        <div class="invalid-feedback" *ngIf="isInvalid('fullName')">Full name is required</div>
-      </div>
-
-      <!-- Mobile & Email -->
-      <div class="row">
-        <div class="col-md-6 mb-3">
-          <label class="form-label">Mobile Number</label>
-          <input formControlName="mobileNumber" class="form-control" [class.is-invalid]="isInvalid('mobileNumber')" />
-          <div class="invalid-feedback" *ngIf="isInvalid('mobileNumber')">Valid 10-digit mobile number required</div>
-        </div>
-        <div class="col-md-6 mb-3">
-          <label class="form-label">Email</label>
-          <input formControlName="email" class="form-control" [class.is-invalid]="isInvalid('email')" />
-          <div class="invalid-feedback" *ngIf="isInvalid('email')">Valid email is required</div>
-        </div>
-      </div>
-
-      <!-- Gender -->
-      <div class="mb-3">
-        <label class="form-label">Gender</label>
-        <select formControlName="gender" class="form-select" [class.is-invalid]="isInvalid('gender')">
-          <option value="MALE">Male</option>
-          <option value="FEMALE">Female</option>
-          <option value="OTHER">Other</option>
-        </select>
-      </div>
-
-      <hr />
-      <h5>Onward Journey</h5>
-      <div formGroupName="onwardJourney">
-
-        <div class="row">
-          <div class="col-md-4 mb-3">
-            <label class="form-label">Mode</label>
-            <select formControlName="mode" class="form-select">
-              <option value="FLIGHT">Flight</option>
-              <option value="TRAIN">Train</option>
-              <option value="ROAD">Road</option>
-            </select>
-          </div>
-          <div class="col-md-4 mb-3">
-            <label class="form-label">Arrival Date</label>
-            <input type="date" formControlName="arrivalDate" class="form-control" />
-          </div>
-          <div class="col-md-4 mb-3">
-            <label class="form-label">Arrival Time</label>
-            <input type="time" formControlName="arrivalTime" class="form-control" />
-          </div>
-        </div>
-
-        <!-- Departure & Destination -->
-        <div class="row">
-          <div class="col-md-6 mb-3">
-            <label class="form-label">Departure City</label>
-            <input formControlName="departureCity" class="form-control" [class.is-invalid]="isInvalid('departureCity','onwardJourney')" />
-            <div class="invalid-feedback" *ngIf="isInvalid('departureCity','onwardJourney')">Departure city is required</div>
-          </div>
-          <div class="col-md-6 mb-3">
-            <label class="form-label">Destination City</label>
-            <input formControlName="destinationCity" class="form-control" [class.is-invalid]="isInvalid('destinationCity','onwardJourney')" />
-            <div class="invalid-feedback" *ngIf="isInvalid('destinationCity','onwardJourney')">Destination city is required</div>
-          </div>
-        </div>
-
-        <!-- Co-passengers -->
-        <div class="mb-3">
-          <label class="form-label">Co-passengers</label>
-          <div formArrayName="coPassengers">
-            <div *ngFor="let cp of getCoPassengersArray('onwardJourney').controls; let i = index" [formGroupName]="i" class="d-flex gap-2 mb-3">
-              <div class="flex-grow-1">
-                <input formControlName="name" placeholder="Name" class="form-control" />
-              </div>
-              <div class="flex-grow-1">
-                <input formControlName="age" type="number" placeholder="Age" class="form-control" />
-              </div>
-              <div class="flex-grow-1">
-                <input formControlName="relationship" placeholder="Relationship" class="form-control" />
-              </div>
-              <button type="button" class="btn btn-danger" (click)="removeCoPassenger(i)">Remove</button>
+<div class="envelope-wrapper">
+  <div class="envelope-card">
+    <!-- Envelope Flap (Header) -->
+    <div class="envelope-flap">
+      <div class="envelope-stamp">Register</div>
+      <h4 style="margin: 0; font-size: 1.75rem; font-weight: 600; letter-spacing: 0.5px; position: relative; z-index: 1;">
+        Guest Registration
+        <small *ngIf="coupleName" style="display: block; margin-top: 0.5rem; font-size: 0.9rem; opacity: 0.9; font-weight: 300;">- {{ coupleName }}</small>
+      </h4>
+    </div>
+    
+    <!-- Envelope Body (Form Content) -->
+    <div class="envelope-body">
+      <form [formGroup]="registerForm" (ngSubmit)="submit()">
+        
+        <!-- Stepper Progress -->
+        <div class="stepper">
+          <div class="stepper-progress">
+            <div class="stepper-progress-line" [style.width.%]="((currentStep - 1) / (totalSteps - 1)) * 100"></div>
+            <div class="stepper-step" [class.active]="currentStep === 1" [class.completed]="currentStep > 1" (click)="goToStep(1)">
+              <div class="stepper-step-circle">1</div>
+              <div class="stepper-step-label">Personal Info</div>
+            </div>
+            <div class="stepper-step" [class.active]="currentStep === 2" [class.completed]="currentStep > 2" (click)="goToStep(2)">
+              <div class="stepper-step-circle">2</div>
+              <div class="stepper-step-label">Onward Journey</div>
+            </div>
+            <div class="stepper-step" [class.active]="currentStep === 3" [class.completed]="currentStep > 3" (click)="goToStep(3)">
+              <div class="stepper-step-circle">3</div>
+              <div class="stepper-step-label">Return Journey</div>
             </div>
           </div>
-          <button type="button" class="btn btn-sm btn-secondary" (click)="addCoPassenger()">Add Co-passenger</button>
         </div>
 
-        <!-- Ticket -->
-        <div class="mb-3">
-          <label class="form-label">Onward Ticket File</label>
-          <input type="file" (change)="onOnwardFileChange($event)" class="form-control" [class.is-invalid]="onwardFileError.length > 0" />
-          <div class="invalid-feedback" *ngIf="onwardFileError">{{ onwardFileError }}</div>
-        </div>
-      </div>
+        <!-- Stepper Content -->
+        <div class="stepper-content">
+          
+          <!-- Step 1: Personal Information -->
+          <div class="step-panel" [class.active]="currentStep === 1">
+            <div class="card">
+              <div class="card-header">
+                Personal Information
+              </div>
+              <div class="card-body">
+                <!-- Full Name -->
+                <div class="mb-3">
+                  <label class="form-label fw-semibold">Full Name <span class="text-danger">*</span></label>
+                  <input formControlName="fullName" class="form-control form-input" placeholder="Enter your full name" [class.is-invalid]="isInvalid('fullName')" />
+                  <div class="invalid-feedback" *ngIf="isInvalid('fullName')">Full name is required</div>
+                </div>
 
-      <hr />
-      <h5>Return Journey</h5>
-      <div formGroupName="returnJourney">
-        <div class="row">
-          <div class="col-md-4 mb-3">
-            <label class="form-label">Mode</label>
-            <select formControlName="mode" class="form-select">
-              <option value="FLIGHT">Flight</option>
-              <option value="TRAIN">Train</option>
-              <option value="ROAD">Road</option>
-            </select>
+                <!-- Mobile & Email -->
+                <div class="row">
+                  <div class="col-md-6 mb-3">
+                    <label class="form-label fw-semibold">Mobile Number <span class="text-danger">*</span></label>
+                    <input formControlName="mobileNumber" class="form-control form-input" placeholder="Enter 10-digit mobile number" [class.is-invalid]="isInvalid('mobileNumber')" />
+                    <div class="invalid-feedback" *ngIf="isInvalid('mobileNumber')">Valid 10-digit mobile number required</div>
+                  </div>
+                  <div class="col-md-6 mb-3">
+                    <label class="form-label fw-semibold">Email <span class="text-danger">*</span></label>
+                    <input type="email" formControlName="email" class="form-control form-input" placeholder="Enter your email address" [class.is-invalid]="isInvalid('email')" />
+                    <div class="invalid-feedback" *ngIf="isInvalid('email')">Valid email is required</div>
+                  </div>
+                </div>
+
+                <!-- Gender -->
+                <div class="mb-3">
+                  <label class="form-label fw-semibold">Gender <span class="text-danger">*</span></label>
+                  <select formControlName="gender" class="form-select form-input" [class.is-invalid]="isInvalid('gender')">
+                    <option value="MALE">Male</option>
+                    <option value="FEMALE">Female</option>
+                    <option value="OTHER">Other</option>
+                  </select>
+                </div>
+              </div>
+            </div>
           </div>
-          <div class="col-md-4 mb-3">
-            <label class="form-label">Departure Date</label>
-            <input type="date" formControlName="departureDate" class="form-control" />
+          
+          <!-- Step 2: Onward Journey -->
+          <div class="step-panel" [class.active]="currentStep === 2" formGroupName="onwardJourney">
+            <div class="card">
+              <div class="card-header">
+                Onward Journey
+              </div>
+              <div class="card-body">
+                <div class="row">
+                  <div class="col-md-4 mb-3">
+                    <label class="form-label fw-semibold">Mode</label>
+                    <select formControlName="mode" class="form-select form-input">
+                      <option value="FLIGHT">Flight</option>
+                      <option value="TRAIN">Train</option>
+                      <option value="BUS">Bus</option>
+                      <option value="ROAD">Road</option>
+                    </select>
+                  </div>
+                  <div class="col-md-4 mb-3">
+                    <label class="form-label fw-semibold">Arrival Date</label>
+                    <input type="date" formControlName="arrivalDate" class="form-control form-input" />
+                  </div>
+                  <div class="col-md-4 mb-3">
+                    <label class="form-label fw-semibold">Arrival Time</label>
+                    <input type="time" formControlName="arrivalTime" class="form-control form-input" />
+                  </div>
+                </div>
+
+                <!-- Carrier Name & Number -->
+                <div class="row">
+                  <div class="col-md-6 mb-3">
+                    <label class="form-label fw-semibold">Carrier Name</label>
+                    <input formControlName="carrierName" class="form-control form-input" placeholder="e.g., IndiGo, Air India" />
+                  </div>
+                  <div class="col-md-6 mb-3">
+                    <label class="form-label fw-semibold">Carrier Number</label>
+                    <input formControlName="carrierNumber" class="form-control form-input" placeholder="e.g., 6E-512" />
+                  </div>
+                </div>
+
+                <!-- Departure & Destination -->
+                <div class="row">
+                  <div class="col-md-6 mb-3">
+                    <label class="form-label fw-semibold">Departure City <span class="text-danger">*</span></label>
+                    <input formControlName="departureCity" class="form-control form-input" placeholder="Enter departure city" [class.is-invalid]="isInvalid('departureCity','onwardJourney')" />
+                    <div class="invalid-feedback" *ngIf="isInvalid('departureCity','onwardJourney')">Departure city is required</div>
+                  </div>
+                  <div class="col-md-6 mb-3">
+                    <label class="form-label fw-semibold">Destination City <span class="text-danger">*</span></label>
+                    <input formControlName="destinationCity" class="form-control form-input" placeholder="Enter destination city" [class.is-invalid]="isInvalid('destinationCity','onwardJourney')" />
+                    <div class="invalid-feedback" *ngIf="isInvalid('destinationCity','onwardJourney')">Destination city is required</div>
+                  </div>
+                </div>
+
+                <!-- Co-passengers -->
+                <div class="mb-3">
+                  <label class="form-label fw-semibold">Co-passengers</label>
+                  <div formArrayName="coPassengers">
+                    <div *ngFor="let cp of getCoPassengersArray('onwardJourney').controls; let i = index" [formGroupName]="i" class="card mb-3" style="background: #f8f9fa; border: 1px solid #e9ecef;">
+                      <div class="card-body">
+                        <div class="row g-2">
+                          <div class="col-md-4">
+                            <input formControlName="name" placeholder="Name" class="form-control form-input" />
+                          </div>
+                          <div class="col-md-3">
+                            <input formControlName="age" type="number" placeholder="Age" class="form-control form-input" />
+                          </div>
+                          <div class="col-md-4">
+                            <input formControlName="relationship" placeholder="Relationship" class="form-control form-input" />
+                          </div>
+                          <div class="col-md-1">
+                            <button type="button" class="btn btn-danger btn-sm w-100" (click)="removeCoPassenger(i)">×</button>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <button type="button" class="btn btn-secondary btn-sm" (click)="addCoPassenger()">+ Add Co-passenger</button>
+                </div>
+
+                <!-- Ticket -->
+                <div class="mb-3" *ngIf="registerForm.get('onwardJourney.mode')?.value !== 'ROAD'">
+                  <label class="form-label fw-semibold">Onward Ticket File <span class="text-danger">*</span></label>
+                  <input type="file" (change)="onOnwardFileChange($event)" class="form-control form-input" accept=".pdf,.jpg,.jpeg,.png" [class.is-invalid]="onwardFileError.length > 0" />
+                  <div class="invalid-feedback" *ngIf="onwardFileError">{{ onwardFileError }}</div>
+                  <small class="form-text text-muted">Upload your onward journey ticket (PDF, JPG, PNG)</small>
+                </div>
+              </div>
+            </div>
           </div>
-          <div class="col-md-4 mb-3">
-            <label class="form-label">Departure Time</label>
-            <input type="time" formControlName="departureTime" class="form-control" />
+          
+          <!-- Step 3: Return Journey -->
+          <div class="step-panel" [class.active]="currentStep === 3" formGroupName="returnJourney">
+            <div class="card">
+              <div class="card-header">
+                Return Journey
+              </div>
+              <div class="card-body">
+                <div class="row">
+                  <div class="col-md-4 mb-3">
+                    <label class="form-label fw-semibold">Mode</label>
+                    <select formControlName="mode" class="form-select form-input">
+                      <option value="FLIGHT">Flight</option>
+                      <option value="TRAIN">Train</option>
+                      <option value="BUS">Bus</option>
+                      <option value="ROAD">Road</option>
+                    </select>
+                  </div>
+                  <div class="col-md-4 mb-3">
+                    <label class="form-label fw-semibold">Departure Date</label>
+                    <input type="date" formControlName="departureDate" class="form-control form-input" />
+                  </div>
+                  <div class="col-md-4 mb-3">
+                    <label class="form-label fw-semibold">Departure Time</label>
+                    <input type="time" formControlName="departureTime" class="form-control form-input" />
+                  </div>
+                </div>
+
+                <div class="row">
+                  <div class="col-md-6 mb-3">
+                    <label class="form-label fw-semibold">Departure City</label>
+                    <input formControlName="departureCity" class="form-control form-input" placeholder="Enter departure city" />
+                  </div>
+                  <div class="col-md-6 mb-3">
+                    <label class="form-label fw-semibold">Destination City <span class="text-danger">*</span></label>
+                    <input formControlName="destinationCity" class="form-control form-input" placeholder="Enter destination city" [class.is-invalid]="isInvalid('destinationCity','returnJourney')" />
+                    <div class="invalid-feedback" *ngIf="isInvalid('destinationCity','returnJourney')">Destination city is required</div>
+                  </div>
+                </div>
+
+                <div class="row">
+                  <div class="col-md-6 mb-3">
+                    <label class="form-label fw-semibold">Carrier Name</label>
+                    <input formControlName="carrierName" class="form-control form-input" placeholder="e.g., IndiGo, Air India" />
+                  </div>
+                  <div class="col-md-6 mb-3">
+                    <label class="form-label fw-semibold">Carrier Number</label>
+                    <input formControlName="carrierNumber" class="form-control form-input" placeholder="e.g., 6E-521" />
+                  </div>
+                </div>
+
+                <div class="mb-3" *ngIf="registerForm.get('returnJourney.mode')?.value !== 'ROAD'">
+                  <label class="form-label fw-semibold">Return Ticket File <span class="text-danger">*</span></label>
+                  <input type="file" (change)="onReturnFileChange($event)" class="form-control form-input" accept=".pdf,.jpg,.jpeg,.png" [class.is-invalid]="returnFileError.length > 0" />
+                  <div class="invalid-feedback" *ngIf="returnFileError">{{ returnFileError }}</div>
+                  <small class="form-text text-muted">Upload your return journey ticket (PDF, JPG, PNG)</small>
+                </div>
+              </div>
+            </div>
           </div>
+
         </div>
 
-        <div class="row">
-          <div class="col-md-6 mb-3">
-            <label class="form-label">Destination City</label>
-            <input formControlName="destinationCity" class="form-control" [class.is-invalid]="isInvalid('destinationCity','returnJourney')" />
-            <div class="invalid-feedback" *ngIf="isInvalid('destinationCity','returnJourney')">Destination city is required</div>
-          </div>
-          <div class="col-md-6 mb-3">
-            <label class="form-label">Carrier Name</label>
-            <input formControlName="carrierName" class="form-control" />
-          </div>
+        <!-- Stepper Actions (Navigation Buttons) -->
+        <div class="stepper-actions">
+          <button type="button" class="btn btn-secondary btn-lg px-4" (click)="previousStep()" [disabled]="currentStep === 1" [style.opacity]="currentStep === 1 ? '0.5' : '1'">
+            ← Previous
+          </button>
+          <button *ngIf="currentStep < totalSteps" type="button" class="btn btn-primary btn-lg px-4 btn-animated" (click)="nextStep()" style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); border: none; font-weight: 600;">
+            Next →
+          </button>
+          <button *ngIf="currentStep === totalSteps" type="submit" class="btn btn-primary btn-lg px-5 btn-animated" [disabled]="isSubmitting" style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); border: none; font-weight: 600;">
+            <span *ngIf="!isSubmitting">
+              <i class="bi bi-send me-2"></i>Register Now
+            </span>
+            <span *ngIf="isSubmitting">
+              <span class="spinner-border spinner-border-sm me-2" role="status" aria-hidden="true"></span>
+              Registering...
+            </span>
+          </button>
         </div>
-
-        <div class="mb-3">
-          <label class="form-label">Carrier Number</label>
-          <input formControlName="carrierNumber" class="form-control" />
-        </div>
-
-        <div class="mb-3">
-          <label class="form-label">Return Ticket File</label>
-          <input type="file" (change)="onReturnFileChange($event)" class="form-control" [class.is-invalid]="returnFileError.length > 0" />
-          <div class="invalid-feedback" *ngIf="returnFileError">{{ returnFileError }}</div>
-        </div>
-      </div>
-
-      <div class="text-end mt-4">
-        <button type="submit" class="btn btn-primary" [disabled]="isSubmitting">
-          {{ isSubmitting ? 'Registering...' : 'Register' }}
-        </button>
-      </div>
-    </form>
+      </form>
+    </div>
   </div>
 </div>
