@@ -100,7 +100,7 @@
             <!-- Registration Start Date -->
             <div class="col-6 mb-3">
               <label>Registration Start Date</label>
-              <input class="form-control" formControlName="registrationStartDate" type="date" />
+              <input class="form-control" formControlName="registrationStartDate" type="date" [min]="today" />
               <div *ngIf="weddingForm.get('registrationStartDate')?.touched && weddingForm.get('registrationStartDate')?.invalid" class="text-danger">
                 <small *ngIf="weddingForm.get('registrationStartDate')?.errors?.['required']">Registration start date is required.</small>
                 <small *ngIf="weddingForm.get('registrationStartDate')?.errors?.['invalidRegistrationStartDate']">
@@ -112,7 +112,7 @@
             <!-- Registration End Date -->
             <div class="col-6 mb-3">
               <label>Registration End Date</label>
-              <input class="form-control" formControlName="registrationEndDate" type="date" />
+              <input class="form-control" formControlName="registrationEndDate" type="date" [min]="registrationStartDateMin" />
               <div *ngIf="weddingForm.get('registrationEndDate')?.touched && weddingForm.get('registrationEndDate')?.invalid" class="text-danger">
                 <small *ngIf="weddingForm.get('registrationEndDate')?.errors?.['required']">Registration end date is required.</small>
                 <small *ngIf="weddingForm.get('registrationEndDate')?.errors?.['invalidRegistrationEndDate']">

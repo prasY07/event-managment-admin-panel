@@ -1,9 +1,10 @@
 import { CommonModule } from '@angular/common';
-import { Component, OnInit } from '@angular/core';
-import { FormArray, FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
+import { Component, OnInit, OnDestroy } from '@angular/core';
+import { AbstractControl, FormArray, FormBuilder, FormGroup, ReactiveFormsModule, ValidationErrors, Validators } from '@angular/forms';
 import { WebWeddingService } from '../../services/webwedding.service';
 import { ToastrService } from 'ngx-toastr';
 import { Router, ActivatedRoute } from '@angular/router';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-wedding-registration',
@@ -12,7 +13,7 @@ import { Router, ActivatedRoute } from '@angular/router';
   templateUrl: './registration.component.html',
   styleUrl: './registration.component.scss'
 })
-export class WeddingRegistrationComponent implements OnInit {
+export class WeddingRegistrationComponent implements OnInit, OnDestroy {
   registerForm!: FormGroup;
   onwardFile?: File | null = null;
   returnFile?: File | null = null;
@@ -23,6 +24,8 @@ export class WeddingRegistrationComponent implements OnInit {
   returnFileError = '';
   currentStep = 1;
   totalSteps = 3;
+  today: string = '';
+  private dateSubscriptions: Subscription[] = [];
 
   constructor(
     private fb: FormBuilder,
@@ -35,6 +38,10 @@ export class WeddingRegistrationComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    // Set today's date in YYYY-MM-DD format
+    const now = new Date();
+    this.today = now.toISOString().split('T')[0];
+
     this.registerForm = this.fb.group({
       fullName: ['', Validators.required],
       mobileNumber: ['', [Validators.required, Validators.pattern(/^\d{10}$/)]],
@@ -42,7 +49,7 @@ export class WeddingRegistrationComponent implements OnInit {
       gender: ['MALE', Validators.required],
       onwardJourney: this.fb.group({
         mode: ['FLIGHT'],
-        arrivalDate: [''],
+        arrivalDate: ['', this.validateArrivalDate.bind(this)],
         arrivalTime: [''],
         departureCity: ['', Validators.required],
         destinationCity: ['', Validators.required],
@@ -52,7 +59,7 @@ export class WeddingRegistrationComponent implements OnInit {
       }),
       returnJourney: this.fb.group({
         mode: ['FLIGHT'],
-        departureDate: [''],
+        departureDate: ['', this.validateDepartureDate.bind(this)],
         departureTime: [''],
         destinationCity: ['', Validators.required],
         carrierName: [''],
@@ -60,7 +67,94 @@ export class WeddingRegistrationComponent implements OnInit {
       })
     });
 
+    // Trigger validation when dates change
+    const arrivalSub = this.registerForm.get('onwardJourney.arrivalDate')?.valueChanges.subscribe(() => {
+      this.registerForm.get('returnJourney.departureDate')?.updateValueAndValidity({ emitEvent: false });
+    });
+    if (arrivalSub) this.dateSubscriptions.push(arrivalSub);
+
+    const departureSub = this.registerForm.get('returnJourney.departureDate')?.valueChanges.subscribe(() => {
+      this.registerForm.get('onwardJourney.arrivalDate')?.updateValueAndValidity({ emitEvent: false });
+    });
+    if (departureSub) this.dateSubscriptions.push(departureSub);
+
     this.loadWeddingDetails();
+  }
+
+  ngOnDestroy(): void {
+    this.dateSubscriptions.forEach(sub => sub.unsubscribe());
+  }
+
+  // Getter for departure date min (should be >= arrival date)
+  get departureDateMin(): string {
+    const arrivalDate = this.registerForm?.get('onwardJourney.arrivalDate')?.value;
+    return arrivalDate || this.today;
+  }
+
+  validateArrivalDate(control: AbstractControl): ValidationErrors | null {
+    if (!control.value) return null;
+
+    const arrivalDate = new Date(control.value);
+    if (isNaN(arrivalDate.getTime())) return null;
+
+    // Check if arrival date is >= today
+    const today = new Date();
+    today.setHours(0, 0, 0, 0);
+    const arrivalDateOnly = new Date(arrivalDate);
+    arrivalDateOnly.setHours(0, 0, 0, 0);
+
+    if (arrivalDateOnly < today) {
+      return { invalidArrivalDate: 'Arrival date must be today or a future date.' };
+    }
+
+    // Check if arrival date is not greater than departure date
+    const departureDateValue = this.registerForm?.get('returnJourney.departureDate')?.value;
+    if (departureDateValue) {
+      const departureDate = new Date(departureDateValue);
+      if (!isNaN(departureDate.getTime())) {
+        const departureDateOnly = new Date(departureDate);
+        departureDateOnly.setHours(0, 0, 0, 0);
+
+        if (arrivalDateOnly > departureDateOnly) {
+          return { invalidArrivalDate: 'Arrival date must not be greater than departure date.' };
+        }
+      }
+    }
+
+    return null;
+  }
+
+  validateDepartureDate(control: AbstractControl): ValidationErrors | null {
+    if (!control.value) return null;
+
+    const departureDate = new Date(control.value);
+    if (isNaN(departureDate.getTime())) return null;
+
+    // Check if departure date is >= today
+    const today = new Date();
+    today.setHours(0, 0, 0, 0);
+    const departureDateOnly = new Date(departureDate);
+    departureDateOnly.setHours(0, 0, 0, 0);
+
+    if (departureDateOnly < today) {
+      return { invalidDepartureDate: 'Departure date must be today or a future date.' };
+    }
+
+    // Check if departure date is not less than arrival date
+    const arrivalDateValue = this.registerForm?.get('onwardJourney.arrivalDate')?.value;
+    if (arrivalDateValue) {
+      const arrivalDate = new Date(arrivalDateValue);
+      if (!isNaN(arrivalDate.getTime())) {
+        const arrivalDateOnly = new Date(arrivalDate);
+        arrivalDateOnly.setHours(0, 0, 0, 0);
+
+        if (departureDateOnly < arrivalDateOnly) {
+          return { invalidDepartureDate: 'Departure date must not be less than arrival date.' };
+        }
+      }
+    }
+
+    return null;
   }
 
   private loadWeddingDetails() {
@@ -204,7 +298,7 @@ export class WeddingRegistrationComponent implements OnInit {
     const onwardMode = this.registerForm.get('onwardJourney.mode')?.value;
     const returnMode = this.registerForm.get('returnJourney.mode')?.value;
 
-    // Only require ticket file if mode is not ROAD
+    // Only require ticket file if mode is not ROAD (By Self)
     if (onwardMode !== 'ROAD' && !this.onwardFile) {
       this.onwardFileError = 'Onward ticket file is required';
       this.toastr.error('Onward ticket file is required', 'Error');

@@ -508,12 +508,17 @@
                       <option value="FLIGHT">Flight</option>
                       <option value="TRAIN">Train</option>
                       <option value="BUS">Bus</option>
-                      <option value="ROAD">Road</option>
+                      <option value="ROAD">By Self</option>
                     </select>
                   </div>
                   <div class="col-md-4 mb-3">
                     <label class="form-label fw-semibold">Arrival Date</label>
-                    <input type="date" formControlName="arrivalDate" class="form-control form-input" />
+                    <input type="date" formControlName="arrivalDate" class="form-control form-input" [min]="today" [class.is-invalid]="isInvalid('arrivalDate','onwardJourney')" />
+                    <div class="invalid-feedback" *ngIf="isInvalid('arrivalDate','onwardJourney')">
+                      <div *ngIf="registerForm.get('onwardJourney.arrivalDate')?.errors?.['invalidArrivalDate']">
+                        {{ registerForm.get('onwardJourney.arrivalDate')?.errors?.['invalidArrivalDate'] }}
+                      </div>
+                    </div>
                   </div>
                   <div class="col-md-4 mb-3">
                     <label class="form-label fw-semibold">Arrival Time</label>
@@ -598,12 +603,17 @@
                       <option value="FLIGHT">Flight</option>
                       <option value="TRAIN">Train</option>
                       <option value="BUS">Bus</option>
-                      <option value="ROAD">Road</option>
+                      <option value="ROAD">By Self</option>
                     </select>
                   </div>
                   <div class="col-md-4 mb-3">
                     <label class="form-label fw-semibold">Departure Date</label>
-                    <input type="date" formControlName="departureDate" class="form-control form-input" />
+                    <input type="date" formControlName="departureDate" class="form-control form-input" [min]="departureDateMin" [class.is-invalid]="isInvalid('departureDate','returnJourney')" />
+                    <div class="invalid-feedback" *ngIf="isInvalid('departureDate','returnJourney')">
+                      <div *ngIf="registerForm.get('returnJourney.departureDate')?.errors?.['invalidDepartureDate']">
+                        {{ registerForm.get('returnJourney.departureDate')?.errors?.['invalidDepartureDate'] }}
+                      </div>
+                    </div>
                   </div>
                   <div class="col-md-4 mb-3">
                     <label class="form-label fw-semibold">Departure Time</label>

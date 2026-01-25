@@ -8,12 +8,12 @@
         <div class="row mb-4">
           <div class="col-md-3 mb-3">
             <label for="event-name" class="form-label">Title</label>
-            <input id="title" type="text" class="form-control" placeholder="Search Title" />
+            <input id="title" type="text" [(ngModel)]="filterTitle" class="form-control" placeholder="Search Title" />
           </div>
 
           <div class="col-md-3 mb-3">
             <label for="status" class="form-label">Status</label>
-            <select id="status" class="form-select">
+            <select id="status" [(ngModel)]="filterStatus" class="form-select">
               <option value="">Event Status</option>
               <option value="UPCOMING">Upcoming</option>
               <option value="ONGOING">Ongoing</option>
@@ -24,15 +24,19 @@
 
           <div class="col-md-3 mb-3">
             <label for="start-date" class="form-label">Start Date</label>
-            <input id="start-date" type="date" class="form-control" />
+            <input id="start-date" type="date" [(ngModel)]="filterStartDate" (change)="onStartDateChange()" class="form-control" />
           </div>
 
           <div class="col-md-3 mb-3">
-            <label for="last-date" class="form-label">Last Date</label>
-            <input id="last-date" type="date" class="form-control" />
+            <label for="end-date" class="form-label">End Date</label>
+            <input id="end-date" type="date" [(ngModel)]="filterEndDate" [min]="endDateMin" (change)="onEndDateChange()" class="form-control" [class.is-invalid]="dateRangeError" />
+            <div class="invalid-feedback" *ngIf="dateRangeError">
+              {{ dateRangeError }}
+            </div>
           </div>
         </div>
-        <button class="btn btn-primary ms-auto">Submit</button>
+        <button type="button" class="btn btn-primary me-2" (click)="applyFilters()">Submit</button>
+        <button type="button" class="btn btn-secondary" (click)="clearFilters()">Clear Filters</button>
 
       </c-card-body>
     </c-card>

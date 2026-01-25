@@ -1,5 +1,6 @@
 import { CommonModule, NgForOf } from '@angular/common';
 import { Component, OnInit, ViewChild } from '@angular/core';
+import { FormsModule } from '@angular/forms';
 import { RouterLink } from '@angular/router';
 import { RowComponent, ColComponent, TextColorDirective, CardComponent, CardHeaderComponent, CardBodyComponent } from '@coreui/angular';
 import { IconComponent, IconDirective, IconSetService } from '@coreui/icons-angular';
@@ -30,9 +31,8 @@ import { ToastrService } from 'ngx-toastr';
     MatTableModule,
     MatPaginatorModule,
     NgForOf,
-    ConfirmationDialogComponent
-    
-    // DataSource
+    ConfirmationDialogComponent,
+    FormsModule
   ],
   
   templateUrl: './list.component.html',
@@ -49,6 +49,14 @@ export class ListComponent implements OnInit {
   totalItems = 0;
   pageSize = 1;
   page = 0;
+
+  // Filter properties: title, status, and date range (startDate to endDate)
+  filterTitle = '';
+  filterStatus = '';
+  filterStartDate = '';
+  filterEndDate = '';
+  private currentFilters: any = {};
+  dateRangeError = '';
 
   @ViewChild(MatPaginator) paginator!: MatPaginator;
   @ViewChild('bannerUpload') bannerUpload!: BannerUploadComponent;
@@ -69,19 +77,129 @@ export class ListComponent implements OnInit {
     this.loadEvents(this.page, this.pageSize);
   }
 
-  loadEvents(page: number, size: number): void {
-    this.eventService.getEventsWithPagination(page).subscribe(
-      (res: any) => {
-        this.dataSource.data = res.data.items;
-        this.totalItems = res.data.totalElements;
-      },
-      (error) => {
-        console.error('Error fetching events:', error);
+  onStartDateChange(): void {
+    this.dateRangeError = '';
+    // If end date is set and is less than start date, clear it
+    if (this.filterEndDate && this.filterStartDate) {
+      const startDate = new Date(this.filterStartDate);
+      const endDate = new Date(this.filterEndDate);
+      startDate.setHours(0, 0, 0, 0);
+      endDate.setHours(0, 0, 0, 0);
+      
+      if (endDate < startDate) {
+        this.filterEndDate = '';
       }
-    );
+    }
   }
 
-  
+  onEndDateChange(): void {
+    this.dateRangeError = '';
+    // Validate when end date changes
+    if (this.filterStartDate && this.filterEndDate) {
+      const startDate = new Date(this.filterStartDate);
+      const endDate = new Date(this.filterEndDate);
+      startDate.setHours(0, 0, 0, 0);
+      endDate.setHours(0, 0, 0, 0);
+      
+      if (endDate < startDate) {
+        this.dateRangeError = 'End date must be greater than or equal to start date.';
+      }
+    }
+  }
+
+  loadEvents(page: number, size: number): void {
+    // Use filters if they exist, otherwise use default pagination
+    if (Object.keys(this.currentFilters).length > 0) {
+      this.eventService.getEventsWithFilter(page, this.currentFilters).subscribe(
+        (res: any) => {
+          this.dataSource.data = res.data.items;
+          this.totalItems = res.data.totalElements;
+        },
+        (error) => {
+          console.error('Error fetching filtered events:', error);
+          this.toastr.error('Error loading events', 'Error');
+        }
+      );
+    } else {
+      this.eventService.getEventsWithPagination(page).subscribe(
+        (res: any) => {
+          this.dataSource.data = res.data.items;
+          this.totalItems = res.data.totalElements;
+        },
+        (error) => {
+          console.error('Error fetching events:', error);
+          this.toastr.error('Error loading events', 'Error');
+        }
+      );
+    }
+  }
+
+  applyFilters(): void {
+    // Validate date range
+    this.dateRangeError = '';
+    if (this.filterStartDate && this.filterEndDate) {
+      const startDate = new Date(this.filterStartDate);
+      const endDate = new Date(this.filterEndDate);
+      startDate.setHours(0, 0, 0, 0);
+      endDate.setHours(0, 0, 0, 0);
+      
+      if (endDate < startDate) {
+        this.dateRangeError = 'End date must be greater than or equal to start date.';
+        this.toastr.error('End date must be greater than or equal to start date', 'Validation Error');
+        return;
+      }
+    }
+
+    this.page = 0; // Reset to first page when filtering
+    // Only include filters that have values
+    this.currentFilters = {};
+    if (this.filterTitle && this.filterTitle.trim()) {
+      this.currentFilters.title = this.filterTitle.trim();
+    }
+    if (this.filterStatus && this.filterStatus.trim()) {
+      this.currentFilters.status = this.filterStatus.trim();
+    }
+    if (this.filterStartDate && this.filterStartDate.trim()) {
+      this.currentFilters.startDate = this.filterStartDate.trim();
+    }
+    if (this.filterEndDate && this.filterEndDate.trim()) {
+      this.currentFilters.endDate = this.filterEndDate.trim();
+    }
+    
+    // Only call filter API if there are actual filters
+    if (Object.keys(this.currentFilters).length > 0) {
+      this.eventService.getEventsWithFilter(this.page, this.currentFilters).subscribe(
+        (res: any) => {
+          this.dataSource.data = res.data.items;
+          this.totalItems = res.data.totalElements;
+          this.toastr.success('Filters applied successfully', 'Success');
+        },
+        (error) => {
+          console.error('Error fetching filtered events:', error);
+          this.toastr.error('Error applying filters', 'Error');
+        }
+      );
+    } else {
+      // No filters, load all events
+      this.loadEvents(this.page, this.pageSize);
+    }
+  }
+
+  clearFilters(): void {
+    this.filterTitle = '';
+    this.filterStatus = '';
+    this.filterStartDate = '';
+    this.filterEndDate = '';
+    this.currentFilters = {};
+    this.dateRangeError = '';
+    this.page = 0;
+    this.loadEvents(this.page, this.pageSize);
+  }
+
+  // Getter for end date min (should be >= start date)
+  get endDateMin(): string {
+    return this.filterStartDate || '';
+  }
 
    openConfirmationDialog(element: any, status: string) {
     this.showConfirmation = true;

@@ -54,11 +54,13 @@ export class ListComponent implements OnInit {
   pageSize = 1;
   page = 0;
 
-  // Filter properties
-  filterTitle = '';
-  filterStatus = '';
+  // Filter properties: groomName, brideName, and wedding date range (startDate to endDate)
+  filterGroomName = '';
+  filterBrideName = '';
   filterStartDate = '';
   filterEndDate = '';
+  private currentFilters: any = {};
+  dateRangeError = '';
 
   @ViewChild(MatPaginator) paginator!: MatPaginator;
   @ViewChild('bannerUpload') bannerUpload!: BannerUploadComponent;
@@ -82,46 +84,128 @@ export class ListComponent implements OnInit {
     this.loadWeddings(this.page, this.pageSize);
   }
 
-  loadWeddings(page: number, size: number): void {
-    this.weddingService.getWeddingsWithPagination(page).subscribe(
-      (res: any) => {
-        this.dataSource.data = res.data.items;
-        this.totalItems = res.data.totalElements;
-      },
-      (error) => {
-        console.error('Error fetching weddings:', error);
+  onStartDateChange(): void {
+    this.dateRangeError = '';
+    // If end date is set and is less than start date, clear it
+    if (this.filterEndDate && this.filterStartDate) {
+      const startDate = new Date(this.filterStartDate);
+      const endDate = new Date(this.filterEndDate);
+      startDate.setHours(0, 0, 0, 0);
+      endDate.setHours(0, 0, 0, 0);
+      
+      if (endDate < startDate) {
+        this.filterEndDate = '';
       }
-    );
+    }
+  }
+
+  onEndDateChange(): void {
+    this.dateRangeError = '';
+    // Validate when end date changes
+    if (this.filterStartDate && this.filterEndDate) {
+      const startDate = new Date(this.filterStartDate);
+      const endDate = new Date(this.filterEndDate);
+      startDate.setHours(0, 0, 0, 0);
+      endDate.setHours(0, 0, 0, 0);
+      
+      if (endDate < startDate) {
+        this.dateRangeError = 'End date must be greater than or equal to start date.';
+      }
+    }
+  }
+
+  loadWeddings(page: number, size: number): void {
+    // Use filters if they exist, otherwise use default pagination
+    if (Object.keys(this.currentFilters).length > 0) {
+      this.weddingService.getWeddingsWithFilter(page, this.currentFilters).subscribe(
+        (res: any) => {
+          this.dataSource.data = res.data.items;
+          this.totalItems = res.data.totalElements;
+        },
+        (error) => {
+          console.error('Error fetching filtered weddings:', error);
+          this.toastr.error('Error loading weddings', 'Error');
+        }
+      );
+    } else {
+      this.weddingService.getWeddingsWithPagination(page).subscribe(
+        (res: any) => {
+          this.dataSource.data = res.data.items;
+          this.totalItems = res.data.totalElements;
+        },
+        (error) => {
+          console.error('Error fetching weddings:', error);
+          this.toastr.error('Error loading weddings', 'Error');
+        }
+      );
+    }
   }
 
   applyFilters(): void {
-    this.page = 0; // Reset to first page when filtering
-    const filters = {
-      title: this.filterTitle,
-      status: this.filterStatus,
-      startDate: this.filterStartDate,
-      endDate: this.filterEndDate,
-    };
-    
-    this.weddingService.getWeddingsWithFilter(this.page, filters).subscribe(
-      (res: any) => {
-        this.dataSource.data = res.data.items;
-        this.totalItems = res.data.totalElements;
-      },
-      (error) => {
-        console.error('Error fetching filtered weddings:', error);
-        this.toastr.error('Error applying filters', 'Error');
+    // Validate date range
+    this.dateRangeError = '';
+    if (this.filterStartDate && this.filterEndDate) {
+      const startDate = new Date(this.filterStartDate);
+      const endDate = new Date(this.filterEndDate);
+      startDate.setHours(0, 0, 0, 0);
+      endDate.setHours(0, 0, 0, 0);
+      
+      if (endDate < startDate) {
+        this.dateRangeError = 'End date must be greater than or equal to start date.';
+        this.toastr.error('End date must be greater than or equal to start date', 'Validation Error');
+        return;
       }
-    );
+    }
+
+    this.page = 0; // Reset to first page when filtering
+    // Only include filters that have values
+    this.currentFilters = {};
+    if (this.filterGroomName && this.filterGroomName.trim()) {
+      this.currentFilters.groomName = this.filterGroomName.trim();
+    }
+    if (this.filterBrideName && this.filterBrideName.trim()) {
+      this.currentFilters.brideName = this.filterBrideName.trim();
+    }
+    if (this.filterStartDate && this.filterStartDate.trim()) {
+      this.currentFilters.startDate = this.filterStartDate.trim();
+    }
+    if (this.filterEndDate && this.filterEndDate.trim()) {
+      this.currentFilters.endDate = this.filterEndDate.trim();
+    }
+    
+    // Only call filter API if there are actual filters
+    if (Object.keys(this.currentFilters).length > 0) {
+      this.weddingService.getWeddingsWithFilter(this.page, this.currentFilters).subscribe(
+        (res: any) => {
+          this.dataSource.data = res.data.items;
+          this.totalItems = res.data.totalElements;
+          this.toastr.success('Filters applied successfully', 'Success');
+        },
+        (error) => {
+          console.error('Error fetching filtered weddings:', error);
+          this.toastr.error('Error applying filters', 'Error');
+        }
+      );
+    } else {
+      // No filters, load all weddings
+      this.loadWeddings(this.page, this.pageSize);
+    }
   }
 
   clearFilters(): void {
-    this.filterTitle = '';
-    this.filterStatus = '';
+    this.filterGroomName = '';
+    this.filterBrideName = '';
     this.filterStartDate = '';
     this.filterEndDate = '';
+    this.currentFilters = {};
+    this.dateRangeError = '';
     this.page = 0;
     this.loadWeddings(this.page, this.pageSize);
+  }
+
+  // Getter for end date min (should be >= start date)
+  get endDateMin(): string {
+    return this.filterStartDate || '';
   }
 
   

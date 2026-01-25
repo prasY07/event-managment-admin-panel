@@ -24,6 +24,18 @@ constructor(private baseApi: BaseApiService) { }
     });
   }
 
+  getEventsWithFilter(pageNumber: number, filters: any): Observable<any> {
+    const params: any = {
+      page: pageNumber,
+    };
+    // Only add non-empty filter values
+    if (filters.title && filters.title.trim()) params.title = filters.title.trim();
+    if (filters.status && filters.status.trim()) params.eventStatus = filters.status.trim();
+    if (filters.startDate && filters.startDate.trim()) params.startDate = filters.startDate.trim();
+    if (filters.endDate && filters.endDate.trim()) params.endDate = filters.endDate.trim();
+    return this.baseApi.getDataWithParams('admin/event/list', params);
+  }
+
    getEventsRegisterUser(pageNumber: number,id: String): Observable<any> {
     return this.baseApi.getDataWithParams(`admin/event-register/${id}/list`, {
       page: pageNumber,

@@ -23,10 +23,11 @@ constructor(private baseApi: BaseApiService) { }
     const params: any = {
       page: pageNumber,
     };
-    if (filters.title) params.title = filters.title;
-    if (filters.status) params.eventStatus = filters.status;
-    if (filters.startDate) params.startDate = filters.startDate;
-    if (filters.endDate) params.endDate = filters.endDate;
+    // Only add non-empty filter values
+    if (filters.groomName && filters.groomName.trim()) params.groomName = filters.groomName.trim();
+    if (filters.brideName && filters.brideName.trim()) params.brideName = filters.brideName.trim();
+    if (filters.startDate && filters.startDate.trim()) params.startDate = filters.startDate.trim();
+    if (filters.endDate && filters.endDate.trim()) params.endDate = filters.endDate.trim();
     return this.baseApi.getDataWithParams('admin/wedding/list', params);
   }
 

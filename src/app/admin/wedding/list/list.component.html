@@ -7,29 +7,26 @@
       <c-card-body>
         <div class="row mb-4">
           <div class="col-md-3 mb-3">
-            <label for="title" class="form-label">Title</label>
-            <input id="title" type="text" [(ngModel)]="filterTitle" class="form-control" placeholder="Search Title" />
+            <label for="groom-name" class="form-label">Groom Name</label>
+            <input id="groom-name" type="text" [(ngModel)]="filterGroomName" class="form-control" placeholder="Search Groom Name" />
           </div>
 
           <div class="col-md-3 mb-3">
-            <label for="status" class="form-label">Status</label>
-            <select id="status" [(ngModel)]="filterStatus" class="form-select">
-              <option value="">Wedding Status</option>
-              <option value="UPCOMING">Upcoming</option>
-              <option value="ONGOING">Ongoing</option>
-              <option value="COMPLETED">Completed</option>
-              <option value="CANCELLED">Cancelled</option>
-            </select>
+            <label for="bride-name" class="form-label">Bride Name</label>
+            <input id="bride-name" type="text" [(ngModel)]="filterBrideName" class="form-control" placeholder="Search Bride Name" />
           </div>
 
           <div class="col-md-3 mb-3">
             <label for="start-date" class="form-label">Start Date</label>
-            <input id="start-date" [(ngModel)]="filterStartDate" type="date" class="form-control" />
+            <input id="start-date" [(ngModel)]="filterStartDate" type="date" (change)="onStartDateChange()" class="form-control" />
           </div>
 
           <div class="col-md-3 mb-3">
-            <label for="last-date" class="form-label">Last Date</label>
-            <input id="last-date" [(ngModel)]="filterEndDate" type="date" class="form-control" />
+            <label for="end-date" class="form-label">End Date</label>
+            <input id="end-date" [(ngModel)]="filterEndDate" type="date" [min]="endDateMin" (change)="onEndDateChange()" class="form-control" [class.is-invalid]="dateRangeError" />
+            <div class="invalid-feedback" *ngIf="dateRangeError">
+              {{ dateRangeError }}
+            </div>
           </div>
         </div>
         <button type="button" class="btn btn-primary me-2" (click)="applyFilters()">Submit</button>
