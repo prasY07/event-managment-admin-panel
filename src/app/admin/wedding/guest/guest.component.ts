@@ -57,7 +57,7 @@ export class GuestComponent implements OnInit {
   }
 
   getWeddingGuests(page: number, size: number): void {
-    this.weddingService.getWeddingGuests(page, this.weddingId).subscribe(
+    this.weddingService.getWeddingGuests(page, size,this.weddingId).subscribe(
       (res: any) => {
         console.log('Guest API Response:', res);
         // Defensive mapping: ensure each item exposes an `id` property

@@ -33,23 +33,45 @@ export class InformationComponent implements OnInit {
   }
 
   getWedding() {
-    this.isLoading = true;
-    this.hasError = false;
-    this.isExpired = false;
+    // this.isLoading = true;
+    // this.hasError = false;
+    // this.isExpired = false;
 
     this.weddingService.getWeddingInformation(this.weddingId).subscribe(
       (resp: any) => {
         
-        if (resp?.isExpired == true) {
-          // isExpired is true, so show the card and register link
-          this.isExpired = false;
-        } else {
-          this.isExpired = true;
-          this.hasError = true;
-          this.errorMessage = 'This wedding URL has expired. The link is no longer valid.';
-          this.isLoading = false;
-          return;
-        }
+        console.log('Wedding information response:', resp);
+      const startDate = new Date(resp.data.startDate);
+    const endDate = new Date(resp.data.endDate);
+    const today = new Date();
+
+    // Remove time part (important!)
+    startDate.setHours(0, 0, 0, 0);
+    endDate.setHours(23, 59, 59, 999);
+    today.setHours(0, 0, 0, 0);
+
+    // 🔴 Registration not started
+    if (today < startDate) {
+      this.hasError = true;
+      this.isExpired = true;
+      this.errorMessage = 'Registration has not started yet.';
+      this.isLoading = false;
+      return;
+    }
+
+    // 🔴 Registration ended
+    if (today > endDate) {
+      this.hasError = true;
+      this.isExpired = true;
+      this.errorMessage = 'Registration has ended.';
+      this.isLoading = false;
+      return;
+    }
+
+    // ✅ Valid date range
+    this.isExpired = false;
+    this.hasError = false;
+    this.isLoading = false;
 
         // Defensive handling for API shapes:
         // - { success:true, message:'Wedding Card', data: null }

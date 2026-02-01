@@ -38,9 +38,10 @@ constructor(private baseApi: BaseApiService) { }
     });
   }
 
-  getWeddingGuests(pageNumber: number, weddingId: string): Observable<any> {
-    return this.baseApi.getDataWithParams(`wedding/registration/guest/list/${weddingId}`, {
-      page: pageNumber
+  getWeddingGuests(pageNumber: number,size: number, weddingId: string): Observable<any> {
+    return this.baseApi.getDataWithParams(`admin/wedding/guest/list/${weddingId}`, {
+      page: pageNumber,
+      size:size
     });
   }
 
@@ -180,7 +181,7 @@ constructor(private baseApi: BaseApiService) { }
   }
 
   bulkUploadGuests(weddingId: string, formData: FormData): Observable<any> {
-    return this.baseApi.uploadImageWithAuth(`wedding/registration/guest/bulk-upload/${weddingId}`, formData);
+    return this.baseApi.uploadImageWithAuth(`admin/wedding/guest/bulk-upload/${weddingId}`, formData);
   }
   
 }
